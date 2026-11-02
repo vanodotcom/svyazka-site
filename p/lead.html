@@ -107,7 +107,7 @@
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   /* ===== ПРАВИТЬ: ссылка на Яндекс Форму «Анкета руководителя», вида https://forms.yandex.ru/u/xxxxxxxx/ .
      Пока пусто, вместо формы просьба написать в чат. */
-  var YANDEX_FORM = '';
+  var YANDEX_FORM = 'https://forms.yandex.ru/u/6ae92251902902db6f8a8c64/';
   var box=document.getElementById('lf-box');
   if(YANDEX_FORM){
     var id=(YANDEX_FORM.match(/\/u\/([^\/?#]+)/)||[])[1]||'form';
