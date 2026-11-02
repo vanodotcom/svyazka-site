@@ -1,0 +1,120 @@
+<!-- «Связка»: страница «Руководителю похода» (адрес /hikes/lead/). Что меняется руками, отмечено словом ПРАВИТЬ, данные которых нет — в [скобках]. -->
+<style>
+.svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
+  font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+  box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
+.svp *{box-sizing:border-box}
+.svp a{color:var(--ink)} .svp a:hover{color:var(--muted)}
+.svp-path{font-size:14px;color:var(--muted)} .svp-path a{color:var(--muted)}
+.svp h1{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:36px;line-height:1.1;font-weight:700;color:var(--ink)}
+.svp h2{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:20px;line-height:1.2;font-weight:700;color:var(--ink)}
+.svp-lead{margin:12px 0 0;font-size:18px;max-width:680px}
+.svp-muted{color:var(--muted)}
+.svp-now{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.svp-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.svp .svp-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;background:var(--accent);color:#fff;text-decoration:none;border:0;cursor:pointer;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:13px;letter-spacing:.06em}
+.svp .svp-btn:hover{background:var(--ink);color:#fff}
+.svp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.svp .svp-chip{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;font:inherit;font-size:15px;cursor:pointer}
+.svp .svp-chip.on{background:var(--ink);color:#fff}
+.svp-tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--ink)}
+.svp-tab{min-height:48px;padding:0;margin-right:28px;border:0;background:none;color:var(--muted);font-family:'Unbounded',sans-serif;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.svp-tab.on{color:var(--ink);box-shadow:inset 0 -3px 0 var(--accent)}
+.svp-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:16px 0;border-top:1px solid var(--line)}
+.svp-row>b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:13px;font-weight:600}
+.svp-li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+.svp-list{border-bottom:1px solid var(--line)}
+.svp ul{margin:0;padding-left:20px;line-height:1.7}
+.svp-img{display:block;width:100%;object-fit:cover;background:var(--stone)}
+.svp-empty{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;background:var(--stone)}
+.svp-hide{display:none!important}
+@media (max-width:640px){
+  .svp{padding:16px 20px 40px}
+  .svp-path{font-size:13px}
+  .svp h1{font-size:24px;line-height:1.15}
+  .svp h2{font-size:16px}
+  .svp-lead{font-size:16px}
+  .svp .svp-btn{display:flex;width:100%;min-height:52px;padding:0 16px}
+  .svp-tab{margin-right:18px;font-size:11px}
+  .svp-row{grid-template-columns:minmax(0,1fr);gap:6px;padding:14px 0}
+  .svp-li{flex-direction:column;gap:2px}
+  .svp .svp-chip{min-height:36px;font-size:14px;padding:0 12px}
+}
+.svp h1{margin-top:16px}
+.svp-wide{max-width:960px}
+.pg-h2{margin:40px 0 4px!important;font-size:18px!important}
+.pg-row{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;padding:14px 0;border-top:1px solid var(--line)}
+.pg-row>b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;line-height:1.6}
+.pg-end{border-bottom:1px solid var(--line)}
+.pg-cols{display:flex;flex-wrap:wrap;gap:40px}
+.pg-cols>div{flex:1 1 340px;min-width:0}
+.pg-cols>div.pg-side{flex:1 1 240px;max-width:300px}
+.pg-step{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
+.pg-step b{font-family:'Unbounded',sans-serif;font-weight:700;font-size:13px;color:var(--accent)}
+.pg-band{background:var(--stone);padding:28px 32px 32px}
+.pg-place{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:24px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line)}
+.pg-place small{display:block;color:var(--muted);font-size:14px}
+.pg-place>a{white-space:nowrap;font-size:15px}
+.pg-tag{display:block;margin-top:4px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.gal{columns:3 240px;column-gap:10px}
+.gal img{width:100%;height:auto;display:block;margin:0 0 10px;break-inside:avoid;background:var(--stone)}
+@media (max-width:640px){
+  .pg-row{grid-template-columns:1fr;gap:4px;padding:12px 0}
+  .pg-h2{margin-top:28px!important;font-size:15px!important}
+  .pg-place{grid-template-columns:1fr;gap:4px}
+  .pg-band{padding:20px}
+  .gal{columns:2;column-gap:6px}.gal img{margin-bottom:6px}
+}
+</style>
+
+<div class="svp" lang="ru">
+  <nav class="svp-path" aria-label="Путь"><a href="/hikes/">Походы</a> / Руководителю</nav>
+  <h1>Руководителю похода</h1>
+  <p class="svp-lead">Всё, что нужно, чтобы провести поход с клубом: от замысла до отчёта. А если вы опытный руководитель без команды, клуб поможет собрать группу.</p>
+  <section class="pg-band pg-cols" style="margin-top:32px;gap:32px">
+    <div><h2>Повести поход с клубом</h2>
+      <p style="margin:8px 0 0">Есть опыт и идея маршрута, но нет команды? Расскажите о походе, и мы поможем найти участников среди выпускников школ.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px 24px;margin-top:20px;font-size:15px">
+        <div><b>Клуб даёт</b><div class="svp-muted">Участников, страницу в «Походах сезона», прокат снаряжения, свою МКК</div></div>
+        <div><b>Клуб просит</b><div class="svp-muted">Кросс-поход с группой, отчёт после похода, [условия членства уточняются]</div></div></div>
+      <p style="margin:24px 0 0"><a class="svp-btn" href="#leadform">Предложить поход</a></p></div>
+    <div class="pg-side" style="flex:1 1 260px;max-width:340px"><div class="pg-step"><b>01</b><span>Анкета руководителя</span></div><div class="pg-step"><b>02</b><span>Встреча с [ответственным за походы]</span></div><div class="pg-step"><b>03</b><span>Поход появляется в «Походах сезона»</span></div><div class="pg-step"><b>04</b><span>Участники пишут вам</span></div><div class="pg-step"><b>05</b><span>Кросс-поход и защита в МКК</span></div><div class="pg-step"><b>06</b><span>Поход и отчёт</span></div></div>
+  </section>
+  <h2 class="pg-h2">От замысла до отчёта</h2>
+  <div class="pg-row"><b>Замысел</b><span>Район, категория сложности, сроки. Начните с <a href="https://westra.ru/passes/">каталога перевалов</a> и <a href="https://westra.ru/reports/">отчётов</a> о походах в этот район.</span></div>
+  <div class="pg-row"><b>Группа</b><span>Добавьте поход в <a href="/hikes/">«Походы сезона»</a>, участники из школ напишут вам сами. Проверьте опыт каждого: он должен соответствовать категории.</span></div>
+  <div class="pg-row"><b>МКК</b><span>Маршрутная книжка, защита маршрута в МКК клуба не позднее чем за [срок] до выхода. Контрольные сроки и связь.</span></div>
+  <div class="pg-row"><b>В походе</b><span>Регистрация группы в МЧС, контрольные сроки, связь с выпускающим.</span></div>
+  <div class="pg-row pg-end"><b>Отчёт</b><span>Сдайте отчёт в МКК в течение [срок]. Он попадёт в <a href="/library/">библиотеку</a> и поможет следующим группам.</span></div>
+  <section class="pg-cols" style="margin-top:40px">
+    <div><h2 style="margin-bottom:4px">Документы и шаблоны</h2>
+      <div class="svp-li" style="border-top:0"><a href="https://westra.ru/mkk/">Маршрутная книжка</a><span class="svp-muted">[шаблон]</span></div>
+      <div class="svp-li"><a href="https://westra.ru/mkk/">Требования к отчёту</a><span class="svp-muted">страница</span></div>
+      <div class="svp-li"><a href="https://mchs.gov.ru/deyatelnost/turistam">Регистрация группы в МЧС</a><span class="svp-muted">ссылка</span></div>
+      <div class="svp-li pg-end"><a href="https://westra.ru/mkk/">Инструкция по безопасности</a><span class="svp-muted">[pdf]</span></div></div>
+    <div class="pg-side"><h2>МКК клуба</h2>
+      <p style="margin:8px 0 0;font-size:15px">Рассматривает походы до [к.с.] включительно. Председатель МКК: [ФИО], [контакт].</p>
+      <p style="margin:12px 0 0;font-size:15px"><a href="https://westra.ru/mkk/">Состав и порядок работы МКК →</a></p></div>
+  </section>
+  <section id="leadform" style="margin-top:48px;max-width:620px">
+    <h2>Анкета руководителя</h2>
+    <p class="svp-muted" style="margin:8px 0 0">Ответим в течение недели и договоримся о встрече.</p>
+    <div id="lf-box" style="margin-top:12px"></div>
+  </section>
+</div>
+<script>
+(function(){
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  /* ===== ПРАВИТЬ: ссылка на Яндекс Форму «Анкета руководителя», вида https://forms.yandex.ru/u/xxxxxxxx/ .
+     Пока пусто, вместо формы просьба написать в чат. */
+  var YANDEX_FORM = '';
+  var box=document.getElementById('lf-box');
+  if(YANDEX_FORM){
+    var id=(YANDEX_FORM.match(/\/u\/([^\/?#]+)/)||[])[1]||'form';
+    box.innerHTML='<iframe src="'+esc(YANDEX_FORM.replace(/[?#].*$/,'').replace(/\/?$/,'/'))+'?iframe=1" name="ya-form-'+esc(id)+'" title="Анкета руководителя" frameborder="0" style="display:block;width:100%;min-height:700px;border:0"></iframe>';
+    var s=document.createElement('script'); s.src='https://forms.yandex.ru/_static/embed.js'; document.body.appendChild(s);
+  } else {
+    box.innerHTML='<p style="margin:0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">Анкета появится здесь. Пока напишите в <a href="https://t.me/+9wvbZK_QDxkxZDY6">чат клуба</a>: опыт руководства, район, категория и сроки похода.</p>';
+  }
+})();
+</script>
