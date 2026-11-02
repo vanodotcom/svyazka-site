@@ -1,0 +1,128 @@
+<!-- «Связка»: страница «Походы сезона» (адрес /hikes/). Вставить в блок T123 «HTML-код», отступы блока 0.
+     Что меняется руками, отмечено словом ПРАВИТЬ. -->
+<style>
+.svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
+  font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+  box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
+.svp *{box-sizing:border-box}
+.svp a{color:var(--ink)} .svp a:hover{color:var(--muted)}
+.svp-path{font-size:14px;color:var(--muted)} .svp-path a{color:var(--muted)}
+.svp h1{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:36px;line-height:1.1;font-weight:700;color:var(--ink)}
+.svp h2{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:20px;line-height:1.2;font-weight:700;color:var(--ink)}
+.svp-lead{margin:12px 0 0;font-size:18px;max-width:680px}
+.svp-muted{color:var(--muted)}
+.svp-now{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.svp-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.svp .svp-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;background:var(--accent);color:#fff;text-decoration:none;border:0;cursor:pointer;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:13px;letter-spacing:.06em}
+.svp .svp-btn:hover{background:var(--ink);color:#fff}
+.svp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.svp .svp-chip{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;font:inherit;font-size:15px;cursor:pointer}
+.svp .svp-chip.on{background:var(--ink);color:#fff}
+.svp-tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--ink)}
+.svp-tab{min-height:48px;padding:0;margin-right:28px;border:0;background:none;color:var(--muted);font-family:'Unbounded',sans-serif;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.svp-tab.on{color:var(--ink);box-shadow:inset 0 -3px 0 var(--accent)}
+.svp-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:16px 0;border-top:1px solid var(--line)}
+.svp-row>b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:13px;font-weight:600}
+.svp-li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+.svp-list{border-bottom:1px solid var(--line)}
+.svp ul{margin:0;padding-left:20px;line-height:1.7}
+.svp-img{display:block;width:100%;object-fit:cover;background:var(--stone)}
+.svp-empty{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;background:var(--stone)}
+.svp-hide{display:none!important}
+@media (max-width:640px){
+  .svp{padding:16px 20px 40px}
+  .svp-path{font-size:13px}
+  .svp h1{font-size:24px;line-height:1.15}
+  .svp h2{font-size:16px}
+  .svp-lead{font-size:16px}
+  .svp .svp-btn{display:flex;width:100%;min-height:52px;padding:0 16px}
+  .svp-tab{margin-right:18px;font-size:11px}
+  .svp-row{grid-template-columns:minmax(0,1fr);gap:6px;padding:14px 0}
+  .svp-li{flex-direction:column;gap:2px}
+  .svp .svp-chip{min-height:36px;font-size:14px;padding:0 12px}
+}
+.hk-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 32px}
+.hk-chk{display:inline-flex;align-items:center;gap:10px;min-height:40px;margin-top:8px;font-size:15px}
+.hk-chk input{width:18px;height:18px;accent-color:#161615}
+.hk-wrap{overflow-x:auto}
+.hk-t{border-collapse:collapse;width:100%;font-size:14px;line-height:1.35;min-width:720px}
+.hk-t th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:6px 12px 6px 0;border-bottom:1px solid var(--ink);white-space:nowrap}
+.hk-t td{padding:7px 12px 7px 0;border-bottom:1px solid var(--line);vertical-align:baseline}
+.hk-t .r{text-align:right;padding-right:0;white-space:nowrap}
+.hk-t .gr td{font-family:'Unbounded',sans-serif;font-weight:600;font-size:12px;padding-top:16px;padding-bottom:5px;border-bottom:1px solid var(--ink)}
+.hk-t tr.closed{color:var(--muted)}
+.hk-st{display:inline-flex;align-items:center;gap:8px}
+.hk-st i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted);flex:none}
+.hk-t tr.open .hk-st{font-weight:600} .hk-t tr.open .hk-st i{background:var(--accent);border-color:var(--accent)}
+@media (max-width:640px){
+  .hk-t{min-width:0} .hk-t thead{display:none}
+  .hk-t,.hk-t tbody,.hk-t tr,.hk-t td{display:block}
+  .hk-t tr{padding:10px 0;border-bottom:1px solid var(--line)}
+  .hk-t td{border:0;padding:1px 0}
+  .hk-t .gr{padding:0} .hk-t .gr td{padding-top:18px}
+  .hk-t td.k{font-size:13px;color:var(--muted)} .hk-t td.a{font-size:16px;font-weight:600}
+  .hk-t td.s:before{content:'Школа: '} .hk-t td.s.no{display:none}
+  .hk-t .r{text-align:left}
+}
+</style>
+
+<div class="svp svp-hikes">
+  <div class="hk-head">
+    <h1>Походы сезона <span data-f="season"></span></h1>
+    <a href="https://westra.ru/activity/ourhikes.html" style="font-size:15px">Прошедшие сезоны →</a>
+  </div>
+  <p class="svp-lead">Выберите поход и напишите руководителю. Ведёте поход сами? <a href="https://westra.ru/mkk/">Пройдите МКК →</a></p>
+  <div class="svp-chips" style="margin-top:24px" id="hk-kinds"></div>
+  <label class="hk-chk"><input type="checkbox" id="hk-open"> только где есть места</label>
+  <div class="hk-wrap">
+    <table class="hk-t">
+      <thead><tr><th>Вид</th><th>Район</th><th>Сроки</th><th>Руководитель</th><th>Школа</th><th>Набор</th><th class="r">Описание</th></tr></thead>
+      <tbody id="hk-body"></tbody>
+    </table>
+  </div>
+  <p class="svp-muted hk-none svp-hide">Под этот фильтр походов нет.</p>
+</div>
+
+<script>
+(function(){
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  /* пока фото не вписаны, вместо них серые прямоугольники */
+  document.querySelectorAll('.svp img').forEach(function(im){
+    if(/^(https?:|data:|file:)/.test(im.getAttribute('src')||'')) return;
+    var d=document.createElement('div'); d.className=im.className+' svp-empty'; d.textContent='фото'; im.parentNode.replaceChild(d,im);
+  });
+  /* ===== ПРАВИТЬ: походы сезона. ks — категория ('1', '2', '3–4'), kind — вид,
+     open: true если есть места, link — ссылка на описание похода (можно '#'). */
+  var SEASON = '2026/27';
+  var HIKES = [
+    {ks:'1', kind:'пешеходный', area:'[район]', dates:'[даты]', leader:'[ФИО]', school:'НУ', open:true, link:'#'},
+    {ks:'1', kind:'горный', area:'[район]', dates:'[даты]', leader:'[ФИО]', school:'', open:false, link:'#'},
+    {ks:'2', kind:'горный', area:'[район]', dates:'[даты]', leader:'[ФИО]', school:'БУ', open:true, link:'#'},
+    {ks:'2', kind:'лыжный', area:'[район]', dates:'[даты]', leader:'[ФИО]', school:'', open:true, link:'#'},
+    {ks:'2', kind:'водный', area:'[река]', dates:'[даты]', leader:'[ФИО]', school:'', open:false, link:'#'},
+    {ks:'3–4', kind:'горный', area:'[район]', dates:'[даты]', leader:'[ФИО]', school:'СУ', open:true, link:'#'},
+    {ks:'3–4', kind:'горный', area:'[район]', dates:'[даты]', leader:'[ФИО]', school:'', open:false, link:'#'}
+  ];
+
+  var root=document.querySelector('.svp-hikes'), kind='все', onlyOpen=false;
+  root.querySelector('[data-f="season"]').textContent=SEASON;
+  var kinds=['все']; HIKES.forEach(function(x){if(kinds.indexOf(x.kind)<0)kinds.push(x.kind);});
+  var kbox=document.getElementById('hk-kinds');
+  kbox.innerHTML=kinds.map(function(k){return '<button type="button" class="svp-chip" data-k="'+esc(k)+'">'+esc(k)+'</button>';}).join('');
+  function draw(){
+    kbox.querySelectorAll('[data-k]').forEach(function(b){b.classList.toggle('on',b.dataset.k===kind);b.setAttribute('aria-pressed',b.dataset.k===kind);});
+    var list=HIKES.filter(function(x){return (kind==='все'||x.kind===kind)&&(!onlyOpen||x.open);});
+    var groups=[]; list.forEach(function(x){if(groups.indexOf(x.ks)<0)groups.push(x.ks);});
+    document.getElementById('hk-body').innerHTML=groups.map(function(g){
+      return '<tr class="gr"><td colspan="7">'+esc(g)+' к.с.</td></tr>'+list.filter(function(x){return x.ks===g;}).map(function(x){
+        return '<tr class="'+(x.open?'open':'closed')+'"><td class="k">'+esc(x.kind)+'</td><td class="a">'+esc(x.area)+'</td><td>'+esc(x.dates)+'</td><td>'+esc(x.leader)+'</td><td class="s'+(x.school?'':' no')+'">'+esc(x.school||'—')+'</td>'+
+          '<td><span class="hk-st"><i aria-hidden="true"></i>'+(x.open?'есть места':'группа набрана')+'</span></td><td class="r"><a href="'+esc(x.link||'#')+'">описание →</a></td></tr>';
+      }).join('');
+    }).join('');
+    root.querySelector('.hk-none').classList.toggle('svp-hide',list.length>0);
+  }
+  kbox.addEventListener('click',function(e){var b=e.target.closest('[data-k]'); if(b){kind=b.dataset.k; draw();}});
+  document.getElementById('hk-open').addEventListener('change',function(e){onlyOpen=e.target.checked; draw();});
+  draw();
+})();
+</script>

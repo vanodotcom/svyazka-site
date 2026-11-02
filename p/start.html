@@ -1,0 +1,114 @@
+<!-- «Связка»: страница «Я здесь впервые» (адрес /start/). Вставить в блок T123 «HTML-код».
+     Что меняется руками, отмечено словом ПРАВИТЬ. -->
+<style>
+.svs{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
+  font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+  box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
+.svs *{box-sizing:border-box}
+.svs a{color:var(--ink)} .svs a:hover{color:var(--muted)}
+.svs-path{font-size:14px;color:var(--muted)} .svs-path a{color:var(--muted)}
+.svs h1{margin:16px 0 0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:40px;line-height:1.08;font-weight:700;color:var(--ink)}
+.svs-lead{margin:14px 0 0;font-size:19px;max-width:640px}
+.svs-hero{display:block;width:100%;height:360px;object-fit:cover;object-position:50% 50%;margin-top:28px;background:var(--stone)}
+.svs h2{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:20px;font-weight:700;line-height:1.2;color:var(--ink)}
+.svs h2.svs-year{margin-top:48px;font-size:22px}
+.svs-step{display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;padding:28px 0;border-top:1px solid var(--line)}
+.svs-step:first-of-type{margin-top:16px}
+.svs-num{font-family:'Unbounded',sans-serif;font-size:30px;font-weight:700;color:var(--accent);line-height:1}
+.svs-when{margin-top:10px;font-size:14px;color:var(--muted)}
+.svs-step p{margin:8px 0 0;font-size:17px;max-width:600px}
+.svs-ph{display:grid;gap:8px;margin-top:16px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.svs-ph.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.svs-ph img,.svs-ph .svs-empty{width:100%;height:220px;object-fit:cover;display:block;background:var(--stone)}
+.svs-end{margin-top:8px;padding:28px 0;border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;align-items:center;gap:20px 28px}
+.svs .svs-btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 32px;background:var(--accent);color:#fff;text-decoration:none;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:14px;letter-spacing:.06em}
+.svs .svs-btn:hover{background:var(--ink);color:#fff}
+.svs-end a:not(.svs-btn){font-weight:500}
+.svs-empty{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
+@media (max-width:640px){
+  .svs{padding:16px 20px 40px}
+  .svs-path{font-size:13px}
+  .svs h1{font-size:26px;line-height:1.12;margin-top:12px}
+  .svs-lead{font-size:16px;margin-top:12px}
+  .svs-hero{height:200px;margin-top:16px}
+  .svs h2{font-size:16px} .svs h2.svs-year{margin-top:28px;font-size:16px}
+  .svs-step{display:block;padding:18px 0}
+  .svs-step:first-of-type{margin-top:8px}
+  .svs-step>div:first-child{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .svs-num{font-size:22px} .svs-when{margin:0;font-size:13px}
+  .svs-step p{font-size:15px;margin-top:6px}
+  .svs-ph,.svs-ph.two{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:12px}
+  .svs-ph img,.svs-ph .svs-empty{height:120px}
+  .svs-ph img:nth-child(3){display:none}
+  .svs-end{flex-direction:column;align-items:stretch;gap:12px;padding:16px 0}
+  .svs .svs-btn{min-height:52px;font-size:13px;padding:0 16px}
+  .svs-end a:not(.svs-btn){text-align:center}
+}
+</style>
+
+<div class="svs">
+  <nav class="svs-path" aria-label="Путь"><a href="/schools/">Школы</a> / Как к нам попасть</nav>
+  <h1>Я здесь впервые</h1>
+  <p class="svs-lead">Мы учим ходить в горы с нуля. Сезон начинается в ноябре со встречи в зале, а заканчивается летним походом в горы. Опыт не нужен, нужно желание учиться.</p>
+  <img class="svs-hero" src="https://static.tildacdn.pub/tila3633-3665-4362-b364-343730653365/svyazka-start-hero.jpg" alt="Палатки на снегу на закате в горах">
+
+  <h2 class="svs-year">Как устроен год в клубе</h2>
+
+  <!-- ПРАВИТЬ: шаги. Дата первой встречи в шаге 01. -->
+  <div class="svs-step">
+    <div><div class="svs-num">01</div><div class="svs-when">ноябрь</div></div>
+    <div><h2>Первая встреча</h2>
+      <p>Знакомимся, рассказываем про школы, руководителей походов и районы. Ближайшая встреча: 24 ноября, 19:30, зал на Пушкинской.</p>
+      <div class="svs-ph two"><img src="https://static.tildacdn.pub/tila3966-6235-4263-a531-326364393164/svyazka-start-1a.jpg" alt="Большое общее фото клуба в лесу с флагом" loading="lazy"><img src="https://static.tildacdn.pub/tila6330-3936-4638-b630-616334363666/svyazka-start-1b.jpg" alt="Группа участников школы улыбается в камеру" loading="lazy"></div>
+    </div>
+  </div>
+
+  <div class="svs-step">
+    <div><div class="svs-num">02</div><div class="svs-when">ноябрь – май, вечером в будни</div></div>
+    <div><h2>Лекции</h2>
+      <p>Снаряжение, техника, ориентирование, медицина, тактика похода. Горная БУ по вторникам, СУ по четвергам, лыжная школа по средам.</p>
+    </div>
+  </div>
+
+  <div class="svs-step">
+    <div><div class="svs-num">03</div><div class="svs-when">выходные, ноябрь – май</div></div>
+    <div><h2>Тренировки и выезды</h2>
+      <p>Верёвки, скалы, переправы, ночёвки в палатках. Всё в Москве и Подмосковье, с инструкторами.</p>
+      <div class="svs-ph"><img src="https://static.tildacdn.pub/tila3962-6630-4961-b235-616463353565/svyazka-start-3a2.jpg" alt="Тренировка переправы по верёвке" loading="lazy"><img src="https://static.tildacdn.pub/tila3664-3032-4764-b239-313530303266/svyazka-start-3b.jpg" alt="Занятие на скалах" loading="lazy"><img src="https://vanodotcom.github.io/svyazka-site/img/start-3c2.jpg" alt="Отработка верёвочной техники в лесу" loading="lazy"></div>
+    </div>
+  </div>
+
+  <div class="svs-step">
+    <div><div class="svs-num">04</div><div class="svs-when">весна и июнь</div></div>
+    <div><h2>Соревнования и кросс-поход</h2>
+      <p>Поисково-спасательные работы, соревнования по технике горного туризма, ориентирование. В июне кросс-поход проверяет, готова ли группа.</p>
+      <div class="svs-ph"><img src="https://static.tildacdn.pub/tila3436-3264-4437-b935-643264326265/svyazka-start-4a.jpg" alt="Группа с рюкзаками поднимается по склону с люпинами" loading="lazy"><img src="https://static.tildacdn.pub/tila3735-6263-4931-a265-636466303638/svyazka-start-4b.jpg" alt="Обед у костра на выезде" loading="lazy"><img src="https://static.tildacdn.pub/tila3630-3030-4230-a562-353661303961/svyazka-start-4c2.jpg" alt="Участники в обвязках после этапа" loading="lazy"></div>
+    </div>
+  </div>
+
+  <div class="svs-step">
+    <div><div class="svs-num">05</div><div class="svs-when">июль – август</div></div>
+    <div><h2>Поход в горы</h2>
+      <p>Поход 1–4 категории сложности с опытным руководителем: Кавказ, Алтай, Памир, Тянь-Шань.</p>
+      <div class="svs-ph"><img src="https://static.tildacdn.pub/tila3262-3630-4935-a334-643234343661/svyazka-start-5a.jpg" alt="Группа на гребне, вдали снежные вершины" loading="lazy"><img src="https://static.tildacdn.pub/tila6435-3632-4365-a337-646332383761/svyazka-start-5b2.jpg" alt="Связка на снежном склоне" loading="lazy"><img src="https://static.tildacdn.pub/tila6237-3663-4537-b965-396264306265/svyazka-start-5c.jpg" alt="Спуск к леднику с рюкзаками" loading="lazy"></div>
+    </div>
+  </div>
+
+  <div class="svs-end">
+    <a class="svs-btn" href="/schools/">Выбрать школу</a>
+    <a href="/schools/join/">Записаться, если набор закрыт</a>
+    <a href="/club/gallery/">Больше фото →</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* пока фото не вписаны, вместо них серые прямоугольники */
+  document.querySelectorAll('.svs img').forEach(function(im){
+    if(/^(https?:|data:)/.test(im.getAttribute('src')||'')) return;
+    var d=document.createElement('div'); d.className=im.className+' svs-empty'; d.textContent='фото';
+    if(im.classList.contains('svs-hero')) d.className='svs-hero svs-empty';
+    im.parentNode.replaceChild(d,im);
+  });
+})();
+</script>

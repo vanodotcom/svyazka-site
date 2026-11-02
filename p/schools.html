@@ -1,0 +1,161 @@
+<!-- «Связка»: страница «Школы · горное направление» (адрес /schools/). Вставить в блок T123 «HTML-код», отступы блока 0.
+     Что меняется руками, отмечено словом ПРАВИТЬ. -->
+<style>
+.svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
+  font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+  box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
+.svp *{box-sizing:border-box}
+.svp a{color:var(--ink)} .svp a:hover{color:var(--muted)}
+.svp-path{font-size:14px;color:var(--muted)} .svp-path a{color:var(--muted)}
+.svp h1{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:36px;line-height:1.1;font-weight:700;color:var(--ink)}
+.svp h2{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:20px;line-height:1.2;font-weight:700;color:var(--ink)}
+.svp-lead{margin:12px 0 0;font-size:18px;max-width:680px}
+.svp-muted{color:var(--muted)}
+.svp-now{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.svp-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.svp .svp-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;background:var(--accent);color:#fff;text-decoration:none;border:0;cursor:pointer;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:13px;letter-spacing:.06em}
+.svp .svp-btn:hover{background:var(--ink);color:#fff}
+.svp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.svp .svp-chip{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;font:inherit;font-size:15px;cursor:pointer}
+.svp .svp-chip.on{background:var(--ink);color:#fff}
+.svp-tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--ink)}
+.svp-tab{min-height:48px;padding:0;margin-right:28px;border:0;background:none;color:var(--muted);font-family:'Unbounded',sans-serif;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.svp-tab.on{color:var(--ink);box-shadow:inset 0 -3px 0 var(--accent)}
+.svp-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:16px 0;border-top:1px solid var(--line)}
+.svp-row>b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:13px;font-weight:600}
+.svp-li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+.svp-list{border-bottom:1px solid var(--line)}
+.svp ul{margin:0;padding-left:20px;line-height:1.7}
+.svp-img{display:block;width:100%;object-fit:cover;background:var(--stone)}
+.svp-empty{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;background:var(--stone)}
+.svp-hide{display:none!important}
+@media (max-width:640px){
+  .svp{padding:16px 20px 40px}
+  .svp-path{font-size:13px}
+  .svp h1{font-size:24px;line-height:1.15}
+  .svp h2{font-size:16px}
+  .svp-lead{font-size:16px}
+  .svp .svp-btn{display:flex;width:100%;min-height:52px;padding:0 16px}
+  .svp-tab{margin-right:18px;font-size:11px}
+  .svp-row{grid-template-columns:minmax(0,1fr);gap:6px;padding:14px 0}
+  .svp-li{flex-direction:column;gap:2px}
+  .svp .svp-chip{min-height:36px;font-size:14px;padding:0 12px}
+}
+.sch-top{display:flex;flex-wrap:wrap;gap:32px;align-items:stretch;padding:28px 0 32px}
+.sch-text{flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.sch-photo{flex:1 1 300px;min-width:0;height:260px;width:auto}
+.sch-season{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:16px;font-size:15px}
+@media (max-width:640px){.sch-top{gap:16px;padding:20px 0 24px}.sch-photo{height:200px;flex-basis:100%}.sch-text{gap:12px}}
+.svp-school h1{overflow-wrap:break-word;hyphens:auto}
+.svp-school h1.long{font-size:26px}
+@media (max-width:640px){.svp-school h1.long{font-size:19px}}
+@media (max-width:640px){
+  .svp-school .svp-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .svp-school .svp-chip{justify-content:center;text-align:center}
+  .sch-long{display:none}
+  .sch-top{flex-direction:column;flex-wrap:nowrap;gap:12px}
+  .sch-text{display:contents}
+  .sch-photo{order:1;flex:none;width:100%}
+  .sch-cta{order:2}
+}
+</style>
+
+<div class="svp svp-school" lang="ru">
+  <nav class="svp-path" aria-label="Путь"><a href="/schools/">Школы</a> / Горное направление</nav>
+  <div class="svp-chips" style="margin-top:16px" aria-label="Уровни">
+    <button type="button" class="svp-chip" data-lvl="nu">НУ<span class="sch-long">&nbsp;· начальный</span></button>
+    <button type="button" class="svp-chip" data-lvl="bu">БУ<span class="sch-long">&nbsp;· базовый</span></button>
+    <button type="button" class="svp-chip" data-lvl="su">СУ<span class="sch-long">&nbsp;· специализированный</span></button>
+  </div>
+  <section class="sch-top">
+    <div class="sch-text">
+      <div class="svp-now"><span class="svp-dot" aria-hidden="true"></span><span data-f="status"></span></div>
+      <h1 data-f="title"></h1>
+      <p class="svp-lead" style="margin:0" data-f="lead"></p>
+      <div class="sch-cta"><a class="svp-btn" href="/schools/join/">Заполнить анкету</a></div>
+    </div>
+    <img class="svp-img sch-photo" src="https://static.tildacdn.pub/tila3536-3834-4162-b961-646632666265/svyazka-school-hero.jpg" alt="Группа с рюкзаками лезет по скалам">
+  </section>
+  <div class="svp-tabs" role="tablist" aria-label="Разделы школы">
+    <button type="button" class="svp-tab" data-tab="about">О школе</button>
+    <button type="button" class="svp-tab" data-tab="plan">Расписание</button>
+    <button type="button" class="svp-tab" data-tab="lect">Лекции</button>
+    <button type="button" class="svp-tab" data-tab="docs">Документы</button>
+  </div>
+  <section id="sch-body" style="padding-top:4px"></section>
+</div>
+
+<script>
+(function(){
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  /* пока фото не вписаны, вместо них серые прямоугольники */
+  document.querySelectorAll('.svp img').forEach(function(im){
+    if(/^(https?:|data:|file:)/.test(im.getAttribute('src')||'')) return;
+    var d=document.createElement('div'); d.className=im.className+' svp-empty'; d.textContent='фото'; im.parentNode.replaceChild(d,im);
+  });
+  /* ===== ПРАВИТЬ: тексты уровней. status — строка над заголовком, photo — ссылка на фото справа, pos — какую часть фото показывать, alt — его описание.
+     season — этапы сезона, plan — ближайшие занятия, docs — документы [название, ссылка, тип]. */
+  var LEVELS = {
+    nu: {photo:'https://static.tildacdn.pub/tila6463-3766-4638-b730-646538643938/svyazka-school-nu2.jpg', pos:'86.4782% 8.8754%', alt:'Горная река в зелёной долине, облака над хребтом',
+      status:'Набор откроется в феврале', title:'Школа начального уровня',
+      lead:'Для тех, кто ещё не ходил в горы. Учим с нуля: лекции, тренировки, выезды и летом первый поход 1 к.с. с опытным руководителем.',
+      who:['Опыт походов и школ не нужен','Возраст от 18 лет, верхней границы нет','Главное: желание учиться и ходить в горы'],
+      season:[['Февраль–май','Лекции раз в неделю, 19:30'],['Выходные','Тренировки и выезды'],['Весна','Соревнования по технике'],['Июнь','Кросс-поход'],['Июль–август','Поход 1 к.с.'],['Октябрь','Экзамен']],
+      leader:'[ФИО] · [контакт]',
+      plan:[['[дата в феврале], 19:30','Первая встреча','Пушкинская']],
+      docs:[['Положение о школе НУ','#','pdf'],['Вопросы к экзамену НУ','#','страница'],['Узлы и нормативы ОФП','#','страница']]},
+    bu: {photo:'https://static.tildacdn.pub/tila3536-3834-4162-b961-646632666265/svyazka-school-hero.jpg', alt:'Группа с рюкзаками лезет по скалам',
+      status:'Набор открыт до [дата]', title:'Школа базового уровня',
+      lead:'Готовим к походам 2 к.с. и дальше: лекции, тренировки, выезды и летний поход с опытным руководителем.',
+      who:['Был хотя бы один поход 1 к.с. или окончена школа НУ','Возраст от 18 лет, верхней границы нет','Главное: желание учиться и ходить в горы'],
+      season:[['Ноябрь–май','Лекции по вторникам'],['Выходные','Тренировки и выезды'],['Весна','ПСР, соревнования'],['Июнь','Кросс-поход'],['Июль–август','Поход 2 к.с.']],
+      leader:'[ФИО] · [контакт]',
+      plan:[['24 нояб, 19:30','Первая встреча','Пушкинская']],
+      docs:[['Положение о школе БУ','#','pdf'],['Вопросы к экзамену','#','страница'],['Узлы и нормативы ОФП','#','страница']]},
+    su: {photo:'https://static.tildacdn.pub/tila6435-3632-4365-a337-646332383761/svyazka-start-5b2.jpg', pos:'50% 90.8421%', alt:'Связка на снежном склоне',
+      status:'Набор открыт до [дата]', title:'Школа специализированного уровня',
+      lead:'Для выпускников БУ, которые хотят в походы 3–4 к.с.: сложная техника, спасработы, автономность и летний поход 3 или 4 к.с.',
+      who:['Окончена школа БУ: диплом или экзамен экстерном','Для похода 3 к.с. нужен опыт похода 2 к.с., для 4 к.с. опыт 3 к.с.','Возраст от 18 лет, верхней границы нет'],
+      season:[['Ноябрь–май','Лекции раз в неделю, 19:30'],['Выходные','Тренировки и выезды'],['Весна','ПСР, соревнования'],['Июнь','Кросс-поход'],['Июль–август','Поход 3–4 к.с.'],['Октябрь','Экзамен']],
+      leader:'[ФИО] · [контакт]',
+      plan:[['24 нояб, 19:30','Первая встреча','Пушкинская']],
+      docs:[['Положение о школе СУ','#','pdf'],['Вопросы к экзамену СУ','#','страница'],['Узлы и нормативы ОФП','#','страница']]}
+  };
+  var FEE = 'Взнос школы и клуба 2000 ₽ в месяц. Снаряжение можно взять в прокате клуба.';
+  var LECTURES_URL = 'https://westra.ru/articles/';
+
+  var root=document.querySelector('.svp-school'), lvl='bu', tab='about';
+  var h=(location.hash||'').slice(1); if(LEVELS[h]) lvl=h;
+  function li(a,b,c){return '<div class="svp-li"><span>'+a+(b?' · '+esc(b):'')+'</span><span class="svp-muted">'+esc(c||'')+'</span></div>';}
+  function draw(){
+    var L=LEVELS[lvl];
+    root.querySelectorAll('[data-lvl]').forEach(function(b){b.classList.toggle('on',b.dataset.lvl===lvl);b.setAttribute('aria-pressed',b.dataset.lvl===lvl);});
+    root.querySelectorAll('[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab===tab);b.setAttribute('aria-selected',b.dataset.tab===tab);});
+    ['status','title','lead'].forEach(function(k){root.querySelector('[data-f="'+k+'"]').textContent=L[k];});
+    root.querySelector('h1').classList.toggle('long',L.title.length>26);
+    var ph=root.querySelector('.sch-photo'); if(ph&&ph.tagName==='IMG'&&L.photo){ph.src=L.photo; ph.alt=L.alt||''; ph.style.objectPosition=L.pos||'';}
+    var out='';
+    if(tab==='about'){
+      out='<div class="svp-row" style="border-top:0"><b>Для кого</b><ul>'+L.who.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'+
+        '<div class="svp-row"><b>Как идёт сезон</b><div class="sch-season">'+L.season.map(function(s){return '<div><b>'+esc(s[0])+'</b><div class="svp-muted">'+esc(s[1])+'</div></div>';}).join('')+'</div></div>'+
+        '<div class="svp-row"><b>Сколько стоит</b><span>'+esc(FEE)+'</span></div>'+
+        '<div class="svp-row" style="border-bottom:1px solid var(--line)"><b>Руководитель</b><span>'+esc(L.leader)+' · <a href="https://westra.ru/contacts.html">все инструкторы</a></span></div>';
+    } else if(tab==='plan'){
+      out='<div class="svp-list">'+L.plan.map(function(p){return li('<b>'+esc(p[0])+'</b>',p[1],p[2]);}).join('')+'</div>'+
+        '<p style="margin:16px 0 0"><a href="/calendar/">Весь календарь и подписка на расписание →</a></p>';
+    } else if(tab==='lect'){
+      out='<p style="margin:16px 0 0;max-width:600px">Видео лекций и статьи для уровня '+lvl.toUpperCase()+' пока лежат в библиотеке на старом сайте.</p>'+
+        '<p style="margin:12px 0 0"><a href="'+LECTURES_URL+'">Лекции и статьи на westra.ru →</a></p>';
+    } else {
+      out='<div class="svp-list">'+L.docs.map(function(d){return '<div class="svp-li"><a href="'+esc(d[1])+'">'+esc(d[0])+'</a><span class="svp-muted">'+esc(d[2])+'</span></div>';}).join('')+'</div>';
+    }
+    document.getElementById('sch-body').innerHTML=out;
+  }
+  root.addEventListener('click',function(e){
+    var b=e.target.closest('[data-lvl],[data-tab]'); if(!b) return;
+    if(b.dataset.lvl){lvl=b.dataset.lvl; history.replaceState(null,'','#'+lvl);} else tab=b.dataset.tab;
+    draw();
+  });
+  draw();
+})();
+</script>

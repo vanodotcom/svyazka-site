@@ -1,0 +1,161 @@
+<!-- «Связка»: содержимое главной. Вставить в блок T123 «HTML-код» на странице «Главная».
+     Что менять руками, отмечено словом ПРАВИТЬ. -->
+<style>
+.svh{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
+  font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+  box-sizing:border-box;max-width:916px;padding:28px 48px 64px}
+.svh *{box-sizing:border-box}
+.svh a{color:var(--ink)} .svh a:hover{color:var(--muted)}
+.svh .cap{font-family:'Unbounded',sans-serif;text-transform:uppercase}
+.svh-now{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.svh-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.svh h1{margin:18px 0 0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:46px;line-height:1.08;font-weight:700;color:var(--ink)}
+.svh-lead{margin:18px 0 0;font-size:19px;max-width:560px}
+.svh-acts{display:flex;flex-wrap:wrap;align-items:center;gap:28px;margin-top:18px}
+.svh .svh-btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 32px;background:var(--accent);color:#fff;text-decoration:none;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:14px;letter-spacing:.06em}
+.svh .svh-btn:hover{background:var(--ink);color:#fff}
+.svh-link{font-weight:500}
+.svh-photo{display:block;width:100%;height:340px;object-fit:cover;object-position:50% 80%;margin-top:26px;background:var(--stone)}
+.svh-ph{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
+.svh-doors{margin-top:40px;border-bottom:1px solid var(--line)}
+.svh .svh-door{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-top:1px solid var(--line);text-decoration:none}
+.svh-door b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:15px}
+.svh-door span{font-size:15px;color:var(--muted);text-align:right}
+.svh-door:hover b{text-decoration:underline}
+.svh-sec{margin-top:48px}
+.svh-sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:4px}
+.svh h2{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:20px;font-weight:700;color:var(--ink)}
+.svh-sec-h a{font-size:15px}
+.svh-list{border-bottom:1px solid var(--line)}
+.svh .svh-nw{display:grid;grid-template-columns:120px minmax(0,1fr);gap:20px;padding:12px 0;border-top:1px solid var(--line);text-decoration:none;align-items:start}
+.svh .svh-nw.noimg{grid-template-columns:minmax(0,1fr)}
+.svh-nw img{width:120px;height:80px;object-fit:cover;display:block;background:var(--stone)}
+.svh-nw small{display:block;font-size:13px;color:var(--muted)}
+.svh-nw strong{display:block;font-size:17px;font-weight:600;line-height:1.35}
+.svh-nw p{margin:2px 0 0;font-size:15px;color:var(--muted)}
+.svh-ev{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;padding:11px 0;border-top:1px solid var(--line);align-items:baseline}
+.svh-ev b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:14px}
+.svh-ev em{font-style:normal;color:var(--muted)}
+.svh-empty{padding:11px 0;border-top:1px solid var(--line);color:var(--muted)}
+@media (max-width:640px){
+  .svh{padding:20px 20px 40px}
+  .svh-now{font-size:12px;gap:8px} .svh-dot{width:8px;height:8px}
+  .svh h1{font-size:26px;line-height:1.12;margin-top:12px}
+  .svh-lead{font-size:16px;margin-top:12px}
+  .svh-acts{flex-direction:column;align-items:stretch;gap:12px;margin-top:12px}
+  .svh .svh-btn{min-height:52px;font-size:13px;padding:0 16px}
+  .svh-link{text-align:center}
+  .svh-photo{height:200px;margin-top:16px}
+  .svh-doors{margin-top:24px}
+  .svh .svh-door{align-items:center;min-height:52px;padding:8px 0}
+  .svh-door b{font-size:13px}
+  .svh-door span{font-size:0} .svh-door span:after{content:'→';font-size:16px;color:var(--ink)}
+  .svh-sec{margin-top:32px}
+  .svh h2{font-size:16px} .svh-sec-h a{font-size:14px}
+  .svh .svh-nw{grid-template-columns:72px minmax(0,1fr);gap:12px;padding:10px 0}
+  .svh-nw img{width:72px;height:56px}
+  .svh-nw strong{font-size:15px;line-height:1.3}
+  .svh-nw p{display:none}
+  .svh-ev{grid-template-columns:72px minmax(0,1fr);gap:12px;padding:10px 0;font-size:15px}
+  .svh-ev b{font-size:12px}
+  .svh-ev em{display:none}
+}
+</style>
+
+<div class="svh">
+
+  <!-- ПРАВИТЬ: верхний блок «Сейчас». Меняйте текст между тегами. -->
+  <section aria-label="Сейчас">
+    <div class="svh-now"><span class="svh-dot" aria-hidden="true"></span>Сейчас · набор открыт</div>
+    <h1>Набор в школы сезона 2026/27</h1>
+    <p class="svh-lead">Первая встреча для всех: 24 ноября, 19:30, зал на Пушкинской. Опыт не нужен, начинаем с азов.</p>
+    <div class="svh-acts">
+      <a class="svh-btn" href="/schools/">Выбрать школу</a>
+      <a class="svh-link" href="/start/">Как всё устроено</a>
+    </div>
+    <!-- ПРАВИТЬ: вместо ССЫЛКА_НА_ФОТО вставьте адрес фото из Тильды (см. инструкцию) -->
+    <img class="svh-photo" src="https://vanodotcom.github.io/svyazka-site/img/home-hero.jpg" alt="Группа в касках поднимается по каменистой тропе, позади горные хребты">
+  </section>
+
+  <nav class="svh-doors" aria-label="С чего начать">
+    <a class="svh-door" href="/start/"><b>Я здесь впервые</b><span>Как устроен клуб и с чего начать →</span></a>
+    <a class="svh-door" href="/hikes/"><b>С кем пойти в поход</b><span>Походы лета 2027 →</span></a>
+    <a class="svh-door" href="/schools/"><b>Я учусь в школе</b><span>Расписание и лекции →</span></a>
+    <a class="svh-door" href="/library/"><b>Готовлю поход</b><span>Перевалы, отчёты, МКК →</span></a>
+  </nav>
+
+  <section class="svh-sec" aria-label="Новости">
+    <div class="svh-sec-h"><h2>Новости</h2><a href="https://t.me/westra">Все в Телеграме →</a></div>
+    <div class="svh-list" id="svh-news"></div>
+  </section>
+
+  <section class="svh-sec" aria-label="Ближайшее">
+    <div class="svh-sec-h"><h2>Ближайшее</h2><a href="/calendar/">Весь календарь →</a></div>
+    <div class="svh-list" id="svh-events"></div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  /* ===== ПРАВИТЬ: новости. Сверху самые свежие, на главной видны первые три.
+     date — как показать дату, title — заголовок, text — одна-две фразы,
+     link — ссылка на пост в Телеграме, photo — ссылка на картинку (можно оставить пустой ''). */
+  var NEWS = [
+    {date:'ноябрь', title:'Горное направление набирает БУ и СУ на сезон 2027',
+     text:'Первая встреча 24 ноября в 19:30: знакомство с руководителями походов, их районами и сроками.',
+     link:'https://t.me/westra', photo:''},
+    {date:'22 окт', title:'Экзамен пешеходной школы ПБУ-2026',
+     text:'5 ноября, 19:00, зал на Пушкинской. Зовём инструкторов и руководителей школ принимать экзамен.',
+     link:'https://t.me/westra', photo:''},
+    {date:'12 окт', title:'Лыжное направление продолжает набор',
+     text:'Лекция о личном и общественном снаряжении лыжника. Впереди новогодний поход по Южному Уралу.',
+     link:'https://t.me/westra', photo:''}
+  ];
+
+  /* ===== ПРАВИТЬ: ближайшие события. day — дата в виде ГГГГ-ММ-ДД.
+     Прошедшие события скрываются сами, показываются первые три. */
+  var EVENTS = [
+    {day:'2026-11-05', title:'Экзамен пешеходной школы ПБУ', where:'Пушкинская, 19:00'},
+    {day:'2026-11-24', title:'Первая встреча горных школ БУ и СУ', where:'Пушкинская, 19:30'}
+  ];
+
+  /* Позже сюда впишем адрес скрипта, который сам берёт посты из t.me/westra. Пока пусто. */
+  var FEED_URL = '';
+
+  var MONTHS=['янв','февр','марта','апр','мая','июня','июля','авг','сент','окт','нояб','дек'];
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  function drawNews(list){
+    var box=document.getElementById('svh-news'); if(!box) return;
+    box.innerHTML=list.slice(0,3).map(function(n){
+      var img=n.photo?'<img src="'+esc(n.photo)+'" alt="" loading="lazy">':'';
+      return '<a class="svh-nw'+(img?'':' noimg')+'" href="'+esc(n.link||'https://t.me/westra')+'">'+img+
+        '<span><small>'+esc(n.date)+'</small><strong>'+esc(n.title)+'</strong>'+(n.text?'<p>'+esc(n.text)+'</p>':'')+'</span></a>';
+    }).join('');
+  }
+
+  function drawEvents(){
+    var box=document.getElementById('svh-events'); if(!box) return;
+    var t=new Date(); var today=t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2);
+    var list=EVENTS.filter(function(e){return e.day>=today;}).sort(function(a,b){return a.day<b.day?-1:1;}).slice(0,3);
+    if(!list.length){box.innerHTML='<div class="svh-empty">Скоро добавим. Пока следите за <a href="https://t.me/westra">Телеграмом</a>.</div>';return;}
+    box.innerHTML=list.map(function(e){
+      var p=e.day.split('-'); var d=parseInt(p[2],10)+' '+MONTHS[parseInt(p[1],10)-1];
+      return '<div class="svh-ev"><b>'+d+'</b><span>'+esc(e.title)+(e.where?' <em>· '+esc(e.where)+'</em>':'')+'</span></div>';
+    }).join('');
+  }
+
+  /* фото-заглушка, пока ссылка на фото не вписана */
+  var ph=document.querySelector('.svh-photo');
+  if(ph && !/^(https?:|data:)/.test(ph.getAttribute('src'))){
+    var d=document.createElement('div'); d.className='svh-photo svh-ph'; d.textContent='Здесь будет фото';
+    ph.parentNode.replaceChild(d,ph);
+  }
+
+  drawNews(NEWS); drawEvents();
+  if(FEED_URL){
+    fetch(FEED_URL).then(function(r){return r.json();}).then(function(j){ if(j&&j.length) drawNews(j); }).catch(function(){});
+  }
+})();
+</script>

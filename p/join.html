@@ -1,0 +1,204 @@
+<!-- «Связка»: страница «Записаться в школу» (адрес /schools/join/). Вставить в блок T123 «HTML-код», отступы блока 0.
+     Что меняется руками, отмечено словом ПРАВИТЬ. -->
+<style>
+.svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
+  font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+  box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
+.svp *{box-sizing:border-box}
+.svp a{color:var(--ink)} .svp a:hover{color:var(--muted)}
+.svp-path{font-size:14px;color:var(--muted)} .svp-path a{color:var(--muted)}
+.svp h1{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:36px;line-height:1.1;font-weight:700;color:var(--ink)}
+.svp h2{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:20px;line-height:1.2;font-weight:700;color:var(--ink)}
+.svp-lead{margin:12px 0 0;font-size:18px;max-width:680px}
+.svp-muted{color:var(--muted)}
+.svp-now{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.svp-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.svp .svp-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;background:var(--accent);color:#fff;text-decoration:none;border:0;cursor:pointer;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:13px;letter-spacing:.06em}
+.svp .svp-btn:hover{background:var(--ink);color:#fff}
+.svp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.svp .svp-chip{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;font:inherit;font-size:15px;cursor:pointer}
+.svp .svp-chip.on{background:var(--ink);color:#fff}
+.svp-tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--ink)}
+.svp-tab{min-height:48px;padding:0;margin-right:28px;border:0;background:none;color:var(--muted);font-family:'Unbounded',sans-serif;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.svp-tab.on{color:var(--ink);box-shadow:inset 0 -3px 0 var(--accent)}
+.svp-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:16px 0;border-top:1px solid var(--line)}
+.svp-row>b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:13px;font-weight:600}
+.svp-li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+.svp-list{border-bottom:1px solid var(--line)}
+.svp ul{margin:0;padding-left:20px;line-height:1.7}
+.svp-img{display:block;width:100%;object-fit:cover;background:var(--stone)}
+.svp-empty{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;background:var(--stone)}
+.svp-hide{display:none!important}
+@media (max-width:640px){
+  .svp{padding:16px 20px 40px}
+  .svp-path{font-size:13px}
+  .svp h1{font-size:24px;line-height:1.15}
+  .svp h2{font-size:16px}
+  .svp-lead{font-size:16px}
+  .svp .svp-btn{display:flex;width:100%;min-height:52px;padding:0 16px}
+  .svp-tab{margin-right:18px;font-size:11px}
+  .svp-row{grid-template-columns:minmax(0,1fr);gap:6px;padding:14px 0}
+  .svp-li{flex-direction:column;gap:2px}
+  .svp .svp-chip{min-height:36px;font-size:14px;padding:0 12px}
+}
+.jn-wrap{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start;padding-top:20px}
+.jn-form{flex:1 1 460px;min-width:0;max-width:620px;border-bottom:1px solid var(--line);margin:0}
+.jn-f{padding:20px 0;border-top:1px solid var(--line)}
+.jn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.jn-grid .full{grid-column:1/-1}
+.jn-l{display:block;font-weight:600;font-size:15px;margin:0 0 6px;padding:0}
+.jn-l small{font-weight:400;color:var(--muted);font-size:14px}
+.svp .jn-in{box-sizing:border-box;width:100%;min-height:48px;padding:0 14px;border:1px solid #CFCBC2;border-radius:0;font:inherit;font-size:16px;background:#fff;color:var(--ink);-webkit-appearance:none;appearance:none}
+.svp select.jn-in{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23161615' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 14px center;padding-right:36px}
+.svp .jn-in:focus{outline:2px solid var(--ink);outline-offset:-1px;border-color:var(--ink)}
+.svp textarea.jn-in{padding:12px 14px;min-height:110px;resize:vertical}
+.svp .jn-in.bad{border-color:var(--accent);outline:1px solid var(--accent)}
+.jn-fs{border:0;margin:0;padding:20px 0;min-width:0;border-top:1px solid var(--line)}
+.jn-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.svp .jn-opt{display:inline-flex;align-items:center;min-height:42px;padding:0 14px;border:1px solid var(--ink);font:inherit;font-size:15px;cursor:pointer;background:#fff;color:var(--ink)}
+.svp .jn-opt.on{background:var(--ink);color:#fff}
+.jn-chk{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);line-height:1.45}
+.jn-chk input{width:18px;height:18px;margin:1px 0 0;flex:none;accent-color:var(--ink)}
+.svp .jn-chk a{color:var(--muted)}
+.jn-err{margin:12px 0 0;color:var(--accent);font-size:14px;font-weight:600}
+.jn-side{flex:1 1 240px;min-width:0;max-width:300px}
+.jn-side h2{margin:0 0 6px;font-size:13px;font-weight:600;letter-spacing:.04em}
+.jn-step{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
+.jn-step b{font-family:'Unbounded',sans-serif;font-weight:700;font-size:13px;color:var(--accent)}
+.jn-q{margin-top:28px;padding-top:16px;border-top:1px solid var(--ink);font-size:15px}
+.jn-q p{margin:6px 0 0;color:var(--muted)}
+.jn-done{padding:32px 0 24px;max-width:620px}
+.jn-done h1{font-size:32px;line-height:1.15;margin-top:16px}
+.jn-done p{margin:16px 0 0;font-size:18px}
+.jn-done .jn-links{display:flex;flex-wrap:wrap;gap:20px;margin-top:24px;font-size:16px}
+@media (max-width:640px){
+  .jn-wrap{gap:28px;padding-top:8px}
+  .jn-f,.jn-fs{padding:16px 0}
+  .jn-side{max-width:none}
+  .jn-done h1{font-size:22px}
+  .jn-done p{font-size:16px}
+}
+.jn-fs>legend{float:left;width:100%}
+.jn-fs .jn-opts{clear:both}
+</style>
+
+<div class="svp svp-join" lang="ru">
+  <nav class="svp-path" aria-label="Путь"><a href="/schools/">Школы</a> / Записаться в школу</nav>
+
+  <div id="jn-main">
+    <section style="padding-top:28px;max-width:720px">
+      <div class="svp-now"><span class="svp-dot" id="jn-dot" aria-hidden="true"></span><span id="jn-status"></span></div>
+      <h1 style="margin-top:16px" id="jn-title"></h1>
+      <p class="svp-lead" style="margin-top:16px" id="jn-lead"></p>
+    </section>
+
+    <div class="jn-wrap">
+      <form class="jn-form" id="jn-form" novalidate>
+        <div class="jn-f jn-grid">
+          <div><label class="jn-l" for="jn-name">Имя</label><input id="jn-name" name="name" class="jn-in" type="text" autocomplete="name" placeholder="Как к вам обращаться"></div>
+          <div><label class="jn-l" for="jn-contact">Телеграм или телефон</label><input id="jn-contact" name="contact" class="jn-in" type="text" placeholder="@ник или +7…"></div>
+          <div class="full"><label class="jn-l" for="jn-email">Почта <small>· если удобнее</small></label><input id="jn-email" name="email" class="jn-in" type="email" autocomplete="email" placeholder="name@example.ru"></div>
+        </div>
+
+        <fieldset class="jn-fs"><legend class="jn-l">Какое направление интересно <small>· можно несколько</small></legend>
+          <div class="jn-opts" id="jn-dirs"></div></fieldset>
+
+        <fieldset class="jn-fs"><legend class="jn-l">Ваш опыт походов</legend>
+          <div class="jn-opts" id="jn-exp" role="radiogroup"></div></fieldset>
+
+        <div class="jn-f"><label class="jn-l" for="jn-about">Пара слов о себе <small>· где уже были, что хочется</small></label>
+          <textarea id="jn-about" name="about" class="jn-in" placeholder="Например: ходил в Карелию с друзьями, хочу в горы летом"></textarea></div>
+
+        <div class="jn-f"><label class="jn-l" for="jn-how">Как вы о нас узнали <small>· необязательно</small></label>
+          <select id="jn-how" name="how" class="jn-in"><option value="">Выберите</option><option>Друзья или знакомые</option><option>Телеграм или ВКонтакте</option><option>Поиск в интернете</option><option>Уже был(а) в клубе раньше</option><option>Другое</option></select></div>
+
+        <div class="jn-f">
+          <label class="jn-chk"><input type="checkbox" id="jn-ok"><span>Согласен(на) на обработку персональных данных по <a href="/privacy/">политике конфиденциальности</a>. Контакты увидят только организаторы школ.</span></label>
+          <p class="jn-err svp-hide" id="jn-err" role="alert"></p>
+          <button type="submit" class="svp-btn" style="margin-top:20px" id="jn-btn"></button>
+        </div>
+      </form>
+
+      <aside class="jn-side" aria-label="Что будет дальше">
+        <h2>Что будет дальше</h2>
+        <div id="jn-steps"></div>
+        <div class="jn-q"><b>Есть вопросы?</b>
+          <p>Спросите в <a href="https://t.me/+9wvbZK_QDxkxZDY6">чате клуба</a> или почитайте <a href="/start/">«Я здесь впервые»</a>.</p></div>
+      </aside>
+    </div>
+  </div>
+
+  <section class="jn-done svp-hide" id="jn-done" aria-live="polite">
+    <div class="svp-now"><span class="svp-dot" aria-hidden="true"></span>Заявка отправлена</div>
+    <h1 id="jn-dtitle"></h1>
+    <p id="jn-dtext"></p>
+    <div class="jn-links"><a href="/start/">Как устроен первый сезон →</a><a href="https://t.me/westra">Новости клуба в Телеграме →</a></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  /* пока фото не вписаны, вместо них серые прямоугольники */
+  document.querySelectorAll('.svp img').forEach(function(im){
+    if(/^(https?:|data:|file:)/.test(im.getAttribute('src')||'')) return;
+    var d=document.createElement('div'); d.className=im.className+' svp-empty'; d.textContent='фото'; im.parentNode.replaceChild(d,im);
+  });
+  /* ===== ПРАВИТЬ: идёт ли набор.
+     'off' — межсезонье: форма «Напишите мне о наборе» (список ожидания).
+     'on'  — идёт набор: та же форма становится анкетой в школу. */
+  var SEASON = 'off';
+  var DEADLINE = '[дата]';   /* ПРАВИТЬ: до какого числа открыт набор, например «30 ноября» */
+
+  /* ===== ПРАВИТЬ: адрес Google-скрипта, который пишет заявки в таблицу (см. инструкцию).
+     Пока пусто, заявки никуда не уходят, а человек видит просьбу написать в чат. */
+  var SHEET_URL = '';
+
+  var DIRS = ['Горное','Пешеходное','Водное','Лыжное','Альпинизм','Пока не знаю'];
+  var EXPS = ['Пока не было','Некатегорийные','1 к.с.','2 к.с. и выше'];
+  var on = SEASON === 'on';
+  var T = on ? {
+    status:'Набор открыт до '+DEADLINE, title:'Анкета в школу',
+    lead:'Заполните анкету, и руководитель школы свяжется с вами в течение недели. Первая встреча сезона во вторник, 19:30, м. Пушкинская.',
+    btn:'Отправить анкету',
+    steps:['Анкета уходит руководителю выбранной школы.','Он пишет вам, отвечает на вопросы и зовёт на первую встречу.','Приходите во вторник на лекцию, взнос платится уже после первой встречи.'],
+    dtitle:'Спасибо, анкета у руководителя школы', dtext:'Руководитель напишет вам в течение недели и позовёт на первую встречу.'
+  } : {
+    status:'Набор откроется в сентябре', title:'Напишите мне о наборе',
+    lead:'Сейчас школы не набирают. Оставьте контакты и пару слов об опыте, и мы напишем, как только откроется набор нового сезона.',
+    btn:'Напишите мне',
+    steps:['Ваши контакты попадают в список ожидания клуба.','В начале сентября мы пишем всем из списка: когда и где первая встреча.','Вы приходите на открытую лекцию и выбираете школу.'],
+    dtitle:'Спасибо, вы в списке', dtext:'Когда откроется набор, мы напишем вам в Телеграм или по телефону. Обычно это начало сентября.'
+  };
+  function $(id){return document.getElementById(id);}
+  $('jn-status').textContent=T.status; $('jn-title').textContent=T.title; $('jn-lead').textContent=T.lead;
+  $('jn-btn').textContent=T.btn; $('jn-dtitle').textContent=T.dtitle; $('jn-dtext').textContent=T.dtext;
+  if(!on) $('jn-dot').style.background='#CFCBC2';
+  $('jn-steps').innerHTML=T.steps.map(function(s,i){return '<div class="jn-step"><b>0'+(i+1)+'</b><span>'+esc(s)+'</span></div>';}).join('');
+
+  var dirs={}, exp='';
+  $('jn-dirs').innerHTML=DIRS.map(function(d){return '<button type="button" class="jn-opt" aria-pressed="false" data-d="'+esc(d)+'">'+esc(d)+'</button>';}).join('');
+  $('jn-exp').innerHTML=EXPS.map(function(x){return '<button type="button" class="jn-opt" role="radio" aria-checked="false" data-x="'+esc(x)+'">'+esc(x)+'</button>';}).join('');
+  $('jn-dirs').addEventListener('click',function(e){var b=e.target.closest('[data-d]');if(!b)return;var d=b.dataset.d;dirs[d]=!dirs[d];b.classList.toggle('on',dirs[d]);b.setAttribute('aria-pressed',dirs[d]);});
+  $('jn-exp').addEventListener('click',function(e){var b=e.target.closest('[data-x]');if(!b)return;exp=b.dataset.x;
+    $('jn-exp').querySelectorAll('[data-x]').forEach(function(o){var a=o===b;o.classList.toggle('on',a);o.setAttribute('aria-checked',a);});});
+
+  function err(msg,el){var p=$('jn-err');p.textContent=msg;p.classList.remove('svp-hide');if(el){el.classList.add('bad');el.focus();}}
+  document.querySelectorAll('.jn-in').forEach(function(i){i.addEventListener('input',function(){i.classList.remove('bad');});});
+
+  $('jn-form').addEventListener('submit',function(e){
+    e.preventDefault(); $('jn-err').classList.add('svp-hide');
+    var name=$('jn-name'), contact=$('jn-contact');
+    if(!name.value.trim()) return err('Напишите, как к вам обращаться.',name);
+    if(!contact.value.trim()) return err('Оставьте Телеграм или телефон, чтобы мы могли написать.',contact);
+    if(!$('jn-ok').checked) return err('Нужно согласие на обработку персональных данных.');
+    if(!SHEET_URL) return err('Форма пока не подключена. Напишите нам в чат клуба: t.me/+9wvbZK_QDxkxZDY6');
+    var data={mode:on?'анкета':'ожидание',name:name.value.trim(),contact:contact.value.trim(),email:$('jn-email').value.trim(),
+      dirs:Object.keys(dirs).filter(function(k){return dirs[k];}).join(', '),exp:exp,about:$('jn-about').value.trim(),how:$('jn-how').value,page:location.href};
+    var btn=$('jn-btn'); btn.disabled=true; btn.textContent='Отправляем…';
+    fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
+      .then(function(){ $('jn-main').classList.add('svp-hide'); $('jn-done').classList.remove('svp-hide'); window.scrollTo(0,0); })
+      .catch(function(){ btn.disabled=false; btn.textContent=T.btn; err('Не получилось отправить. Проверьте интернет и попробуйте ещё раз или напишите в чат клуба.'); });
+  });
+})();
+</script>
