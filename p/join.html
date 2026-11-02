@@ -93,31 +93,7 @@
     </section>
 
     <div class="jn-wrap">
-      <form class="jn-form" id="jn-form" novalidate>
-        <div class="jn-f jn-grid">
-          <div><label class="jn-l" for="jn-name">Имя</label><input id="jn-name" name="name" class="jn-in" type="text" autocomplete="name" placeholder="Как к вам обращаться"></div>
-          <div><label class="jn-l" for="jn-contact">Телеграм или телефон</label><input id="jn-contact" name="contact" class="jn-in" type="text" placeholder="@ник или +7…"></div>
-          <div class="full"><label class="jn-l" for="jn-email">Почта <small>· если удобнее</small></label><input id="jn-email" name="email" class="jn-in" type="email" autocomplete="email" placeholder="name@example.ru"></div>
-        </div>
-
-        <fieldset class="jn-fs"><legend class="jn-l">Какое направление интересно <small>· можно несколько</small></legend>
-          <div class="jn-opts" id="jn-dirs"></div></fieldset>
-
-        <fieldset class="jn-fs"><legend class="jn-l">Ваш опыт походов</legend>
-          <div class="jn-opts" id="jn-exp" role="radiogroup"></div></fieldset>
-
-        <div class="jn-f"><label class="jn-l" for="jn-about">Пара слов о себе <small>· где уже были, что хочется</small></label>
-          <textarea id="jn-about" name="about" class="jn-in" placeholder="Например: ходил в Карелию с друзьями, хочу в горы летом"></textarea></div>
-
-        <div class="jn-f"><label class="jn-l" for="jn-how">Как вы о нас узнали <small>· необязательно</small></label>
-          <select id="jn-how" name="how" class="jn-in"><option value="">Выберите</option><option>Друзья или знакомые</option><option>Телеграм или ВКонтакте</option><option>Поиск в интернете</option><option>Уже был(а) в клубе раньше</option><option>Другое</option></select></div>
-
-        <div class="jn-f">
-          <label class="jn-chk"><input type="checkbox" id="jn-ok"><span>Даю <a href="/soglasie/" target="_blank">согласие на обработку персональных данных</a>, с <a href="/privacy/" target="_blank">политикой обработки</a> ознакомлен(а). Контакты увидят только организаторы школ.</span></label>
-          <p class="jn-err svp-hide" id="jn-err" role="alert"></p>
-          <button type="submit" class="svp-btn" style="margin-top:20px" id="jn-btn"></button>
-        </div>
-      </form>
+      <div class="jn-form" id="jn-yf"></div>
 
       <aside class="jn-side" aria-label="Что будет дальше">
         <h2>Что будет дальше</h2>
@@ -127,13 +103,6 @@
       </aside>
     </div>
   </div>
-
-  <section class="jn-done svp-hide" id="jn-done" aria-live="polite">
-    <div class="svp-now"><span class="svp-dot" aria-hidden="true"></span>Заявка отправлена</div>
-    <h1 id="jn-dtitle"></h1>
-    <p id="jn-dtext"></p>
-    <div class="jn-links"><a href="/start/">Как устроен первый сезон →</a><a href="https://t.me/westra">Новости клуба в Телеграме →</a></div>
-  </section>
 </div>
 
 <script>
@@ -150,12 +119,10 @@
   var SEASON = 'off';
   var DEADLINE = '[дата]';   /* ПРАВИТЬ: до какого числа открыт набор, например «30 ноября» */
 
-  /* ===== ПРАВИТЬ: адрес Google-скрипта, который пишет заявки в таблицу (см. инструкцию).
-     Пока пусто, заявки никуда не уходят, а человек видит просьбу написать в чат. */
-  var SHEET_URL = '';
+  /* ===== ПРАВИТЬ: ссылка на Яндекс Форму (кнопка «Поделиться» в Яндекс Формах),
+     вида https://forms.yandex.ru/u/xxxxxxxx/ . Пока пусто, вместо формы просьба написать в чат. */
+  var YANDEX_FORM = '';
 
-  var DIRS = ['Горное','Пешеходное','Водное','Лыжное','Альпинизм','Пока не знаю'];
-  var EXPS = ['Пока не было','Некатегорийные','1 к.с.','2 к.с. и выше'];
   var on = SEASON === 'on';
   var T = on ? {
     status:'Набор открыт до '+DEADLINE, title:'Анкета в школу',
@@ -172,33 +139,16 @@
   };
   function $(id){return document.getElementById(id);}
   $('jn-status').textContent=T.status; $('jn-title').textContent=T.title; $('jn-lead').textContent=T.lead;
-  $('jn-btn').textContent=T.btn; $('jn-dtitle').textContent=T.dtitle; $('jn-dtext').textContent=T.dtext;
   if(!on) $('jn-dot').style.background='#CFCBC2';
   $('jn-steps').innerHTML=T.steps.map(function(s,i){return '<div class="jn-step"><b>0'+(i+1)+'</b><span>'+esc(s)+'</span></div>';}).join('');
 
-  var dirs={}, exp='';
-  $('jn-dirs').innerHTML=DIRS.map(function(d){return '<button type="button" class="jn-opt" aria-pressed="false" data-d="'+esc(d)+'">'+esc(d)+'</button>';}).join('');
-  $('jn-exp').innerHTML=EXPS.map(function(x){return '<button type="button" class="jn-opt" role="radio" aria-checked="false" data-x="'+esc(x)+'">'+esc(x)+'</button>';}).join('');
-  $('jn-dirs').addEventListener('click',function(e){var b=e.target.closest('[data-d]');if(!b)return;var d=b.dataset.d;dirs[d]=!dirs[d];b.classList.toggle('on',dirs[d]);b.setAttribute('aria-pressed',dirs[d]);});
-  $('jn-exp').addEventListener('click',function(e){var b=e.target.closest('[data-x]');if(!b)return;exp=b.dataset.x;
-    $('jn-exp').querySelectorAll('[data-x]').forEach(function(o){var a=o===b;o.classList.toggle('on',a);o.setAttribute('aria-checked',a);});});
-
-  function err(msg,el){var p=$('jn-err');p.textContent=msg;p.classList.remove('svp-hide');if(el){el.classList.add('bad');el.focus();}}
-  document.querySelectorAll('.jn-in').forEach(function(i){i.addEventListener('input',function(){i.classList.remove('bad');});});
-
-  $('jn-form').addEventListener('submit',function(e){
-    e.preventDefault(); $('jn-err').classList.add('svp-hide');
-    var name=$('jn-name'), contact=$('jn-contact');
-    if(!name.value.trim()) return err('Напишите, как к вам обращаться.',name);
-    if(!contact.value.trim()) return err('Оставьте Телеграм или телефон, чтобы мы могли написать.',contact);
-    if(!$('jn-ok').checked) return err('Нужно согласие на обработку персональных данных.');
-    if(!SHEET_URL) return err('Форма пока не подключена. Напишите нам в чат клуба: t.me/+9wvbZK_QDxkxZDY6');
-    var data={mode:on?'анкета':'ожидание',name:name.value.trim(),contact:contact.value.trim(),email:$('jn-email').value.trim(),
-      dirs:Object.keys(dirs).filter(function(k){return dirs[k];}).join(', '),exp:exp,about:$('jn-about').value.trim(),how:$('jn-how').value,page:location.href};
-    var btn=$('jn-btn'); btn.disabled=true; btn.textContent='Отправляем…';
-    fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
-      .then(function(){ $('jn-main').classList.add('svp-hide'); $('jn-done').classList.remove('svp-hide'); window.scrollTo(0,0); })
-      .catch(function(){ btn.disabled=false; btn.textContent=T.btn; err('Не получилось отправить. Проверьте интернет и попробуйте ещё раз или напишите в чат клуба.'); });
-  });
+  var box=$('jn-yf');
+  if(YANDEX_FORM){
+    var id=(YANDEX_FORM.match(/\/u\/([^\/?#]+)/)||[])[1]||'form';
+    box.innerHTML='<iframe src="'+esc(YANDEX_FORM.replace(/[?#].*$/,'').replace(/\/?$/,'/'))+'?iframe=1" name="ya-form-'+esc(id)+'" title="'+esc(T.title)+'" frameborder="0" style="display:block;width:100%;min-height:900px;border:0"></iframe>';
+    var s=document.createElement('script'); s.src='https://forms.yandex.ru/_static/embed.js'; document.body.appendChild(s);
+  } else {
+    box.innerHTML='<div class="jn-f"><p style="margin:0;font-size:17px">Форма появится здесь совсем скоро. Пока напишите нам в <a href="https://t.me/+9wvbZK_QDxkxZDY6">чат клуба</a>: имя, опыт и какое направление интересно.</p></div>';
+  }
 })();
 </script>
