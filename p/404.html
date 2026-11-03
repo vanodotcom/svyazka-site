@@ -67,28 +67,51 @@
 }
 </style>
 <style>
-.nf-code{font-family:'Unbounded',sans-serif;font-weight:700;font-size:120px;line-height:1;color:var(--accent);margin:8px 0 16px}
-.nf-btns{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;margin-top:28px}
-.svp .nf-sec{font-weight:600}
-.nf-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));border-top:1px solid var(--line);margin-top:12px}
-.svp .nf-links a{display:flex;flex-direction:column;gap:2px;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none}
-.nf-links b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:14px}
-.nf-links span{font-size:14px;color:var(--muted)}
-.nf-old{margin-top:28px;font-size:15px}
-@media (max-width:640px){.nf-code{font-size:80px}}
+.nf-art{display:block;width:100%;max-width:640px;height:auto;margin:4px 0 20px}
+.nf-art .ridge{fill:none;stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+.nf-art .snow{fill:var(--stone)}
+.nf-art .route{fill:none;stroke:var(--accent);stroke-width:3;stroke-dasharray:7 7;stroke-linecap:round}
+.nf-art .route-in{stroke-dashoffset:600;animation:nfDraw 3.2s ease-out forwards}
+.nf-art .q{font-family:'Unbounded',sans-serif;font-weight:700;fill:var(--accent);opacity:0;animation:nfFade .5s 3s forwards}
+.nf-art .num{font-family:'Unbounded',sans-serif;font-weight:700;fill:var(--ink)}
+.nf-art .flag{opacity:0;animation:nfFade .4s .1s forwards}
+@keyframes nfDraw{from{stroke-dashoffset:600}to{stroke-dashoffset:0}}
+@keyframes nfFade{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.nf-art .route-in{animation:none;stroke-dashoffset:0}.nf-art .q,.nf-art .flag{animation:none;opacity:1}}
+.nf-kicker{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.svp-404 h1{margin-top:6px}
+.nf-steps{counter-reset:s;margin:12px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.nf-steps li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.nf-steps li:before{counter-increment:s;content:'0' counter(s);font-family:'Unbounded',sans-serif;font-weight:700;color:var(--accent)}
+.nf-steps b{display:block;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:13px;margin-bottom:4px}
+.nf-steps p{margin:0;color:var(--muted);font-size:15px}
+.nf-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.svp .nf-links a{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid var(--ink);text-decoration:none;font-size:14px}
+.svp .nf-links a:hover{background:var(--ink);color:#fff}
+.nf-btns{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;margin-top:24px}
+.svp .nf-back{font:inherit;font-weight:600;background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:var(--ink)}
+.nf-foot{margin-top:24px;font-size:14px}
 </style>
 <div class="svp svp-404">
-  <div class="nf-code" aria-hidden="true">404</div>
-  <h1>Такой страницы нет</h1>
-  <p class="svp-lead">Возможно, ссылка устарела: сайт клуба переезжает на новый адрес, и часть страниц ещё живёт на старом. Попробуйте начать с главной или выберите раздел ниже.</p>
-  <div class="nf-btns"><a class="svp-btn" href="/">На главную</a><a class="nf-sec" href="/start/">Я здесь впервые →</a></div>
-  <h2 class="pg-h2">Разделы</h2>
-  <div class="nf-links">
-    <a href="/schools/"><b>Школы</b><span>горные школы НУ, БУ, СУ</span></a>
-    <a href="/hikes/"><b>Походы</b><span>походы сезона, руководителю</span></a>
-    <a href="/calendar/"><b>Календарь</b><span>лекции, тренировки, выезды</span></a>
-    <a href="/library/"><b>Библиотека</b><span>лекции, перевалы, отчёты</span></a>
-    <a href="/club/"><b>О клубе</b><span>люди, контакты, членство</span></a>
-  </div>
-  <p class="nf-old svp-muted">Ищете отчёт, перевал или старую страницу? Они пока на <a href="https://westra.ru/">westra.ru</a>. Если что-то потерялось, напишите в <a href="https://t.me/+9wvbZK_QDxkxZDY6">чат клуба</a>.</p>
+  <svg class="nf-art" viewBox="0 0 640 230" role="img" aria-label="Горный хребет, нитка маршрута обрывается у вопросительного знака">
+    <path class="snow" d="M150 92 L176 62 L200 88 L188 84 L176 92 L164 84 Z"/>
+    <path class="snow" d="M392 72 L420 34 L452 70 L438 66 L424 76 L408 66 Z"/>
+    <path class="ridge" d="M0 200 L70 150 L110 168 L176 62 L238 140 L290 110 L330 132 L420 34 L520 160 L560 138 L640 196"/>
+    <text class="num" x="18" y="226" font-size="15" letter-spacing="2">МАРШРУТ № 404 · ПЕРЕВАЛ НЕ НАЙДЕН</text>
+    <g class="flag"><line x1="34" y1="196" x2="34" y2="170" stroke="#161615" stroke-width="2"/><path d="M34 170 L52 176 L34 182 Z" fill="#C8410B"/></g>
+    <path class="route route-in" pathLength="600" d="M36 196 C90 190 110 176 140 150 S190 120 220 132 S268 150 290 126 S318 104 340 116 S380 150 410 128 S470 96 500 120 S530 150 548 132"/>
+    <text class="q" x="560" y="138" font-size="54">?</text>
+  </svg>
+  <div class="nf-kicker">Ошибка 404</div>
+  <h1>Кажется, вы сбились с&nbsp;маршрута</h1>
+  <p class="svp-lead">Такой страницы нет. Может, ссылка устарела, а может, перевал переименовали: сайт клуба как раз переезжает на новый адрес. Не страшно, в школе НУ этому учат на первой же лекции.</p>
+  <h2 class="pg-h2">Что делать, если сбились</h2>
+  <ol class="nf-steps">
+    <li><div><b>Остановиться и не паниковать</b><p>Чай из термоса помогает. Вы в безопасности, это просто сайт.</p></div></li>
+    <li><div><b>Вернуться к последней известной точке</b><p><button type="button" class="nf-back" onclick="history.length>1?history.back():location.href='/'">← назад, откуда пришли</button></p></div></li>
+    <li><div><b>Свериться с картой</b><p>Вот основные долины этого сайта:</p>
+      <div class="nf-links"><a href="/schools/">Школы</a><a href="/hikes/">Походы</a><a href="/calendar/">Календарь</a><a href="/library/">Библиотека</a><a href="/club/">О клубе</a></div></div></li>
+    <li><div><b>Выйти на связь с группой</b><p>Если что-то потерялось, напишите в <a href="https://t.me/+9wvbZK_QDxkxZDY6">чат клуба</a>. Старые отчёты и перевалы пока ждут на <a href="https://westra.ru/">westra.ru</a>.</p></div></li>
+  </ol>
+  <div class="nf-btns"><a class="svp-btn" href="/">В базовый лагерь</a><a href="/start/" style="font-weight:600">Я здесь впервые →</a></div>
 </div>
