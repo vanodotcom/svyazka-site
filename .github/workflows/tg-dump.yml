@@ -1,10 +1,19 @@
 name: Выгрузка канала (разово)
 on: workflow_dispatch
+permissions:
+  contents: write
 jobs:
   dump:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: python3 scripts/tg_dump.py
-      - uses: actions/upload-artifact@v4
-        with: {name: tg-dump, path: tg_dump.json, retention-days: 3}
+      - name: Положить в отдельную ветку tg-dump (не на сайт)
+        run: |
+          git config user.name "svyazka-news-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan tg-dump
+          git rm -rfq --cached .
+          git add tg_dump.json
+          git commit -qm "Выгрузка канала"
+          git push -f origin tg-dump
