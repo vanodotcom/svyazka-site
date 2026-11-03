@@ -84,6 +84,17 @@ details.pc-reg[open] .pc-name::before{content:'−'}
   .pc-reg li{flex-direction:column;gap:0;font-size:14px}
   .pc-more{grid-template-columns:minmax(0,1fr);gap:20px;margin-top:32px}
 }
+.pc-search{position:relative}
+.pc-sug{position:absolute;left:-2px;right:-2px;top:100%;z-index:50;background:#fff;border:2px solid var(--ink);border-top:1px solid var(--line);max-height:420px;overflow-y:auto}
+.pc-sug a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;padding:10px 14px;text-decoration:none;border-top:1px solid var(--line);color:var(--ink)}
+.pc-sug a:first-child{border-top:0}
+.pc-sug a.on,.pc-sug a:hover{background:var(--stone);color:var(--ink)}
+.pc-sug b{font-weight:600} .pc-sug mark{background:none;color:var(--accent);font-weight:600}
+.pc-sug small{grid-column:1;font-size:13px;color:var(--muted)}
+.pc-sug i{grid-row:1/3;grid-column:2;align-self:center;font-style:normal;font-size:13px;color:var(--muted);white-space:nowrap}
+.pc-sug .pc-sreg b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:12px;letter-spacing:.02em}
+.pc-sug-all{display:block!important;font-size:14px;color:var(--muted)!important}
+@media (max-width:640px){.pc-sug{top:50px;max-height:55vh;border-top:2px solid var(--ink)}.pc-sug a{padding:10px 12px}.pc-sug i{font-size:12px}}
 </style>
 
 <div class="svp svp-passes">
@@ -93,12 +104,13 @@ details.pc-reg[open] .pc-name::before{content:'−'}
 
   <form class="pc-search" id="pcForm" action="https://westra.ru/passes/" method="get" target="_blank" role="search">
     <label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#161615" stroke-width="2.2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M20 20l-4.6-4.6"></path></svg>
-      <input type="search" name="word" placeholder="Перевал, вершина, село или руководитель" aria-label="Что ищем"></label>
+      <input type="search" name="word" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="pcSug" placeholder="Перевал, вершина, село или руководитель" aria-label="Что ищем"></label>
     <select name="place" aria-label="Район"><option value="">Все районы</option><option value="65">Алтай</option><option value="387">&nbsp;&nbsp;&nbsp;Ивановский хребет</option><option value="92">&nbsp;&nbsp;&nbsp;Катунский хребет</option><option value="459">&nbsp;&nbsp;&nbsp;Курайский хребет</option><option value="388">&nbsp;&nbsp;&nbsp;Массив Мунгун-Тайга</option><option value="66">&nbsp;&nbsp;&nbsp;Северо-Чуйский хребет</option><option value="386">&nbsp;&nbsp;&nbsp;Хребет Листвяга</option><option value="393">&nbsp;&nbsp;&nbsp;Хребет Монгольский Алтай</option><option value="389">&nbsp;&nbsp;&nbsp;Хребет Цаган-Шибэту</option><option value="390">&nbsp;&nbsp;&nbsp;Хребет Чихачева (Сайлюгем)</option><option value="392">&nbsp;&nbsp;&nbsp;Хребет Южный Алтай</option><option value="391">&nbsp;&nbsp;&nbsp;Шапшальский хребет</option><option value="88">&nbsp;&nbsp;&nbsp;Узургу Южно-Чуйский хребет</option><option value="433">Альпы</option><option value="470">Анды</option><option value="471">&nbsp;&nbsp;&nbsp;Центральные Анды</option><option value="472">&nbsp;&nbsp;&nbsp;Южные Анды</option><option value="461">Высокий Атлас</option><option value="434">Гималаи</option><option value="498">Горы Восточной Сибири</option><option value="497">&nbsp;&nbsp;&nbsp;Верхне-Колымское нагорье</option><option value="499">&nbsp;&nbsp;&nbsp;Верхоянский хребет</option><option value="515">&nbsp;&nbsp;&nbsp;Колымское нагорье</option><option value="444">&nbsp;&nbsp;&nbsp;Сунтар-Хаята</option><option value="454">&nbsp;&nbsp;&nbsp;Хребет Черского</option><option value="469">Гренландия</option><option value="228">Джунгарский Алатау</option><option value="437">&nbsp;&nbsp;&nbsp;Коянды-Тау</option><option value="229">&nbsp;&nbsp;&nbsp;Северная Джунгария</option><option value="230">&nbsp;&nbsp;&nbsp;Центральная Джунгария</option><option value="231">&nbsp;&nbsp;&nbsp;Южная Джунгария</option><option value="2">Кавказ</option><option value="97">&nbsp;&nbsp;&nbsp;Армянское нагорье</option><option value="8">&nbsp;&nbsp;&nbsp;Восточный Кавказ</option><option value="5">&nbsp;&nbsp;&nbsp;Западный Кавказ</option><option value="3">&nbsp;&nbsp;&nbsp;Центральный Кавказ</option><option value="430">Камчатка</option><option value="465">Каракорум</option><option value="476">Карпаты</option><option value="350">Кольский полуостров</option><option value="351">&nbsp;&nbsp;&nbsp;Ловозерские тундры</option><option value="1">&nbsp;&nbsp;&nbsp;Хибины</option><option value="477">Куньлунь</option><option value="467">Ладакх</option><option value="50">Памир</option><option value="181">&nbsp;&nbsp;&nbsp;Ванчский хребет и отроги</option><option value="177">&nbsp;&nbsp;&nbsp;Дарвазский хребет</option><option value="164">&nbsp;&nbsp;&nbsp;Заалайский хребет</option><option value="168">&nbsp;&nbsp;&nbsp;Зулумарт</option><option value="332">&nbsp;&nbsp;&nbsp;Ишкашимский хребет</option><option value="403">&nbsp;&nbsp;&nbsp;Массив Богчигир</option><option value="316">&nbsp;&nbsp;&nbsp;Рушанский хребет</option><option value="411">&nbsp;&nbsp;&nbsp;Сарыкольский хребет</option><option value="331">&nbsp;&nbsp;&nbsp;Северо-Аличурский (Базардаринский) хребет</option><option value="172">&nbsp;&nbsp;&nbsp;Хребет Академии наук</option><option value="312">&nbsp;&nbsp;&nbsp;Хребет Музкол</option><option value="173">&nbsp;&nbsp;&nbsp;Хребет Петра Первого</option><option value="308">&nbsp;&nbsp;&nbsp;Хребет Северный Танымас</option><option value="340">&nbsp;&nbsp;&nbsp;Шахдаринский хребет</option><option value="336">&nbsp;&nbsp;&nbsp;Шугнанский хребет</option><option value="404">&nbsp;&nbsp;&nbsp;Южно-Аличурский хребет</option><option value="281">&nbsp;&nbsp;&nbsp;Язгулемский хребет</option><option value="413">Памир Афганский и Восточный Гиндукуш</option><option value="410">&nbsp;&nbsp;&nbsp;Ваханский хребет (Большой Памир)</option><option value="415">&nbsp;&nbsp;&nbsp;Восточный Гиндукуш</option><option value="414">&nbsp;&nbsp;&nbsp;Музтаг-Сарыкольский хребет (Малый Памир)</option><option value="406">Памир Китайский</option><option value="409">&nbsp;&nbsp;&nbsp;Кингтау</option><option value="407">&nbsp;&nbsp;&nbsp;Конгур-Музтаг</option><option value="408">&nbsp;&nbsp;&nbsp;Улугарттаг</option><option value="104">Памиро-Алай</option><option value="137">&nbsp;&nbsp;&nbsp;Высокий Алай</option><option value="106">&nbsp;&nbsp;&nbsp;Гиссарский хребет (участок западнее перевала Анзоб)</option><option value="133">&nbsp;&nbsp;&nbsp;Горный узел Такали</option><option value="147">&nbsp;&nbsp;&nbsp;Кичик-Алай и Восточный Алай</option><option value="131">&nbsp;&nbsp;&nbsp;Матчинский горный узел</option><option value="105">&nbsp;&nbsp;&nbsp;Фанские горы</option><option value="423">плато Путорана</option><option value="466">Понтийские горы</option><option value="353">Прибайкалье и Забайкалье</option><option value="380">&nbsp;&nbsp;&nbsp;Байкальский хребет</option><option value="381">&nbsp;&nbsp;&nbsp;Баргузинский хребет</option><option value="378">&nbsp;&nbsp;&nbsp;Верхне-Ангарский хребет</option><option value="383">&nbsp;&nbsp;&nbsp;Икатский и Муйские хребты южнее БАМа</option><option value="352">&nbsp;&nbsp;&nbsp;Кодар</option><option value="382">&nbsp;&nbsp;&nbsp;Северо-Муйский и Делюн-Уранский хребты</option><option value="500">&nbsp;&nbsp;&nbsp;Становой хребет и Алданское нагорье</option><option value="379">&nbsp;&nbsp;&nbsp;Хребет Хамар-Дабан</option><option value="494">Сахалин и Курилы</option><option value="384">Саяны</option><option value="399">&nbsp;&nbsp;&nbsp;Восточный Саян</option><option value="398">&nbsp;&nbsp;&nbsp;Западный Саян</option><option value="402">&nbsp;&nbsp;&nbsp;Кузнецкий Алатау</option><option value="462">Скандинавия</option><option value="463">&nbsp;&nbsp;&nbsp;Шпицберген</option><option value="375">Тавр</option><option value="367">&nbsp;&nbsp;&nbsp;Аладаглар</option><option value="513">Тибет</option><option value="55">Тянь-Шань</option><option value="271">&nbsp;&nbsp;&nbsp;Восточная часть Центрального Тянь-Шаня</option><option value="232">&nbsp;&nbsp;&nbsp;Заилийский Алатау и Кунгей</option><option value="249">&nbsp;&nbsp;&nbsp;Западный Тянь-Шань</option><option value="67">&nbsp;&nbsp;&nbsp;Киргизский хребет и Карамойнок</option><option value="56">&nbsp;&nbsp;&nbsp;Центральный Тянь-Шань</option><option value="4">Урал</option><option value="418">&nbsp;&nbsp;&nbsp;Полярный Урал</option><option value="46">&nbsp;&nbsp;&nbsp;Приполярный Урал</option><option value="417">&nbsp;&nbsp;&nbsp;Северный Урал</option><option value="514">&nbsp;&nbsp;&nbsp;Южный Урал</option></select>
     <input type="hidden" name="notdone" value="0"><input type="hidden" name="notconfirmed" value="0">
     <button class="svp-btn" type="submit">Найти</button>
+    <div class="pc-sug svp-hide" id="pcSug" role="listbox"></div>
   </form>
-  <p class="pc-hint">Ищет по названиям перевалов и по отчётам сразу. Результаты откроются в каталоге на westra.ru.</p>
+  <p class="pc-hint">Начните вводить название, и появятся подсказки: перевалы и районы. Кнопка «Найти» ищет ещё и по отчётам. Всё открывается в каталоге на westra.ru.</p>
 
   <div class="pc-stats">
     <div><b>18&nbsp;842</b><span>перевала и вершины</span></div>
@@ -121,14 +133,85 @@ details.pc-reg[open] .pc-name::before{content:'−'}
 
 <script>
 (function(){
+  var W='https://westra.ru/passes/';
+  var DATA='https://vanodotcom.github.io/svyazka-site/data/passes.json';
   var f=document.getElementById('pcForm'); if(!f) return;
-  f.addEventListener('submit',function(ev){
-    /* каталог понимает только адрес вида ?word=...&place=..., собираем его сами в UTF-8 */
-    ev.preventDefault();
-    var q=f.word.value.trim(), p=f.place.value;
-    var url='https://westra.ru/passes/'+(q||p?('?word='+encodeURIComponent(q)+'&place='+encodeURIComponent(p)+'&notdone=0&notconfirmed=0'):'');
-    if(!q&&p) url='https://westra.ru/passes/Passes/view_passes.php?place='+encodeURIComponent(p);
-    window.open(url,'_blank','noopener');
+  var inp=f.word, box=document.getElementById('pcSug');
+  var db=null, loading=null, items=[], sel=-1;
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function norm(s){return s.toLowerCase().replace(/ё/g,'е').replace(/[«»"()]/g,' ');}
+  var PRE=/^(пер\.|вер\.|пик|г\.)\s*/;
+  function load(){
+    if(loading) return loading;
+    loading=fetch(DATA).then(function(r){return r.json();}).then(function(d){
+      d.passes.forEach(function(p){p.k=norm(p[1].replace(PRE,''));p.f=norm(p[1]);});
+      d.regions.forEach(function(r){r.k=norm(r[1]);});
+      db=d; return d;
+    }).catch(function(){loading=null;});
+    return loading;
+  }
+  function wordStart(k,q){var i=k.indexOf(q);while(i>=0){if(i===0||/[\s\-.,\/]/.test(k[i-1]))return i;i=k.indexOf(q,i+1);}return -1;}
+  function hl(name,q){
+    var n=norm(name),i=n.indexOf(q); if(i<0) return esc(name);
+    return esc(name.slice(0,i))+'<mark>'+esc(name.slice(i,i+q.length))+'</mark>'+esc(name.slice(i+q.length));
+  }
+  function search(q){
+    var place=f.place.value, res=[], regs=[];
+    db.regions.forEach(function(r){var i=wordStart(r.k,q); if(i>=0) regs.push([i?1:0,r]);});
+    regs.sort(function(a,b){return a[0]-b[0]||a[1][1].length-b[1][1].length;});
+    db.passes.forEach(function(p){
+      if(place && String(db.regions[p[4]][0])!==place && !inside(p[4],place)) return;
+      var i=p.k.indexOf(q); if(i<0){i=p.f.indexOf(q); if(i<0) return;}
+      var rank=(i===0?0:wordStart(p.k,q)>=0?1:2);
+      res.push([rank,-p[5],p]);
+    });
+    res.sort(function(a,b){return a[0]-b[0]||a[1]-b[1]||a[2][1].length-b[2][1].length;});
+    return {regs:place?[]:regs.slice(0,3).map(function(x){return x[1];}), passes:res.slice(0,8).map(function(x){return x[2];}), more:res.length};
+  }
+  var parents=null;
+  function inside(ri,place){ /* подрайон выбранного района: сверяем по списку районов в выпадашке */
+    if(!parents){parents={};var top=null;[].forEach.call(f.place.options,function(o){if(!o.value)return;if(o.text.charAt(0)!==' ')top=o.value;parents[o.value]=top;});}
+    var id=String(db.regions[ri][0]); return parents[id]===place;
+  }
+  function render(q){
+    var r=search(q), h='';
+    items=[];
+    r.regs.forEach(function(g){items.push(W+'Passes/view_passes.php?place='+g[0]);
+      h+='<a class="pc-sreg" href="'+W+'Passes/view_passes.php?place='+g[0]+'" target="_blank" rel="noopener"><b>'+hl(g[1],q)+'</b><small>район, все перевалы</small><i>↗</i></a>';});
+    r.passes.forEach(function(p){items.push(W+'Passes/'+p[0]);
+      var meta=[p[2]?p[2]+' м':'',p[3]&&p[3]!=='н/к'?p[3]:(p[3]||''),db.regions[p[4]][1]].filter(Boolean).join(' · ');
+      h+='<a href="'+W+'Passes/'+p[0]+'" target="_blank" rel="noopener"><b>'+hl(p[1],q)+'</b><small>'+esc(meta)+'</small><i>'+(p[5]?p[5]+' '+plural(p[5]):'')+'</i></a>';});
+    if(!items.length) h='<a class="pc-sug-all" href="#" data-all="1">Подсказок нет. Нажмите «Найти», чтобы искать и по отчётам</a>';
+    else if(r.more>r.passes.length) h+='<a class="pc-sug-all" href="#" data-all="1">Все совпадения ('+r.more+') и отчёты: «Найти» →</a>';
+    box.innerHTML=h; box.classList.remove('svp-hide'); sel=-1;
+  }
+  function plural(n){var a=n%10,b=n%100;return a===1&&b!==11?'отчёт':a>=2&&a<=4&&(b<12||b>14)?'отчёта':'отчётов';}
+  function hide(){box.classList.add('svp-hide');sel=-1;}
+  var t=null;
+  function update(){
+    var q=norm(inp.value).trim(); if(q.length<2){hide();return;}
+    if(db){render(q);return;}
+    load().then(function(){if(db&&norm(inp.value).trim()===q) render(q);});
+  }
+  inp.addEventListener('focus',load);
+  inp.addEventListener('input',function(){clearTimeout(t);t=setTimeout(update,120);});
+  f.place.addEventListener('change',update);
+  inp.addEventListener('keydown',function(e){
+    var links=box.querySelectorAll('a'); if(box.classList.contains('svp-hide')||!links.length) return;
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();sel=(sel+(e.key==='ArrowDown'?1:-1)+links.length)%links.length;
+      links.forEach(function(a,i){a.classList.toggle('on',i===sel);}); links[sel].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&sel>=0){e.preventDefault();links[sel].click();}
+    else if(e.key==='Escape') hide();
   });
+  box.addEventListener('click',function(e){var a=e.target.closest('a'); if(a&&a.getAttribute('data-all')){e.preventDefault();hide();go();}});
+  document.addEventListener('click',function(e){if(!f.contains(e.target)) hide();});
+  function go(){
+    /* каталог понимает только адрес вида ?word=...&place=..., собираем его сами в UTF-8 */
+    var q=inp.value.trim(), p=f.place.value;
+    var url=W+(q||p?('?word='+encodeURIComponent(q)+'&place='+encodeURIComponent(p)+'&notdone=0&notconfirmed=0'):'');
+    if(!q&&p) url=W+'Passes/view_passes.php?place='+encodeURIComponent(p);
+    window.open(url,'_blank','noopener');
+  }
+  f.addEventListener('submit',function(ev){ev.preventDefault();hide();go();});
 })();
 </script>
