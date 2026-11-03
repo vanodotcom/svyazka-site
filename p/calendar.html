@@ -87,7 +87,7 @@
   var SHEET_ID = '1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE';
   function loadSheet(done){
     if(!SHEET_ID){done(null);return;}
-    fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&_='+Math.floor(Date.now()/60000))
+    fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('События')+'&_='+Math.floor(Date.now()/60000))
       .then(function(r){if(!r.ok)throw r.status;return r.text();})
       .then(function(txt){
         var rows=[],row=[],f='',q=false;
