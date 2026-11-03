@@ -115,10 +115,10 @@
   </div>
 
   <h2 id="mr-sizes" style="margin-top:56px">Таблица размеров</h2>
-  <p class="svp-muted" style="margin:8px 0 0">Обмеры готовой футболки, разложенной на столе. Проще всего сравнить со своей любимой футболкой.</p>
+  <p class="svp-muted" style="margin:8px 0 0">Обмеры готовой футболки, разложенной на столе. Крой свободный, плечо спущено, поэтому футболка шире обычной. Возможна погрешность в 1–2 см.</p>
   <div class="mr-sizes">
     <div>
-      <svg viewBox="0 0 360 380" width="100%" role="img" aria-label="Схема обмеров футболки: ширина, длина, рукав">
+      <svg viewBox="0 -6 360 386" width="100%" role="img" aria-label="Схема обмеров футболки: ширина, длина, рукав">
         <defs><marker id="mr-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#161615"/></marker></defs>
         <path d="M110 40 L150 28 Q180 52 210 28 L250 40 L330 90 L300 150 L260 130 L260 350 L100 350 L100 130 L60 150 L30 90 Z" fill="#fff" stroke="#161615" stroke-width="1.5" stroke-linejoin="round"/>
         <line x1="104" y1="170" x2="256" y2="170" stroke="#C8410B" stroke-width="1.5" marker-start="url(#mr-ar)" marker-end="url(#mr-ar)"/>
@@ -127,11 +127,13 @@
         <text x="142" y="270" font-family="Unbounded,sans-serif" font-size="16" font-weight="700" fill="#161615">B</text>
         <line x1="258" y1="26" x2="336" y2="74" stroke="#C8410B" stroke-width="1.5" marker-start="url(#mr-ar)" marker-end="url(#mr-ar)"/>
         <text x="300" y="38" font-family="Unbounded,sans-serif" font-size="16" font-weight="700" fill="#161615">C</text>
+        <line x1="214" y1="20" x2="246" y2="30" stroke="#C8410B" stroke-width="1.5" marker-start="url(#mr-ar)" marker-end="url(#mr-ar)"/>
+        <text x="222" y="14" font-family="Unbounded,sans-serif" font-size="16" font-weight="700" fill="#161615">D</text>
       </svg>
-      <div class="mr-legend">A — ширина по груди, от шва до шва<br>B — длина от плеча до низа<br>C — длина рукава</div>
+      <div class="mr-legend">A — ширина под проймой<br>B — длина по переду<br>C — длина рукава<br>D — длина плеча</div>
     </div>
     <div style="overflow-x:auto">
-      <table class="mr-tbl"><thead><tr><th>Размер</th><th>A, см</th><th>B, см</th><th>C, см</th></tr></thead><tbody id="mr-tb"></tbody></table>
+      <table class="mr-tbl"><thead><tr><th>Размер</th><th>A, см</th><th>B, см</th><th>C, см</th><th>D, см</th></tr></thead><tbody id="mr-tb"></tbody></table>
       <p class="svp-muted" style="margin:12px 0 0;font-size:14px">Выбранный размер подсвечен.</p>
     </div>
   </div>
@@ -148,10 +150,12 @@
     {name:'Горы на спине', img:M+'g2-pered.jpg', back:M+'g2-spina.jpg', detail:M+'g2-krupno.jpg'},
     {name:'Вся спина', img:M+'g5-pered.jpg', back:M+'g5-spina.jpg', detail:M+'g5-krupno.jpg'}
   ];
-  /* ===== ПРАВИТЬ: размеры и обмеры в сантиметрах (A — ширина, B — длина, C — рукав). */
+  /* ===== ПРАВИТЬ: размеры и обмеры в сантиметрах (A — ширина под проймой, B — длина по переду, C — рукав, D — плечо).
+     Размерная сетка оверсайз-футболки Моспошив. */
   var SIZES = [
-    ['XS','[..]','[..]','[..]'], ['S','[..]','[..]','[..]'], ['M','[..]','[..]','[..]'],
-    ['L','[..]','[..]','[..]'], ['XL','[..]','[..]','[..]'], ['XXL','[..]','[..]','[..]']
+    ['XS','54','67','25','17'], ['S','56','69','24,5','17,5'], ['M','58','73','25','18'],
+    ['L','60','75','25,5','18,5'], ['XL','62','77','26','19'], ['XXL','64','79','26,5','19,5'],
+    ['3XL','68','82','27','19,5'], ['4XL','70','84','27,5','20']
   ];
   var PRICE = '[цена] ₽';                       /* ПРАВИТЬ: цена */
   var WHO = '[ответственный]';                  /* ПРАВИТЬ: кто разбирает заявки, например «Аня Петрова» */
