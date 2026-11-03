@@ -134,7 +134,9 @@ body{font-family:'Onest',system-ui,sans-serif}
   window.addEventListener('scroll',place,{passive:true}); window.addEventListener('resize',fit); fit();
   /* страница и подвал подгружаются позже: пересчитать, когда меняется высота */
   document.addEventListener('sv:loaded',fit); window.addEventListener('load',fit);
-  if(window.ResizeObserver) new ResizeObserver(fit).observe(document.body);
+  if(window.ResizeObserver){ var ro=new ResizeObserver(fit); ro.observe(document.body); var ar=document.getElementById('allrecords'); if(ar) ro.observe(ar); document.querySelectorAll('.t-rec').forEach(function(r){ro.observe(r);}); }
+  /* фильтры и вкладки меняют высоту страницы: пересчитать после клика */
+  document.addEventListener('click',function(){ setTimeout(fit,30); setTimeout(fit,300); });
   function open(v){side.classList.toggle('sv-open',v); burger.setAttribute('aria-expanded',v?'true':'false');}
   burger.addEventListener('click',function(){open(!side.classList.contains('sv-open'));});
   close.addEventListener('click',function(){open(false);});
