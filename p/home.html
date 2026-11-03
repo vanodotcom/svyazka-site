@@ -148,8 +148,8 @@
     {day:'2026-11-24', title:'Первая встреча горных школ БУ и СУ', where:'Пушкинская, 19:30'}
   ];
 
-  /* Позже сюда впишем адрес скрипта, который сам берёт посты из t.me/westra. Пока пусто. */
-  var FEED_URL = '';
+  /* Новости: файл news.json, его раз в час обновляет GitHub из t.me/westra (scripts/tg_news.py). Если не загрузился, показывается NEWS выше. */
+  var FEED_URL = 'https://vanodotcom.github.io/svyazka-site/news.json?v='+Math.floor(Date.now()/60000); /* обновляется раз в час из t.me/westra */
 
   var MONTHS=['янв','февр','марта','апр','мая','июня','июля','авг','сент','окт','нояб','дек'];
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}

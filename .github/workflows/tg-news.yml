@@ -1,0 +1,22 @@
+name: Новости из Телеграма
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: tg-news
+jobs:
+  news:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/tg_news.py
+      - name: Сохранить, если новости изменились
+        run: |
+          git add news.json
+          if git diff --cached --quiet; then echo "без изменений"; exit 0; fi
+          git config user.name "svyazka-news-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Новости из Телеграма"
+          git push
