@@ -1,0 +1,201 @@
+<!-- «Связка»: страница «Мерч» (адрес /club/merch/). Вставить в блок T123 «HTML-код», отступы блока 0.
+     Что меняется руками, отмечено словом ПРАВИТЬ (в скрипте внизу), данные которых пока нет, — в [скобках]. -->
+<style>
+.svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
+  font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+  box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
+.svp *{box-sizing:border-box}
+.svp a{color:var(--ink)} .svp a:hover{color:var(--muted)}
+.svp-path{font-size:14px;color:var(--muted)} .svp-path a{color:var(--muted)}
+.svp h1{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:36px;line-height:1.1;font-weight:700;color:var(--ink)}
+.svp h2{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:20px;line-height:1.2;font-weight:700;color:var(--ink)}
+.svp-lead{margin:12px 0 0;font-size:18px;max-width:680px}
+.svp-muted{color:var(--muted)}
+.svp-now{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.svp-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.svp .svp-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;background:var(--accent);color:#fff;text-decoration:none;border:0;cursor:pointer;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:13px;letter-spacing:.06em}
+.svp .svp-btn:hover{background:var(--ink);color:#fff}
+.svp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.svp .svp-chip{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;font:inherit;font-size:15px;cursor:pointer}
+.svp .svp-chip.on{background:var(--ink);color:#fff}
+.svp-tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--ink)}
+.svp-tab{min-height:48px;padding:0;margin-right:28px;border:0;background:none;color:var(--muted);font-family:'Unbounded',sans-serif;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.svp-tab.on{color:var(--ink);box-shadow:inset 0 -3px 0 var(--accent)}
+.svp-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:16px 0;border-top:1px solid var(--line)}
+.svp-row>b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:13px;font-weight:600}
+.svp-li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+.svp-list{border-bottom:1px solid var(--line)}
+.svp ul{margin:0;padding-left:20px;line-height:1.7}
+.svp-img{display:block;width:100%;object-fit:cover;background:var(--stone)}
+.svp-empty{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;background:var(--stone)}
+.svp-hide{display:none!important}
+@media (max-width:640px){
+  .svp{padding:16px 20px 40px}
+  .svp-path{font-size:13px}
+  .svp h1{font-size:24px;line-height:1.15}
+  .svp h2{font-size:16px}
+  .svp-lead{font-size:16px}
+  .svp .svp-btn{display:flex;width:100%;min-height:52px;padding:0 16px}
+  .svp-tab{margin-right:18px;font-size:11px}
+  .svp-row{grid-template-columns:minmax(0,1fr);gap:6px;padding:14px 0}
+  .svp-li{flex-direction:column;gap:2px}
+  .svp .svp-chip{min-height:36px;font-size:14px;padding:0 12px}
+}
+.mr-top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;margin-top:28px;align-items:start}
+.mr-main{height:460px}
+.mr-thumbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+.mr-thumbs .svp-img{height:96px}
+.mr-side{display:flex;flex-direction:column;gap:24px}
+.mr-lbl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;letter-spacing:.04em}
+.mr-lbl a{font-family:'Onest',sans-serif;text-transform:none;font-size:14px;font-weight:400;letter-spacing:0}
+.mr-gr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.svp .mr-g{display:flex;flex-direction:column;gap:8px;padding:6px;border:1px solid var(--line);background:#fff;font:inherit;font-size:14px;color:var(--ink);text-align:left;cursor:pointer}
+.svp .mr-g.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.mr-g .svp-img{height:84px}
+.mr-sz{display:flex;flex-wrap:wrap;gap:6px}
+.svp .mr-sz .svp-chip{min-width:52px;justify-content:center}
+.mr-price{font-family:'Unbounded',sans-serif;font-weight:700;font-size:24px}
+.mr-pick{font-size:15px;color:var(--muted);margin-top:8px}
+.mr-steps{border-top:1px solid var(--ink);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+.mr-step{display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px;font-size:15px}
+.mr-step b{font-family:'Unbounded',sans-serif;font-size:13px;color:var(--accent)}
+.mr-box{margin-top:12px;padding:20px;background:var(--stone)}
+.mr-sizes{display:grid;grid-template-columns:300px minmax(0,1fr);gap:40px;margin-top:20px;align-items:start}
+.mr-tbl{width:100%;border-collapse:collapse;font-size:15px}
+.mr-tbl th,.mr-tbl td{text-align:left;padding:10px 12px;border-top:1px solid var(--line)}
+.mr-tbl th{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:11px;font-weight:600;letter-spacing:.04em;border-top:0;border-bottom:1px solid var(--ink)}
+.mr-tbl tr.on td{background:var(--stone);font-weight:600}
+.mr-legend{font-size:14px;color:var(--muted);line-height:1.7;margin-top:8px}
+@media (max-width:820px){
+  .mr-top{grid-template-columns:minmax(0,1fr);gap:24px;margin-top:20px}
+  .mr-main{height:340px}
+  .mr-sizes{grid-template-columns:minmax(0,1fr);gap:16px}
+  .mr-sizes svg{max-width:230px;display:block}
+}
+@media (max-width:640px){
+  .mr-main{height:280px}
+  .mr-thumbs .svp-img{height:72px}
+  .mr-g .svp-img{height:64px}
+  .mr-g{font-size:13px}
+  .mr-tbl th,.mr-tbl td{padding:9px 8px}
+}
+</style>
+
+<div class="svp svp-merch">
+  <nav class="svp-path" aria-label="Путь"><a href="/club/">О клубе</a> / Мерч</nav>
+  <h1 style="margin-top:16px">Мерч клуба</h1>
+  <p class="svp-lead">Футболки с символикой «Связки». Это не интернет-магазин: заявки разбирает <span id="mr-who"></span> вручную, платить на сайте не нужно.</p>
+
+  <div class="mr-top">
+    <div>
+      <img class="svp-img mr-main" id="mr-main" src="" alt="">
+      <div class="mr-thumbs" id="mr-thumbs"></div>
+    </div>
+    <div class="mr-side">
+      <div><div class="mr-lbl">Графика</div><div class="mr-gr" id="mr-gr"></div></div>
+      <div><div class="mr-lbl"><span>Размер</span><a href="#mr-sizes">Таблица размеров ↓</a></div><div class="mr-sz svp-chips" id="mr-sz"></div></div>
+      <div>
+        <div class="mr-price" id="mr-price"></div>
+        <div class="mr-pick" id="mr-pick"></div>
+      </div>
+      <div>
+        <a class="svp-btn" id="mr-btn" href="#mr-form">Оставить заявку</a>
+        <div id="mr-form"></div>
+      </div>
+      <div class="mr-steps">
+        <div class="mr-lbl" style="margin:0">Как это работает</div>
+        <div class="mr-step"><b>01</b><span>Выберите графику и размер и оставьте заявку.</span></div>
+        <div class="mr-step"><b>02</b><span id="mr-step2"></span></div>
+        <div class="mr-step"><b>03</b><span id="mr-step3"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 id="mr-sizes" style="margin-top:56px">Таблица размеров</h2>
+  <p class="svp-muted" style="margin:8px 0 0">Обмеры готовой футболки, разложенной на столе. Проще всего сравнить со своей любимой футболкой.</p>
+  <div class="mr-sizes">
+    <div>
+      <svg viewBox="0 0 360 380" width="100%" role="img" aria-label="Схема обмеров футболки: ширина, длина, рукав">
+        <defs><marker id="mr-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#161615"/></marker></defs>
+        <path d="M110 40 L150 28 Q180 52 210 28 L250 40 L330 90 L300 150 L260 130 L260 350 L100 350 L100 130 L60 150 L30 90 Z" fill="#fff" stroke="#161615" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="104" y1="170" x2="256" y2="170" stroke="#C8410B" stroke-width="1.5" marker-start="url(#mr-ar)" marker-end="url(#mr-ar)"/>
+        <text x="180" y="160" text-anchor="middle" font-family="Unbounded,sans-serif" font-size="16" font-weight="700" fill="#161615">A</text>
+        <line x1="132" y1="36" x2="132" y2="346" stroke="#C8410B" stroke-width="1.5" stroke-dasharray="4 4" marker-start="url(#mr-ar)" marker-end="url(#mr-ar)"/>
+        <text x="142" y="270" font-family="Unbounded,sans-serif" font-size="16" font-weight="700" fill="#161615">B</text>
+        <line x1="258" y1="26" x2="336" y2="74" stroke="#C8410B" stroke-width="1.5" marker-start="url(#mr-ar)" marker-end="url(#mr-ar)"/>
+        <text x="300" y="38" font-family="Unbounded,sans-serif" font-size="16" font-weight="700" fill="#161615">C</text>
+      </svg>
+      <div class="mr-legend">A — ширина по груди, от шва до шва<br>B — длина от плеча до низа<br>C — длина рукава</div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="mr-tbl"><thead><tr><th>Размер</th><th>A, см</th><th>B, см</th><th>C, см</th></tr></thead><tbody id="mr-tb"></tbody></table>
+      <p class="svp-muted" style="margin:12px 0 0;font-size:14px">Выбранный размер подсвечен.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ===== ПРАВИТЬ: варианты графики. name — подпись, img — фото футболки с этой графикой (спереди),
+     back — сзади, wear — на человеке. Пустая строка — серый прямоугольник «фото». */
+  var GRAPHICS = [
+    {name:'[Графика 1]', img:'', back:'', wear:''},
+    {name:'[Графика 2]', img:'', back:'', wear:''},
+    {name:'[Графика 3]', img:'', back:'', wear:''}
+  ];
+  /* ===== ПРАВИТЬ: размеры и обмеры в сантиметрах (A — ширина, B — длина, C — рукав). */
+  var SIZES = [
+    ['XS','[..]','[..]','[..]'], ['S','[..]','[..]','[..]'], ['M','[..]','[..]','[..]'],
+    ['L','[..]','[..]','[..]'], ['XL','[..]','[..]','[..]'], ['XXL','[..]','[..]','[..]']
+  ];
+  var PRICE = '[цена] ₽';                       /* ПРАВИТЬ: цена */
+  var WHO = '[ответственный]';                  /* ПРАВИТЬ: кто разбирает заявки, например «Аня Петрова» */
+  var WHO_TO = '[ответственному]';             /* ПРАВИТЬ: то же в дательном падеже, «Ане Петровой» */
+  var WHO_LINK = 'https://t.me/+9wvbZK_QDxkxZDY6'; /* ПРАВИТЬ: его Телеграм, например https://t.me/anya_p ; пока чат клуба */
+  var PICKUP = 'на встрече клуба во вторник [или почтой]'; /* ПРАВИТЬ: где забрать */
+  /* ===== ПРАВИТЬ: ссылка на Яндекс Форму заявки на мерч (кнопка «Поделиться» в Яндекс Формах).
+     Пока пусто, вместо формы просьба написать ответственному в Телеграм. */
+  var YANDEX_FORM = '';
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function $(id){return document.getElementById(id);}
+  function pic(src,cls,alt){ return src ? '<img class="svp-img '+cls+'" src="'+esc(src)+'" alt="'+esc(alt)+'">' : '<div class="svp-img svp-empty '+cls+'">'+esc(alt)+'</div>'; }
+  var g=0, sz='M';
+  $('mr-who').textContent=WHO;
+  $('mr-step2').innerHTML=esc(WHO.replace(/[a-zа-яё]/i,function(c){return c.toUpperCase();}))+' напишет вам, подтвердит заказ и скажет, как оплатить.';
+  $('mr-step3').textContent='Футболку можно забрать '+PICKUP+'.';
+  $('mr-price').textContent=PRICE;
+
+  function render(){
+    var G=GRAPHICS[g];
+    var m=$('mr-main'), html=pic(G.img,'mr-main','фото футболки: '+G.name+', спереди');
+    m.outerHTML=html.replace('class="svp-img','id="mr-main" class="svp-img');
+    $('mr-thumbs').innerHTML=pic(G.img,'','спереди')+pic(G.back,'','сзади')+pic(G.wear,'','на человеке');
+    $('mr-gr').innerHTML=GRAPHICS.map(function(x,i){return '<button type="button" class="mr-g'+(i===g?' on':'')+'" data-g="'+i+'" aria-pressed="'+(i===g)+'">'+pic(x.img,'',x.name)+'<b>'+esc(x.name)+'</b></button>';}).join('');
+    $('mr-sz').innerHTML=SIZES.map(function(r){return '<button type="button" class="svp-chip'+(r[0]===sz?' on':'')+'" data-sz="'+esc(r[0])+'" aria-pressed="'+(r[0]===sz)+'">'+esc(r[0])+'</button>';}).join('');
+    $('mr-tb').innerHTML=SIZES.map(function(r){return '<tr'+(r[0]===sz?' class="on"':'')+'><td>'+r.map(esc).join('</td><td>')+'</td></tr>';}).join('');
+    $('mr-pick').textContent='Ваш выбор: '+G.name+', размер '+sz;
+    document.querySelectorAll('.mr-cur').forEach(function(x){x.textContent=G.name+', размер '+sz;});
+  }
+  document.querySelector('.svp-merch').addEventListener('click',function(e){
+    var b=e.target.closest('[data-g],[data-sz]'); if(!b) return;
+    if(b.hasAttribute('data-g')) g=+b.getAttribute('data-g'); else sz=b.getAttribute('data-sz');
+    render();
+  });
+  render();
+
+  $('mr-btn').addEventListener('click',function(e){
+    e.preventDefault();
+    var box=$('mr-form');
+    if(YANDEX_FORM){
+      var id=(YANDEX_FORM.match(/\/u\/([^\/?#]+)/)||[])[1]||'form';
+      box.innerHTML='<p class="mr-pick">Укажите в форме: <span class="mr-cur"></span>.</p><iframe src="'+esc(YANDEX_FORM.replace(/[?#].*$/,'').replace(/\/?$/,'/'))+'?iframe=1" name="ya-form-'+esc(id)+'" title="Заявка на мерч" frameborder="0" style="display:block;width:100%;min-height:700px;border:0;margin-top:12px"></iframe>';
+      if(!document.querySelector('script[src*="forms.yandex.ru/_static/embed.js"]')){ var s=document.createElement('script'); s.src='https://forms.yandex.ru/_static/embed.js'; document.body.appendChild(s); }
+    } else {
+      box.innerHTML='<div class="mr-box"><b>Напишите '+esc(WHO_TO)+' в <a href="'+esc(WHO_LINK)+'">Телеграм</a></b><p style="margin:8px 0 0">Например: «Хочу футболку: <span class="mr-cur"></span>, 1 шт.» Ответим, подтвердим заказ и скажем, как оплатить.</p></div>';
+    }
+    $('mr-btn').style.display='none';
+    render();
+  });
+})();
+</script>
