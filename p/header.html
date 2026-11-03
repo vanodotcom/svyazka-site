@@ -78,6 +78,9 @@ body{font-family:'Onest',system-ui,sans-serif}
   .sv-side{max-width:none}
 }
 .sv-close{display:none;position:absolute;top:16px;right:16px;width:44px;height:44px;border:0;background:none;font-size:28px;line-height:1;cursor:pointer;color:var(--sv-ink)}
+/* ссылки в тексте: заметное подчёркивание */
+#allrecords :is(p,span,small,td,dd,label) > a:not([class]){text-decoration:underline!important;text-decoration-color:#C8410B!important;text-decoration-thickness:1.5px!important;text-underline-offset:3px!important}
+#allrecords :is(p,span,small,td,dd,label) > a:not([class]):hover{color:#C8410B!important}
 </style>
 
 <header class="sv-head">
