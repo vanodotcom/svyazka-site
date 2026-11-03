@@ -139,6 +139,41 @@
         done(S);
       }).catch(function(){done({});});
   }
+
+  /* Расписание школы берётся из листа «События» той же таблицы: строки, у которых в столбце «Метка»
+     есть слово этой школы. Если таких будущих событий нет, показывается «первая встреча» из «Настроек». */
+  function loadSchoolEvents(test, done){
+    fetch('https://docs.google.com/spreadsheets/d/1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('События')+'&_='+Math.floor(Date.now()/60000))
+      .then(function(r){if(!r.ok)throw r.status;return r.text();})
+      .then(function(txt){
+        var rows=[],row=[],f='',q=false;
+        for(var i=0;i<txt.length;i++){var c=txt[i];
+          if(q){ if(c=='"'){ if(txt[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
+          else if(c=='"') q=true; else if(c==','){row.push(f);f='';} else if(c=='\n'){row.push(f);rows.push(row);row=[];f='';} else if(c!='\r') f+=c; }
+        if(f||row.length){row.push(f);rows.push(row);}
+        var t=new Date(), today=t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2);
+        var MS=['янв','февр','марта','апр','мая','июня','июля','авг','сент','окт','нояб','дек'], out=[];
+        rows.slice(1).forEach(function(r){
+          var d=(r[0]||'').trim(),m;
+          if((m=d.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/))) d=m[3]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2);
+          else if((m=d.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) d=m[1]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[3]).slice(-2);
+          else return;
+          var title=(r[2]||'').trim(), tag=(r[4]||'').trim().toLowerCase();
+          if(!title||d<today||!test(tag)) return;
+          var p=d.split('-'), tm=(r[1]||'').trim();
+          out.push({day:d, when:(+p[2])+' '+MS[+p[1]-1]+(tm?', '+tm:''), title:title, place:(r[3]||'').trim(), tag:tag});
+        });
+        out.sort(function(a,b){return a.day<b.day?-1:1;});
+        done(out);
+      }).catch(function(){done(null);});
+  }
+  var EV={}; /* события из таблицы по уровням: метка «горная НУ», «горная БУ», «горная СУ» */
+  loadSchoolEvents(function(tag){return /горн/.test(tag);}, function(list){
+    if(!list) return;
+    ['nu','bu','su'].forEach(function(k){ var w={nu:'ну',bu:'бу',su:'су'}[k];
+      EV[k]=list.filter(function(e){return new RegExp('(^|[^а-яё])'+w+'([^а-яё]|$)').test(e.tag);}); });
+    draw();
+  });
   var root=document.querySelector('.svp-school'), lvl='bu', tab='about';
   var h=(location.hash||'').slice(1); if(LEVELS[h]) lvl=h;
   function li(a,b,c){return '<div class="svp-li"><span>'+a+(b?' · '+esc(b):'')+'</span><span class="svp-muted">'+esc(c||'')+'</span></div>';}
@@ -156,7 +191,8 @@
         '<div class="svp-row"><b>Сколько стоит</b><span>'+esc(FEE())+'</span></div>'+
         '<div class="svp-row" style="border-bottom:1px solid var(--line)"><b>Руководитель</b><span>'+esc(L.leader)+' · <a href="https://westra.ru/contacts.html">все инструкторы</a></span></div>';
     } else if(tab==='plan'){
-      out='<div class="svp-list">'+L.plan.map(function(p){return li('<b>'+esc(p[0])+'</b>',p[1],p[2]);}).join('')+'</div>'+
+      var ev=EV[lvl]&&EV[lvl].length?EV[lvl].slice(0,8).map(function(e){return [e.when,e.title,e.place];}):L.plan;
+      out='<div class="svp-list">'+ev.map(function(p){return li('<b>'+esc(p[0])+'</b>',p[1],p[2]);}).join('')+'</div>'+
         '<p style="margin:16px 0 0"><a href="/calendar/">Весь календарь и подписка на расписание →</a></p>';
     } else if(tab==='lect'){
       out='<p style="margin:16px 0 0;max-width:600px">Видео лекций и статьи для уровня '+({nu:'НУ',bu:'БУ',su:'СУ'}[lvl])+' пока лежат в библиотеке на старом сайте.</p>'+

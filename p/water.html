@@ -114,6 +114,40 @@
         done(S);
       }).catch(function(){done({});});
   }
+
+  /* Расписание школы берётся из листа «События» той же таблицы: строки, у которых в столбце «Метка»
+     есть слово этой школы. Если таких будущих событий нет, показывается «первая встреча» из «Настроек». */
+  function loadSchoolEvents(test, done){
+    fetch('https://docs.google.com/spreadsheets/d/1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('События')+'&_='+Math.floor(Date.now()/60000))
+      .then(function(r){if(!r.ok)throw r.status;return r.text();})
+      .then(function(txt){
+        var rows=[],row=[],f='',q=false;
+        for(var i=0;i<txt.length;i++){var c=txt[i];
+          if(q){ if(c=='"'){ if(txt[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
+          else if(c=='"') q=true; else if(c==','){row.push(f);f='';} else if(c=='\n'){row.push(f);rows.push(row);row=[];f='';} else if(c!='\r') f+=c; }
+        if(f||row.length){row.push(f);rows.push(row);}
+        var t=new Date(), today=t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2);
+        var MS=['янв','февр','марта','апр','мая','июня','июля','авг','сент','окт','нояб','дек'], out=[];
+        rows.slice(1).forEach(function(r){
+          var d=(r[0]||'').trim(),m;
+          if((m=d.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/))) d=m[3]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2);
+          else if((m=d.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) d=m[1]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[3]).slice(-2);
+          else return;
+          var title=(r[2]||'').trim(), tag=(r[4]||'').trim().toLowerCase();
+          if(!title||d<today||!test(tag)) return;
+          var p=d.split('-'), tm=(r[1]||'').trim();
+          out.push({day:d, when:(+p[2])+' '+MS[+p[1]-1]+(tm?', '+tm:''), title:title, place:(r[3]||'').trim(), tag:tag});
+        });
+        out.sort(function(a,b){return a.day<b.day?-1:1;});
+        done(out);
+      }).catch(function(){done(null);});
+  }
+  function escE(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  loadSchoolEvents(function(tag){return /водн/.test(tag);}, function(list){
+    if(!list||!list.length) return;
+    var box=root.querySelector('[data-panel="plan"] .svp-list');
+    box.innerHTML=list.slice(0,8).map(function(e){return '<div class="svp-li"><span><b>'+escE(e.when)+'</b> · '+escE(e.title)+'</span><span class="svp-muted">'+escE(e.place)+'</span></div>';}).join('');
+  });
   loadSettings(function(S){
     function G(n){for(var i=0;i<KEYS.length;i++){var v=S[KEYS[i]+': '+n]; if(v) return v;}}
     var st=G('статус'), pp=G('руководители'), fm=G('первая встреча'), fp=G('место первой встречи'), fee=S['взнос в месяц'];
