@@ -123,6 +123,9 @@
      вида https://forms.yandex.ru/u/xxxxxxxx/ . Пока пусто, вместо формы просьба написать в чат. */
   var YANDEX_FORM = 'https://forms.yandex.ru/u/6ae917824a052dd32551974b/';
 
+  var OPENS = 'в сентябре';
+  function $(id){return document.getElementById(id);}
+  function render(){
   var on = SEASON === 'on';
   var T = on ? {
     status:'Набор открыт до '+DEADLINE, title:'Анкета в школу',
@@ -131,16 +134,38 @@
     steps:['Анкета уходит руководителю выбранной школы.','Он пишет вам, отвечает на вопросы и зовёт на первую встречу.','Приходите во вторник на лекцию, взнос платится уже после первой встречи.'],
     dtitle:'Спасибо, анкета у руководителя школы', dtext:'Руководитель напишет вам в течение недели и позовёт на первую встречу.'
   } : {
-    status:'Набор откроется в сентябре', title:'Напишите мне о наборе',
+    status:'Набор откроется '+OPENS, title:'Напишите мне о наборе',
     lead:'Сейчас школы не набирают. Оставьте контакты и пару слов об опыте, и мы напишем, как только откроется набор нового сезона.',
     btn:'Напишите мне',
     steps:['Ваши контакты попадают в список ожидания клуба.','В начале сентября мы пишем всем из списка: когда и где первая встреча.','Вы приходите на открытую лекцию и выбираете школу.'],
     dtitle:'Спасибо, вы в списке', dtext:'Когда откроется набор, мы напишем вам в Телеграм или по телефону. Обычно это начало сентября.'
   };
-  function $(id){return document.getElementById(id);}
   $('jn-status').textContent=T.status; $('jn-title').textContent=T.title; $('jn-lead').textContent=T.lead;
-  if(!on) $('jn-dot').style.background='#CFCBC2';
+  $('jn-dot').style.background=on?'':'#CFCBC2';
   $('jn-steps').innerHTML=T.steps.map(function(s,i){return '<div class="jn-step"><b>0'+(i+1)+'</b><span>'+esc(s)+'</span></div>';}).join('');
+  return T;
+  }
+  var T=render();
+  /* Лист «Настройки» в Google-таблице «Связка: календарь»: столбец A — название настройки, B — значение. */
+  function loadSettings(done){
+    fetch('https://docs.google.com/spreadsheets/d/1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('Настройки')+'&_='+Math.floor(Date.now()/60000))
+      .then(function(r){if(!r.ok)throw r.status;return r.text();})
+      .then(function(txt){
+        var rows=[],row=[],f='',q=false;
+        for(var i=0;i<txt.length;i++){var c=txt[i];
+          if(q){ if(c=='"'){ if(txt[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
+          else if(c=='"') q=true; else if(c==','){row.push(f);f='';} else if(c=='\n'){row.push(f);rows.push(row);row=[];f='';} else if(c!='\r') f+=c; }
+        if(f||row.length){row.push(f);rows.push(row);}
+        var S={}; rows.forEach(function(r){var k=(r[0]||'').trim().toLowerCase(), v=(r[1]||'').trim(); if(k&&v) S[k]=v;});
+        done(S);
+      }).catch(function(){done({});});
+  }
+  loadSettings(function(S){
+    var m=S['запись в школу: режим']; if(m) SEASON=/межсез/i.test(m)?'off':'on';
+    if(S['набор открыт до']) DEADLINE=S['набор открыт до'];
+    if(S['набор откроется']) OPENS=S['набор откроется'];
+    T=render();
+  });
 
   var box=$('jn-yf');
   if(YANDEX_FORM){
