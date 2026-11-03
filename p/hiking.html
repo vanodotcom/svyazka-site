@@ -1,5 +1,5 @@
 <!-- «Связка»: страница «Пешеходный туризм» (адрес /schools/hiking/). Вставить в блок T123 «HTML-код», отступы блока 0.
-     Статус набора и руководителей можно менять в Google-таблице, лист «Настройки»: строки «Пешеходное: статус» и «Пешеходное: руководители». -->
+     Меняется в Google-таблице, лист «Настройки»: «Пешеходное: статус», «Пешеходное: руководители» (через точку с запятой), «Пешеходное: первая встреча», «Пешеходное: место первой встречи», «Взнос в месяц». -->
 <style>
 .svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
   font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
@@ -56,6 +56,8 @@
   .dr-photo{order:1;flex:none;width:100%;height:200px}
   .dr-cta{order:2}
   .dr-season{grid-template-columns:1fr 1fr}
+  .svp-dir .svp-tabs{flex-wrap:nowrap;justify-content:space-between}
+  .svp-dir .svp-tab{margin-right:0;font-size:10px;letter-spacing:0;white-space:nowrap}
 }
 </style>
 
@@ -70,16 +72,34 @@
     </div>
     
   </section>
-  <div class="svp-row" style="border-top:0"><b>Для кого</b><ul><li>Опыт походов не нужен, нужно желание учиться</li><li>Возраст от 18 лет</li><li>Нет медицинских противопоказаний</li></ul></div>
-  <div class="svp-row"><b>Как идёт сезон</b><div class="dr-season"><div><b>Декабрь–май</b><div class="svp-muted">Лекции по четвергам, 19:30</div></div><div><b>Выходные</b><div class="svp-muted">Выезды: ориентирование, бивак, переправы, ПВД</div></div><div><b>Весна</b><div class="svp-muted">Техника, ориентирование, экзамен</div></div><div><b>Май</b><div class="svp-muted">Кросс-поход</div></div><div><b>Конец июня</b><div class="svp-muted">Походы 1–2 к.с. в Хибинах</div></div></div></div>
-  <div class="svp-row"><b>Руководители</b><div class="dr-people" data-people><div>Начальник школы: [ФИО] · [контакт]</div></div></div>
-  <div class="svp-row"><b>Где занимаемся</b><span>Лекции в зале клуба: Старопименовский пер., 4с2, м. Пушкинская. Тренировки и выезды в Москве и Подмосковье. <a href="/schools/places/">Все места занятий →</a></span></div>
-  <div class="svp-row"><b>Документы</b><span>Положение и расписание прошлых сезонов пока на <a href="https://westra.ru/activity/">старом сайте →</a></span></div>
+  <div class="svp-tabs" role="tablist" aria-label="Разделы школы">
+    <button type="button" class="svp-tab on" data-tab="about" aria-selected="true">О школе</button>
+    <button type="button" class="svp-tab" data-tab="plan">Расписание</button>
+    <button type="button" class="svp-tab" data-tab="lect">Лекции</button>
+    <button type="button" class="svp-tab" data-tab="docs">Документы</button>
+  </div>
+  <section style="padding-top:4px">
+   <div data-panel="about">
+    <div class="svp-row" style="border-top:0"><b>Для кого</b><ul><li>Опыт походов не нужен, нужно желание учиться</li><li>Возраст от 18 лет</li><li>Нет медицинских противопоказаний</li></ul></div>
+    <div class="svp-row"><b>Как идёт сезон</b><div class="dr-season"><div><b>Декабрь–май</b><div class="svp-muted">Лекции по четвергам, 19:30</div></div><div><b>Выходные</b><div class="svp-muted">Выезды: ориентирование, бивак, переправы, ПВД</div></div><div><b>Весна</b><div class="svp-muted">Техника, ориентирование, экзамен</div></div><div><b>Май</b><div class="svp-muted">Кросс-поход</div></div><div><b>Конец июня</b><div class="svp-muted">Походы 1–2 к.с. в Хибинах</div></div></div></div>
+    <div class="svp-row"><b>Сколько стоит</b><span>Взнос школы и клуба <span data-fee>2000 ₽</span> в месяц. Снаряжение можно взять в прокате клуба.</span></div>
+    <div class="svp-row"><b>Руководители</b><div class="dr-people" data-people><div>Начальник школы: [ФИО] · [контакт]</div></div></div>
+    <div class="svp-row"><b>Где занимаемся</b><span>Лекции в зале клуба: Старопименовский пер., 4с2, м. Пушкинская. Тренировки и выезды в Москве и Подмосковье. <a href="/schools/places/">Все места занятий →</a></span></div>
+   </div>
+   <div data-panel="plan" class="svp-hide"><div class="svp-list"><div class="svp-li" data-first><span><b>[дата в декабре], 19:30</b> · Первая встреча</span><span class="svp-muted">Пушкинская</span></div></div><p style="margin:16px 0 0"><a href="/calendar/">Весь календарь и подписка на расписание →</a></p></div>
+   <div data-panel="lect" class="svp-hide"><p style="margin:16px 0 0;max-width:600px">Видео лекций и статьи пешеходной школы пока лежат в библиотеке на старом сайте.</p><p style="margin:12px 0 0"><a href="https://westra.ru/articles/">Лекции и статьи на westra.ru →</a></p></div>
+   <div data-panel="docs" class="svp-hide"><div class="svp-list"><div class="svp-li"><a href="#">Положение о пешеходной школе</a><span class="svp-muted">pdf</span></div><div class="svp-li"><a href="#">Вопросы к экзамену</a><span class="svp-muted">страница</span></div><div class="svp-li"><a href="#">Список снаряжения</a><span class="svp-muted">страница</span></div></div></div>
+  </section>
 </div>
 
 <script>
 (function(){
   var root=document.querySelector('.svp-dir'), KEY='пешеходное';
+  root.addEventListener('click',function(e){
+    var b=e.target.closest('[data-tab]'); if(!b) return;
+    root.querySelectorAll('[data-tab]').forEach(function(x){var on=x===b; x.classList.toggle('on',on); x.setAttribute('aria-selected',on);});
+    root.querySelectorAll('[data-panel]').forEach(function(p){p.classList.toggle('svp-hide',p.getAttribute('data-panel')!==b.dataset.tab);});
+  });
   function loadSettings(done){
     fetch('https://docs.google.com/spreadsheets/d/1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('Настройки')+'&_='+Math.floor(Date.now()/60000))
       .then(function(r){if(!r.ok)throw r.status;return r.text();})
@@ -94,9 +114,11 @@
       }).catch(function(){done({});});
   }
   loadSettings(function(S){
-    var st=S[KEY+': статус'], pp=S[KEY+': руководители'];
+    var st=S[KEY+': статус'], pp=S[KEY+': руководители'], fm=S[KEY+': первая встреча'], fp=S[KEY+': место первой встречи'], fee=S['взнос в месяц'];
     if(st) root.querySelector('[data-f="status"]').textContent=st;
+    if(fee) root.querySelector('[data-fee]').textContent=fee;
     if(pp){ var box=root.querySelector('[data-people]'); box.innerHTML=''; pp.split(/\s*;\s*|\n/).forEach(function(x){ if(!x) return; var e=document.createElement('div'); e.textContent=x; box.appendChild(e); }); }
+    var f=root.querySelector('[data-first]'); if(f){ if(fm) f.querySelector('b').textContent=fm; if(fp) f.querySelector('.svp-muted').textContent=fp; }
   });
 })();
 </script>
