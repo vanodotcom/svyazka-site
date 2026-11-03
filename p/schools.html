@@ -112,7 +112,7 @@
       leader:'[ФИО] · [контакт]',
       plan:[['24 нояб, 19:30','Первая встреча','Пушкинская']],
       docs:[['Положение о школе БУ','#','pdf'],['Вопросы к экзамену','#','страница'],['Узлы и нормативы ОФП','#','страница']]},
-    su: {photo:'https://static.tildacdn.pub/tila6435-3632-4365-a337-646332383761/svyazka-start-5b2.jpg', pos:'50% 90.8421%', alt:'Связка на снежном склоне',
+    su: {photo:'https://static.tildacdn.pub/tila6435-3632-4365-a337-646332383761/svyazka-start-5b2.jpg', pos:'50% 90.8421%', mpos:'50% 76%', alt:'Связка на снежном склоне',
       status:'Набор открыт до 15 декабря', title:'Школа специализированного уровня',
       lead:'Для выпускников БУ, которые хотят в походы 3–4 к.с.: сложная техника, спасработы, автономность и летний поход 3 или 4 к.с.',
       who:['Окончена школа БУ: диплом или экзамен экстерном','Для похода 3 к.с. нужен опыт похода 2 к.с., для 4 к.с. опыт 3 к.с.','Возраст от 18 лет, верхней границы нет'],
@@ -148,7 +148,7 @@
     root.querySelectorAll('[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab===tab);b.setAttribute('aria-selected',b.dataset.tab===tab);});
     ['status','title','lead'].forEach(function(k){root.querySelector('[data-f="'+k+'"]').textContent=L[k];});
     root.querySelector('h1').classList.toggle('long',L.title.length>26);
-    var ph=root.querySelector('.sch-photo'); if(ph&&ph.tagName==='IMG'&&L.photo){ph.src=L.photo; ph.alt=L.alt||''; ph.style.objectPosition=L.pos||'';}
+    var ph=root.querySelector('.sch-photo'); if(ph&&ph.tagName==='IMG'&&L.photo){ph.src=L.photo; ph.alt=L.alt||''; ph.style.objectPosition=(window.innerWidth<=640&&L.mpos)||L.pos||'';}
     var out='';
     if(tab==='about'){
       out='<div class="svp-row" style="border-top:0"><b>Для кого</b><ul>'+L.who.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'+
