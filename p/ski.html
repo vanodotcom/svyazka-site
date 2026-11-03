@@ -94,7 +94,7 @@
 
 <script>
 (function(){
-  var root=document.querySelector('.svp-dir'), KEY='лыжное';
+  var root=document.querySelector('.svp-dir'), KEYS=['лыжный туризм', 'лыжное']; /* новое название в таблице, затем старое */
   root.addEventListener('click',function(e){
     var b=e.target.closest('[data-tab]'); if(!b) return;
     root.querySelectorAll('[data-tab]').forEach(function(x){var on=x===b; x.classList.toggle('on',on); x.setAttribute('aria-selected',on);});
@@ -114,7 +114,8 @@
       }).catch(function(){done({});});
   }
   loadSettings(function(S){
-    var st=S[KEY+': статус'], pp=S[KEY+': руководители'], fm=S[KEY+': первая встреча'], fp=S[KEY+': место первой встречи'], fee=S['взнос в месяц'];
+    function G(n){for(var i=0;i<KEYS.length;i++){var v=S[KEYS[i]+': '+n]; if(v) return v;}}
+    var st=G('статус'), pp=G('руководители'), fm=G('первая встреча'), fp=G('место первой встречи'), fee=S['взнос в месяц'];
     if(st) root.querySelector('[data-f="status"]').textContent=st;
     if(fee) root.querySelector('[data-fee]').textContent=fee;
     if(pp){ var box=root.querySelector('[data-people]'); box.innerHTML=''; pp.split(/\s*;\s*|\n/).forEach(function(x){ if(!x) return; var e=document.createElement('div'); e.textContent=x; box.appendChild(e); }); }
