@@ -159,7 +159,7 @@
       out='<div class="svp-list">'+L.plan.map(function(p){return li('<b>'+esc(p[0])+'</b>',p[1],p[2]);}).join('')+'</div>'+
         '<p style="margin:16px 0 0"><a href="/calendar/">Весь календарь и подписка на расписание →</a></p>';
     } else if(tab==='lect'){
-      out='<p style="margin:16px 0 0;max-width:600px">Видео лекций и статьи для уровня '+lvl.toUpperCase()+' пока лежат в библиотеке на старом сайте.</p>'+
+      out='<p style="margin:16px 0 0;max-width:600px">Видео лекций и статьи для уровня '+({nu:'НУ',bu:'БУ',su:'СУ'}[lvl])+' пока лежат в библиотеке на старом сайте.</p>'+
         '<p style="margin:12px 0 0"><a href="'+LECTURES_URL+'">Лекции и статьи на westra.ru →</a></p>';
     } else {
       out='<div class="svp-list">'+L.docs.map(function(d){return '<div class="svp-li"><a href="'+esc(d[1])+'">'+esc(d[0])+'</a><span class="svp-muted">'+esc(d[2])+'</span></div>';}).join('')+'</div>';
