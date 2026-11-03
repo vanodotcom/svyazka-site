@@ -1,0 +1,22 @@
+name: Список перевалов для подсказок
+on:
+  schedule:
+    - cron: '40 2 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: passes-index
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p data && python3 scripts/passes_index.py
+      - name: Сохранить, если список изменился
+        run: |
+          git add data/passes.json
+          if git diff --cached --quiet; then echo "без изменений"; exit 0; fi
+          git config user.name "svyazka-passes-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Список перевалов из каталога westra.ru"
+          git push
