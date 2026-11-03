@@ -118,7 +118,7 @@
      Таблица должна быть открыта «всем, у кого есть ссылка» на просмотр. Колонки первой строки:
      Дата | Время | Событие | Место | Метка | Тип  (Дата как 2026-11-24 или 24.11.2026; Тип: школы / клубные / открытые).
      Пока пусто или таблица не открылась, показывается список EVENTS ниже. */
-  var SHEET_ID = '';
+  var SHEET_ID = '1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE';
   function loadSheet(done){
     if(!SHEET_ID){done(null);return;}
     fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&_='+Math.floor(Date.now()/60000))
