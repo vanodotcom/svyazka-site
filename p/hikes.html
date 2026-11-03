@@ -54,6 +54,11 @@
 .hk-st{display:inline-flex;align-items:center;gap:8px}
 .hk-st i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted);flex:none}
 .hk-t tr.open .hk-st{font-weight:600} .hk-t tr.open .hk-st i{background:var(--accent);border-color:var(--accent)}
+.hk-more{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer;white-space:nowrap}
+.hk-t tr.ds td{padding:4px 0 14px;color:var(--ink);font-size:15px;line-height:1.5;white-space:pre-line}
+.hk-t tr.ds .dt{max-width:680px}
+.hk-t tr.ds a{display:inline-block;margin-top:6px}
+.hk-t tr.has-ds td{border-bottom-color:transparent}
 @media (max-width:640px){
   .hk-t{min-width:0} .hk-t thead{display:none}
   .hk-t,.hk-t tbody,.hk-t tr,.hk-t td{display:block}
@@ -62,7 +67,8 @@
   .hk-t .gr{padding:0} .hk-t .gr td{padding-top:18px}
   .hk-t td.k{font-size:13px;color:var(--muted)} .hk-t td.a{font-size:16px;font-weight:600}
   .hk-t td.s:before{content:'Школа: '} .hk-t td.s.no{display:none}
-  .hk-t .r{text-align:left}
+  .hk-t .r{text-align:left;margin-top:4px}
+  .hk-t tr.ds{padding-top:0} .hk-t tr.has-ds{border-bottom:0;padding-bottom:4px}
 }
 </style>
 
@@ -123,13 +129,13 @@
           if(!r[2]&&!r[1]) return;
           if(r[2]==='Район') return;
           out.push({ks:(r[0]||'—').replace('-','–'), kind:(r[1]||'').toLowerCase(), area:r[2], dates:r[3]||'', leader:r[4]||'', school:r[5]||'',
-            open:/^есть/i.test(r[6]||''), link:/^https?:\/\//.test(r[7]||'')?r[7]:''});
+            open:/^есть/i.test(r[6]||''), link:/^https?:\/\//.test(r[7]||'')?r[7]:'', desc:r[8]||''});
         });
         done(out.length?out:null);
       }).catch(function(){done(null);});
   }
 
-  var root=document.querySelector('.svp-hikes'), kind='все', onlyOpen=false;
+  var root=document.querySelector('.svp-hikes'), kind='все', onlyOpen=false, shown={};
   root.querySelector('[data-f="season"]').textContent=SEASON;
   var kbox=document.getElementById('hk-kinds');
   function chips(){
@@ -144,15 +150,20 @@
     var groups=[]; list.forEach(function(x){if(groups.indexOf(x.ks)<0)groups.push(x.ks);}); groups.sort(function(a,b){return rank(a)-rank(b);});
     document.getElementById('hk-body').innerHTML=groups.map(function(g){
       return '<tr class="gr"><td colspan="7">'+(/^н/i.test(g)?'некатегорийные':esc(g)+' к.с.')+'</td></tr>'+list.filter(function(x){return x.ks===g;}).map(function(x){
-        return '<tr class="'+(x.open?'open':'closed')+'"><td class="k">'+esc(x.kind)+'</td><td class="a">'+esc(x.area)+'</td><td>'+esc(x.dates)+'</td><td>'+esc(x.leader)+'</td><td class="s'+(x.school?'':' no')+'">'+esc(x.school||'—')+'</td>'+
-          '<td><span class="hk-st"><i aria-hidden="true"></i>'+(x.open?'есть места':'группа набрана')+'</span></td><td class="r">'+(x.link&&x.link!=='#'?'<a href="'+esc(x.link)+'" target="_blank" rel="noopener">описание →</a>':'')+'</td></tr>';
+        var id=HIKES.indexOf(x), isOpen=shown[id], lk=x.link&&x.link!=='#'?x.link:'';
+        var last=x.desc?'<button type="button" class="hk-more" data-d="'+id+'" aria-expanded="'+!!isOpen+'">описание '+(isOpen?'↑':'↓')+'</button>'
+          :(lk?'<a href="'+esc(lk)+'" target="_blank" rel="noopener">описание →</a>':'');
+        return '<tr class="'+(x.open?'open':'closed')+(isOpen?' has-ds':'')+'"><td class="k">'+esc(x.kind)+'</td><td class="a">'+esc(x.area)+'</td><td>'+esc(x.dates)+'</td><td>'+esc(x.leader)+'</td><td class="s'+(x.school?'':' no')+'">'+esc(x.school||'—')+'</td>'+
+          '<td><span class="hk-st"><i aria-hidden="true"></i>'+(x.open?'есть места':'группа набрана')+'</span></td><td class="r">'+last+'</td></tr>'+
+          (isOpen?'<tr class="ds"><td colspan="7"><div class="dt">'+esc(x.desc)+(lk?'<br><a href="'+esc(lk)+'" target="_blank" rel="noopener">подробнее →</a>':'')+'</div></td></tr>':'');
       }).join('');
     }).join('');
     root.querySelector('.hk-none').classList.toggle('svp-hide',list.length>0);
   }
   kbox.addEventListener('click',function(e){var b=e.target.closest('[data-k]'); if(b){kind=b.dataset.k; draw();}});
+  document.getElementById('hk-body').addEventListener('click',function(e){var b=e.target.closest('[data-d]'); if(b){shown[b.dataset.d]=!shown[b.dataset.d]; draw();}});
   document.getElementById('hk-open').addEventListener('change',function(e){onlyOpen=e.target.checked; draw();});
   chips(); draw();
-  loadSheet(function(list){ if(list){ HIKES=list; chips(); draw(); } });
+  loadSheet(function(list){ if(list){ HIKES=list; shown={}; chips(); draw(); } });
 })();
 </script>
