@@ -121,7 +121,8 @@
       plan:[['24 нояб, 19:30','Первая встреча','Пушкинская']],
       docs:[['Положение о школе СУ','#','pdf'],['Вопросы к экзамену СУ','#','страница'],['Узлы и нормативы ОФП','#','страница']]}
   };
-  var FEE = 'Взнос школы и клуба 2000 ₽ в месяц. Снаряжение можно взять в прокате клуба.';
+  var FEE_SUM = '2000 ₽';
+  function FEE(){ return 'Взнос школы и клуба '+FEE_SUM+' в месяц. Снаряжение можно взять в прокате клуба.'; }
   var LECTURES_URL = 'https://westra.ru/articles/';
 
   /* Лист «Настройки» в Google-таблице «Связка: календарь»: столбец A — название настройки, B — значение. */
@@ -152,7 +153,7 @@
     if(tab==='about'){
       out='<div class="svp-row" style="border-top:0"><b>Для кого</b><ul>'+L.who.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'+
         '<div class="svp-row"><b>Как идёт сезон</b><div class="sch-season">'+L.season.map(function(s){return '<div><b>'+esc(s[0])+'</b><div class="svp-muted">'+esc(s[1])+'</div></div>';}).join('')+'</div></div>'+
-        '<div class="svp-row"><b>Сколько стоит</b><span>'+esc(FEE)+'</span></div>'+
+        '<div class="svp-row"><b>Сколько стоит</b><span>'+esc(FEE())+'</span></div>'+
         '<div class="svp-row" style="border-bottom:1px solid var(--line)"><b>Руководитель</b><span>'+esc(L.leader)+' · <a href="https://westra.ru/contacts.html">все инструкторы</a></span></div>';
     } else if(tab==='plan'){
       out='<div class="svp-list">'+L.plan.map(function(p){return li('<b>'+esc(p[0])+'</b>',p[1],p[2]);}).join('')+'</div>'+
@@ -171,6 +172,15 @@
     draw();
   });
   draw();
-  loadSettings(function(S){ ['nu','bu','su'].forEach(function(k){ var v=S['школа '+k.replace('nu','ну').replace('bu','бу').replace('su','су')+': статус']; if(v) LEVELS[k].status=v; }); draw(); });
+  loadSettings(function(S){
+    var RU={nu:'ну',bu:'бу',su:'су'};
+    ['nu','bu','su'].forEach(function(k){ var L=LEVELS[k], p='школа '+RU[k]+': ';
+      if(S[p+'статус']) L.status=S[p+'статус'];
+      if(S[p+'руководитель']) L.leader=S[p+'руководитель'];
+      if(L.plan&&L.plan[0]){ if(S[p+'первая встреча']) L.plan[0][0]=S[p+'первая встреча']; if(S[p+'место первой встречи']) L.plan[0][2]=S[p+'место первой встречи']; }
+    });
+    if(S['взнос в месяц']) FEE_SUM=S['взнос в месяц'];
+    draw();
+  });
 })();
 </script>

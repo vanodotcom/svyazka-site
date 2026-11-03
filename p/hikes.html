@@ -74,7 +74,7 @@
 
 <div class="svp svp-hikes">
   <div class="hk-head">
-    <h1>Походы сезона <span data-f="season"></span></h1>
+    <h1>Походы сезона <span data-f="season" data-set="сезон"></span></h1>
     <a href="https://westra.ru/activity/ourhikes.html" style="font-size:15px">Прошедшие сезоны →</a>
   </div>
   <p class="svp-lead">Выберите поход и напишите руководителю. Ведёте поход сами? <a href="/hikes/lead/">Руководителю →</a></p>
@@ -165,5 +165,22 @@
   document.getElementById('hk-open').addEventListener('change',function(e){onlyOpen=e.target.checked; draw();});
   chips(); draw();
   loadSheet(function(list){ if(list){ HIKES=list; shown={}; chips(); draw(); } });
+  /* Лист «Настройки» в Google-таблице «Связка: календарь»: столбец A — название настройки, B — значение. */
+  function loadSettings(done){
+    fetch('https://docs.google.com/spreadsheets/d/1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('Настройки')+'&_='+Math.floor(Date.now()/60000))
+      .then(function(r){if(!r.ok)throw r.status;return r.text();})
+      .then(function(txt){
+        var rows=[],row=[],f='',q=false;
+        for(var i=0;i<txt.length;i++){var c=txt[i];
+          if(q){ if(c=='"'){ if(txt[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
+          else if(c=='"') q=true; else if(c==','){row.push(f);f='';} else if(c=='\n'){row.push(f);rows.push(row);row=[];f='';} else if(c!='\r') f+=c; }
+        if(f||row.length){row.push(f);rows.push(row);}
+        var S={}; rows.forEach(function(r){var k=(r[0]||'').trim().toLowerCase(), v=(r[1]||'').trim(); if(k&&v) S[k]=v;});
+        done(S);
+      }).catch(function(){done({});});
+  }
+  /* элементы с data-set="название настройки" получают её значение */
+  function fillSet(S){ document.querySelectorAll('[data-set]').forEach(function(e){ var v=S[e.getAttribute('data-set')]; if(v) e.textContent=v; }); }
+  loadSettings(fillSet);
 })();
 </script>

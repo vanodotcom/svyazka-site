@@ -61,7 +61,7 @@
     <div><b>5 направлений</b><span>горное, пешеходное, водное, лыжное, альпинизм</span></div>
     <div><b>С ноября по август</b><span>лекции, тренировки, выезды и летний поход</span></div>
     <div><b>Кавказ, Алтай, Памир, Тянь-Шань</b><span>основные районы походов</span></div>
-    <div><b>2000 ₽ в месяц</b><span>общий взнос школы и клуба</span></div>
+    <div><b><span data-set="взнос в месяц">2000 ₽</span> в месяц</b><span>общий взнос школы и клуба</span></div>
   </div>
   <h2 style="margin-top:40px">Разделы</h2>
   <div style="margin-top:8px;border-bottom:1px solid var(--line)">
@@ -83,5 +83,22 @@
     if(/^(https?:|data:|file:)/.test(im.getAttribute('src')||'')) return;
     var d=document.createElement('div'); d.className=im.className+' svp-empty'; d.textContent='фото'; im.parentNode.replaceChild(d,im);
   });
+  /* Лист «Настройки» в Google-таблице «Связка: календарь»: столбец A — название настройки, B — значение. */
+  function loadSettings(done){
+    fetch('https://docs.google.com/spreadsheets/d/1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('Настройки')+'&_='+Math.floor(Date.now()/60000))
+      .then(function(r){if(!r.ok)throw r.status;return r.text();})
+      .then(function(txt){
+        var rows=[],row=[],f='',q=false;
+        for(var i=0;i<txt.length;i++){var c=txt[i];
+          if(q){ if(c=='"'){ if(txt[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
+          else if(c=='"') q=true; else if(c==','){row.push(f);f='';} else if(c=='\n'){row.push(f);rows.push(row);row=[];f='';} else if(c!='\r') f+=c; }
+        if(f||row.length){row.push(f);rows.push(row);}
+        var S={}; rows.forEach(function(r){var k=(r[0]||'').trim().toLowerCase(), v=(r[1]||'').trim(); if(k&&v) S[k]=v;});
+        done(S);
+      }).catch(function(){done({});});
+  }
+  /* элементы с data-set="название настройки" получают её значение */
+  function fillSet(S){ document.querySelectorAll('[data-set]').forEach(function(e){ var v=S[e.getAttribute('data-set')]; if(v) e.textContent=v; }); }
+  loadSettings(fillSet);
 })();
 </script>
