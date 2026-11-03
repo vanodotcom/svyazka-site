@@ -113,7 +113,35 @@
      link:'https://t.me/westra', photo:''}
   ];
 
-  /* ===== ПРАВИТЬ: ближайшие события. day — дата в виде ГГГГ-ММ-ДД.
+
+  /* ===== ПРАВИТЬ: ID Google Таблицы с событиями (из ссылки docs.google.com/spreadsheets/d/ЭТОТ_КУСОК/edit).
+     Таблица должна быть открыта «всем, у кого есть ссылка» на просмотр. Колонки первой строки:
+     Дата | Время | Событие | Место | Метка | Тип  (Дата как 2026-11-24 или 24.11.2026; Тип: школы / клубные / открытые).
+     Пока пусто или таблица не открылась, показывается список EVENTS ниже. */
+  var SHEET_ID = '';
+  function loadSheet(done){
+    if(!SHEET_ID){done(null);return;}
+    fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&_='+Math.floor(Date.now()/60000))
+      .then(function(r){if(!r.ok)throw r.status;return r.text();})
+      .then(function(txt){
+        var rows=[],row=[],f='',q=false;
+        for(var i=0;i<txt.length;i++){var c=txt[i];
+          if(q){ if(c=='"'){ if(txt[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
+          else if(c=='"') q=true; else if(c==','){row.push(f);f='';} else if(c=='\n'){row.push(f);rows.push(row);row=[];f='';} else if(c!='\r') f+=c; }
+        if(f||row.length){row.push(f);rows.push(row);}
+        var out=[];
+        rows.slice(1).forEach(function(r){
+          var d=(r[0]||'').trim(),m;
+          if((m=d.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/))) d=m[3]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2);
+          else if((m=d.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) d=m[1]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[3]).slice(-2);
+          else return;
+          if(!(r[2]||'').trim()) return;
+          out.push({day:d,time:(r[1]||'').trim(),title:r[2].trim(),place:(r[3]||'').trim(),where:[(r[3]||'').trim(),(r[1]||'').trim()].filter(Boolean).join(', '),tag:(r[4]||'').trim(),type:(r[5]||'').trim().toLowerCase()});
+        });
+        done(out.length?out:null);
+      }).catch(function(){done(null);});
+  }
+  /* ===== ПРАВИТЬ: запасной список ближайших событий, если таблица не подключена. day — дата в виде ГГГГ-ММ-ДД.
      Прошедшие события скрываются сами, показываются первые три. */
   var EVENTS = [
     {day:'2026-11-05', title:'Экзамен пешеходной школы ПБУ', where:'Пушкинская, 19:00'},
@@ -154,6 +182,7 @@
   }
 
   drawNews(NEWS); drawEvents();
+  loadSheet(function(list){ if(list){EVENTS=list; drawEvents();} });
   if(FEED_URL){
     fetch(FEED_URL).then(function(r){return r.json();}).then(function(j){ if(j&&j.length) drawNews(j); }).catch(function(){});
   }
