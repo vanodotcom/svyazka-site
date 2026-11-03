@@ -1,6 +1,7 @@
 <!-- «Связка»: страница «Календарь» (адрес /calendar/). Вставить в блок T123 «HTML-код», отступы блока 0.
      Что меняется руками, отмечено словом ПРАВИТЬ. -->
 <style>
+.sv-skel{height:18px;margin:16px 0;border-radius:4px;background:#ECEAE5;animation:svsk 1.2s ease-in-out infinite}.sv-skel:nth-child(even){width:70%}@keyframes svsk{50%{opacity:.45}}
 .svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
   font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
   box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
@@ -139,7 +140,12 @@
   fbox.addEventListener('click',function(e){var b=e.target.closest('[data-f]'); if(b){filter=b.dataset.f; draw();}});
   var sb=document.getElementById('cl-subbtn');
   sb.addEventListener('click',function(){var p=document.getElementById('cl-sub'); var open=p.classList.toggle('svp-hide')===false; sb.setAttribute('aria-expanded',open);});
-  draw();
-  loadSheet(function(list){ if(list){EVENTS=list; draw();} });
+  /* Пока таблица грузится, вместо событий серые полоски. Запасной список EVENTS
+     показывается, только если таблица не ответила (ошибка или дольше 8 секунд). */
+  function skel(n){var h='<div role="status" aria-label="Загружаем">';for(var i=0;i<n;i++)h+='<div class="sv-skel"></div>';return h+'</div>';}
+  document.getElementById('cl-list').innerHTML='<div style="margin-top:24px">'+skel(5)+'</div>';
+  var ready=false;
+  function show(list){ if(list) EVENTS=list; else if(ready) return; ready=true; draw(); }
+  loadSheet(show); setTimeout(function(){ if(!ready) show(null); },8000);
 })();
 </script>

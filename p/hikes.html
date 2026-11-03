@@ -1,6 +1,7 @@
 <!-- «Связка»: страница «Походы сезона» (адрес /hikes/). Вставить в блок T123 «HTML-код», отступы блока 0.
      Что меняется руками, отмечено словом ПРАВИТЬ. -->
 <style>
+.sv-skel{height:18px;margin:16px 0;border-radius:4px;background:#ECEAE5;animation:svsk 1.2s ease-in-out infinite}.sv-skel:nth-child(even){width:70%}@keyframes svsk{50%{opacity:.45}}
 .svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
   font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
   box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
@@ -163,8 +164,13 @@
   kbox.addEventListener('click',function(e){var b=e.target.closest('[data-k]'); if(b){kind=b.dataset.k; draw();}});
   document.getElementById('hk-body').addEventListener('click',function(e){var b=e.target.closest('[data-d]'); if(b){shown[b.dataset.d]=!shown[b.dataset.d]; draw();}});
   document.getElementById('hk-open').addEventListener('change',function(e){onlyOpen=e.target.checked; draw();});
-  chips(); draw();
-  loadSheet(function(list){ if(list){ HIKES=list; shown={}; chips(); draw(); } });
+  /* Пока таблица грузится, вместо походов серые полоски. Запасной список HIKES
+     показывается, только если таблица не ответила (ошибка или дольше 8 секунд). */
+  function skel(n){var h='<div role="status" aria-label="Загружаем">';for(var i=0;i<n;i++)h+='<div class="sv-skel"></div>';return h+'</div>';}
+  document.getElementById('hk-body').innerHTML='<tr><td colspan="7">'+skel(5)+'</td></tr>';
+  var ready=false;
+  function show(list){ if(list){ HIKES=list; shown={}; } else if(ready) return; ready=true; chips(); draw(); }
+  loadSheet(show); setTimeout(function(){ if(!ready) show(null); },8000);
   /* Лист «Настройки» в Google-таблице «Связка: календарь»: столбец A — название настройки, B — значение. */
   function loadSettings(done){
     fetch('https://docs.google.com/spreadsheets/d/1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('Настройки')+'&_='+Math.floor(Date.now()/60000))
