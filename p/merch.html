@@ -48,7 +48,7 @@
 .mr-side{display:flex;flex-direction:column;gap:24px}
 .mr-lbl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;letter-spacing:.04em}
 .mr-lbl a{font-family:'Onest',sans-serif;text-transform:none;font-size:14px;font-weight:400;letter-spacing:0}
-.mr-gr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.mr-gr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .svp .mr-g{display:flex;flex-direction:column;gap:8px;padding:6px;border:1px solid var(--line);background:#fff;font:inherit;font-size:14px;color:var(--ink);text-align:left;cursor:pointer}
 .svp .mr-g.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
 .mr-g .svp-img{height:84px}
@@ -75,7 +75,8 @@
 @media (max-width:640px){
   .mr-main{height:280px}
   .mr-thumbs .svp-img{height:72px}
-  .mr-g .svp-img{height:64px}
+  .mr-gr{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mr-g .svp-img{height:84px}
   .mr-g{font-size:13px}
   .mr-tbl th,.mr-tbl td{padding:9px 8px}
 }
@@ -141,6 +142,7 @@
      настоящие фото заменят их. Пустая строка — серый прямоугольник «фото». */
   var M = 'https://vanodotcom.github.io/svyazka-site/img/merch/';
   var GRAPHICS = [
+    {name:'Я в Связке', img:M+'g4-pered.jpg', back:'', detail:M+'g4-krupno.jpg'},
     {name:'Знак', img:M+'g1-pered.jpg', back:M+'g1-spina.jpg', detail:M+'g1-krupno.jpg'},
     {name:'Горы на спине', img:M+'g2-pered.jpg', back:M+'g2-spina.jpg', detail:M+'g2-krupno.jpg'},
     {name:'Хочу в горы', img:M+'g3-pered.jpg', back:M+'g3-spina.jpg', detail:M+'g3-krupno.jpg'}
@@ -172,7 +174,7 @@
     var G=GRAPHICS[g];
     var m=$('mr-main'), html=pic(G.img,'mr-main','фото футболки: '+G.name+', спереди');
     m.outerHTML=html.replace('class="svp-img','id="mr-main" class="svp-img');
-    $('mr-thumbs').innerHTML=pic(G.img,'','спереди')+pic(G.back,'','сзади')+pic(G.detail,'','крупно');
+    $('mr-thumbs').innerHTML=[[G.img,'спереди'],[G.back,'сзади'],[G.detail,'крупно']].filter(function(t){return t[0];}).map(function(t){return pic(t[0],'',t[1]);}).join('');
     $('mr-gr').innerHTML=GRAPHICS.map(function(x,i){return '<button type="button" class="mr-g'+(i===g?' on':'')+'" data-g="'+i+'" aria-pressed="'+(i===g)+'">'+pic(x.detail,'',x.name)+'<b>'+esc(x.name)+'</b></button>';}).join('');
     $('mr-sz').innerHTML=SIZES.map(function(r){return '<button type="button" class="svp-chip'+(r[0]===sz?' on':'')+'" data-sz="'+esc(r[0])+'" aria-pressed="'+(r[0]===sz)+'">'+esc(r[0])+'</button>';}).join('');
     $('mr-tb').innerHTML=SIZES.map(function(r){return '<tr'+(r[0]===sz?' class="on"':'')+'><td>'+r.map(esc).join('</td><td>')+'</td></tr>';}).join('');
