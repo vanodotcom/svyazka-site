@@ -164,4 +164,24 @@ body{font-family:'Onest',system-ui,sans-serif}
   }
   markOld(); document.addEventListener('sv:loaded',markOld); setTimeout(markOld,1500);
 })();
+/* Цели Яндекс Метрики: номер счётчика берём из того, что подключила Тильда */
+(function(){
+  if(window.svGoals) return; window.svGoals=1;
+  function goal(name){
+    try{
+      var c=window.Ya&&Ya.Metrika2&&Ya.Metrika2.counters&&Ya.Metrika2.counters();
+      if(c&&c.length&&window.ym) c.forEach(function(x){ ym(x.id,'reachGoal',name); });
+    }catch(e){}
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a'); if(!a) return;
+    var h=a.getAttribute('href')||'', t=(a.textContent||'').trim();
+    if(/Хочу в горы/i.test(t)) goal('want_mountains');
+    if(h.indexOf('/schools/join')>-1) goal('join_click');
+    if(h.indexOf('/hikes/lead')>-1) goal('lead_click');
+    if(h.indexOf('t.me/+')>-1) goal('tg_chat');
+    else if(h.indexOf('t.me/westra')>-1) goal('tg_channel');
+    if(h.indexOf('vk.com/')>-1) goal('vk');
+  },true);
+})();
 </script>
