@@ -45,6 +45,8 @@
 .mr-main{height:460px}
 .mr-thumbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
 .mr-thumbs .svp-img{height:96px}
+.svp .mr-th{padding:0;border:1px solid transparent;background:none;cursor:pointer;display:block}
+.svp .mr-th.on{border-color:var(--ink)}
 .mr-side{display:flex;flex-direction:column;gap:24px}
 .mr-lbl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;letter-spacing:.04em}
 .mr-lbl a{font-family:'Onest',sans-serif;text-transform:none;font-size:14px;font-weight:400;letter-spacing:0}
@@ -138,14 +140,13 @@
 <script>
 (function(){
   /* ===== ПРАВИТЬ: варианты графики. name — подпись, img — фото футболки спереди, back — сзади,
-     detail — крупный план или фото на человеке. Сейчас стоят нарисованные макеты оверсайз-футболки (папка img/merch/),
-     настоящие фото заменят их. Пустая строка — серый прямоугольник «фото». */
+     detail — крупный план или фото на человеке. Сейчас стоят макеты: графика наложена на фото футболки (папка img/merch/). Пустая строка — серый прямоугольник «фото». */
   var M = 'https://vanodotcom.github.io/svyazka-site/img/merch/';
   var GRAPHICS = [
     {name:'Я в Связке', img:M+'g4-pered.jpg', back:'', detail:M+'g4-krupno.jpg'},
-    {name:'Знак', img:M+'g1-pered.jpg', back:M+'g1-spina.jpg', detail:M+'g1-krupno.jpg'},
+    {name:'Знак', img:M+'g1-pered.jpg', back:'', detail:M+'g1-krupno.jpg'},
     {name:'Горы на спине', img:M+'g2-pered.jpg', back:M+'g2-spina.jpg', detail:M+'g2-krupno.jpg'},
-    {name:'Хочу в горы', img:M+'g3-pered.jpg', back:M+'g3-spina.jpg', detail:M+'g3-krupno.jpg'}
+    {name:'Вся спина', img:M+'g5-pered.jpg', back:M+'g5-spina.jpg', detail:M+'g5-krupno.jpg'}
   ];
   /* ===== ПРАВИТЬ: размеры и обмеры в сантиметрах (A — ширина, B — длина, C — рукав). */
   var SIZES = [
@@ -164,7 +165,7 @@
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function $(id){return document.getElementById(id);}
   function pic(src,cls,alt){ return src ? '<img class="svp-img '+cls+'" src="'+esc(src)+'" alt="'+esc(alt)+'">' : '<div class="svp-img svp-empty '+cls+'">'+esc(alt)+'</div>'; }
-  var g=0, sz='M';
+  var g=0, sz='M', view=null;
   $('mr-who').textContent=WHO;
   $('mr-step2').innerHTML=esc(WHO.replace(/[a-zа-яё]/i,function(c){return c.toUpperCase();}))+' напишет вам, подтвердит заказ и скажет, как оплатить.';
   $('mr-step3').textContent='Футболку можно забрать '+PICKUP+'.';
@@ -172,9 +173,11 @@
 
   function render(){
     var G=GRAPHICS[g];
-    var m=$('mr-main'), html=pic(G.img,'mr-main','фото футболки: '+G.name+', спереди');
+    var T=[[G.img,'спереди'],[G.back,'сзади'],[G.detail,'крупно']].filter(function(t){return t[0];});
+    var cur=(view!=null&&T[view])?view:(G.back?1:0);
+    var m=$('mr-main'), html=pic(T[cur]?T[cur][0]:'','mr-main','фото футболки: '+G.name+', '+(T[cur]?T[cur][1]:'спереди'));
     m.outerHTML=html.replace('class="svp-img','id="mr-main" class="svp-img');
-    $('mr-thumbs').innerHTML=[[G.img,'спереди'],[G.back,'сзади'],[G.detail,'крупно']].filter(function(t){return t[0];}).map(function(t){return pic(t[0],'',t[1]);}).join('');
+    $('mr-thumbs').innerHTML=T.map(function(t,i){return '<button type="button" class="mr-th'+(i===cur?' on':'')+'" data-v="'+i+'" aria-label="'+esc(t[1])+'">'+pic(t[0],'',t[1])+'</button>';}).join('');
     $('mr-gr').innerHTML=GRAPHICS.map(function(x,i){return '<button type="button" class="mr-g'+(i===g?' on':'')+'" data-g="'+i+'" aria-pressed="'+(i===g)+'">'+pic(x.detail,'',x.name)+'<b>'+esc(x.name)+'</b></button>';}).join('');
     $('mr-sz').innerHTML=SIZES.map(function(r){return '<button type="button" class="svp-chip'+(r[0]===sz?' on':'')+'" data-sz="'+esc(r[0])+'" aria-pressed="'+(r[0]===sz)+'">'+esc(r[0])+'</button>';}).join('');
     $('mr-tb').innerHTML=SIZES.map(function(r){return '<tr'+(r[0]===sz?' class="on"':'')+'><td>'+r.map(esc).join('</td><td>')+'</td></tr>';}).join('');
@@ -182,8 +185,10 @@
     document.querySelectorAll('.mr-cur').forEach(function(x){x.textContent=G.name+', размер '+sz;});
   }
   document.querySelector('.svp-merch').addEventListener('click',function(e){
-    var b=e.target.closest('[data-g],[data-sz]'); if(!b) return;
-    if(b.hasAttribute('data-g')) g=+b.getAttribute('data-g'); else sz=b.getAttribute('data-sz');
+    var b=e.target.closest('[data-g],[data-sz],[data-v]'); if(!b) return;
+    if(b.hasAttribute('data-g')){ g=+b.getAttribute('data-g'); view=null; }
+    else if(b.hasAttribute('data-v')) view=+b.getAttribute('data-v');
+    else sz=b.getAttribute('data-sz');
     render();
   });
   render();
