@@ -16,6 +16,14 @@
   .sv-foot-row{grid-template-columns:1fr;gap:20px;text-align:center}
   .sv-foot-addr{order:1} .sv-foot-btns{order:2;display:grid;grid-template-columns:repeat(3,1fr);justify-content:stretch} .sv-foot-logo{order:3}
 }
+.sv-ck{position:fixed;right:20px;bottom:20px;z-index:9999;width:376px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:10px 12px;background:#fff;border:1px solid #CFCBC2;font-family:'Onest',system-ui,sans-serif;font-size:12px;line-height:1.4;color:#57554F;opacity:0;transform:translateY(10px);transition:opacity .4s,transform .4s}
+.sv-ck.on{opacity:1;transform:none}
+.sv-ck[hidden]{display:none}
+.sv-ck svg{width:18px;height:18px;display:inline-block;vertical-align:-4px;margin-left:3px}
+.sv-ck a{color:#57554F}
+.sv-ck button{flex:none;white-space:nowrap;min-height:24px;padding:0 10px;border:1px solid #161615;background:#fff;color:#161615;font-family:'Onest',system-ui,sans-serif;font-size:12px;font-weight:600;cursor:pointer}
+.sv-ck button:hover{border-color:#C8410B;color:#C8410B}
+@media (max-width:640px){.sv-ck{left:12px;right:12px;bottom:12px;width:auto;gap:8px;padding:9px 10px;font-size:11.5px}}
 </style>
 <footer class="sv-foot">
   <div class="sv-foot-row">
@@ -25,3 +33,19 @@
   </div>
   <div class="sv-foot-copy">© Турклуб «Связка», 2026 · раньше westra.ru · <a href="/privacy/" style="color:#57554F">Политика обработки персональных данных</a></div>
 </footer>
+<div class="sv-ck" role="region" aria-label="Про cookie" hidden>
+  <span>У нас тут перекус: <a href="/privacy/#cookie">печеньки‑cookie</a>. Они помогают делать сайт удобнее. Возьмёте <span style="white-space:nowrap">одну?<svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3a15 15 0 1 0 15 15 5 5 0 0 1-5.5-5.2A5 5 0 0 1 21.6 7 4.5 4.5 0 0 1 18 3z" fill="#E9C99A" stroke="#161615" stroke-width="1.5" stroke-linejoin="round"/><circle cx="11" cy="14" r="2" fill="#5A3A22"/><circle cx="17" cy="22" r="2.2" fill="#5A3A22"/><circle cx="10" cy="23" r="1.5" fill="#5A3A22"/><circle cx="24" cy="25" r="1.8" fill="#5A3A22"/><circle cx="16" cy="11" r="1.3" fill="#5A3A22"/></svg></span></span>
+  <button type="button">Да!</button>
+</div>
+<script>
+(function(){
+  var b=document.querySelector('.sv-ck'); if(!b) return;
+  var k='sv-cookie-ok', ok=false; try{ok=localStorage.getItem(k)==='1';}catch(e){}
+  if(ok) return;
+  setTimeout(function(){ b.hidden=false; requestAnimationFrame(function(){ requestAnimationFrame(function(){ b.classList.add('on'); }); }); },4000);
+  b.querySelector('button').addEventListener('click',function(){
+    try{localStorage.setItem(k,'1');}catch(e){}
+    b.classList.remove('on'); setTimeout(function(){ b.hidden=true; },400);
+  });
+})();
+</script>
