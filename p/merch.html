@@ -84,7 +84,7 @@
 <div class="svp svp-merch">
   <nav class="svp-path" aria-label="Путь"><a href="/club/">О клубе</a> / Мерч</nav>
   <h1 style="margin-top:16px">Мерч клуба</h1>
-  <p class="svp-lead">Футболки с символикой «Связки». Это не интернет-магазин: заявки разбирает <span id="mr-who"></span> вручную, платить на сайте не нужно.</p>
+  <p class="svp-lead">Футболки оверсайз с символикой «Связки». Это не интернет-магазин: заявки разбирает <span id="mr-who"></span> вручную, платить на сайте не нужно.</p>
 
   <div class="mr-top">
     <div>
@@ -136,12 +136,14 @@
 
 <script>
 (function(){
-  /* ===== ПРАВИТЬ: варианты графики. name — подпись, img — фото футболки с этой графикой (спереди),
-     back — сзади, wear — на человеке. Пустая строка — серый прямоугольник «фото». */
+  /* ===== ПРАВИТЬ: варианты графики. name — подпись, img — фото футболки спереди, back — сзади,
+     detail — крупный план или фото на человеке. Сейчас стоят нарисованные макеты оверсайз-футболки (папка img/merch/),
+     настоящие фото заменят их. Пустая строка — серый прямоугольник «фото». */
+  var M = 'https://vanodotcom.github.io/svyazka-site/img/merch/';
   var GRAPHICS = [
-    {name:'[Графика 1]', img:'', back:'', wear:''},
-    {name:'[Графика 2]', img:'', back:'', wear:''},
-    {name:'[Графика 3]', img:'', back:'', wear:''}
+    {name:'Знак', img:M+'g1-pered.jpg', back:M+'g1-spina.jpg', detail:M+'g1-krupno.jpg'},
+    {name:'Горы на спине', img:M+'g2-pered.jpg', back:M+'g2-spina.jpg', detail:M+'g2-krupno.jpg'},
+    {name:'Хочу в горы', img:M+'g3-pered.jpg', back:M+'g3-spina.jpg', detail:M+'g3-krupno.jpg'}
   ];
   /* ===== ПРАВИТЬ: размеры и обмеры в сантиметрах (A — ширина, B — длина, C — рукав). */
   var SIZES = [
@@ -170,8 +172,8 @@
     var G=GRAPHICS[g];
     var m=$('mr-main'), html=pic(G.img,'mr-main','фото футболки: '+G.name+', спереди');
     m.outerHTML=html.replace('class="svp-img','id="mr-main" class="svp-img');
-    $('mr-thumbs').innerHTML=pic(G.img,'','спереди')+pic(G.back,'','сзади')+pic(G.wear,'','на человеке');
-    $('mr-gr').innerHTML=GRAPHICS.map(function(x,i){return '<button type="button" class="mr-g'+(i===g?' on':'')+'" data-g="'+i+'" aria-pressed="'+(i===g)+'">'+pic(x.img,'',x.name)+'<b>'+esc(x.name)+'</b></button>';}).join('');
+    $('mr-thumbs').innerHTML=pic(G.img,'','спереди')+pic(G.back,'','сзади')+pic(G.detail,'','крупно');
+    $('mr-gr').innerHTML=GRAPHICS.map(function(x,i){return '<button type="button" class="mr-g'+(i===g?' on':'')+'" data-g="'+i+'" aria-pressed="'+(i===g)+'">'+pic(x.detail,'',x.name)+'<b>'+esc(x.name)+'</b></button>';}).join('');
     $('mr-sz').innerHTML=SIZES.map(function(r){return '<button type="button" class="svp-chip'+(r[0]===sz?' on':'')+'" data-sz="'+esc(r[0])+'" aria-pressed="'+(r[0]===sz)+'">'+esc(r[0])+'</button>';}).join('');
     $('mr-tb').innerHTML=SIZES.map(function(r){return '<tr'+(r[0]===sz?' class="on"':'')+'><td>'+r.map(esc).join('</td><td>')+'</td></tr>';}).join('');
     $('mr-pick').textContent='Ваш выбор: '+G.name+', размер '+sz;
