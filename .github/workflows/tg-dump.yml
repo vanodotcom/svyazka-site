@@ -1,0 +1,10 @@
+name: Выгрузка канала (разово)
+on: workflow_dispatch
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/tg_dump.py
+      - uses: actions/upload-artifact@v4
+        with: {name: tg-dump, path: tg_dump.json, retention-days: 3}
