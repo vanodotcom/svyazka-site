@@ -1,0 +1,94 @@
+<!-- «Связка»: страница 404 (в Тильде: Настройки сайта → Ещё → Страница 404). -->
+<style>
+.svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
+  font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+  box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
+.svp *{box-sizing:border-box}
+.svp a{color:var(--ink)} .svp a:hover{color:var(--muted)}
+.svp-path{font-size:14px;color:var(--muted)} .svp-path a{color:var(--muted)}
+.svp h1{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:36px;line-height:1.1;font-weight:700;color:var(--ink)}
+.svp h2{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:20px;line-height:1.2;font-weight:700;color:var(--ink)}
+.svp-lead{margin:12px 0 0;font-size:18px;max-width:680px}
+.svp-muted{color:var(--muted)}
+.svp-now{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.svp-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.svp .svp-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;background:var(--accent);color:#fff;text-decoration:none;border:0;cursor:pointer;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:13px;letter-spacing:.06em}
+.svp .svp-btn:hover{background:var(--ink);color:#fff}
+.svp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.svp .svp-chip{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;font:inherit;font-size:15px;cursor:pointer}
+.svp .svp-chip.on{background:var(--ink);color:#fff}
+.svp-tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--ink)}
+.svp-tab{min-height:48px;padding:0;margin-right:28px;border:0;background:none;color:var(--muted);font-family:'Unbounded',sans-serif;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.svp-tab.on{color:var(--ink);box-shadow:inset 0 -3px 0 var(--accent)}
+.svp-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:16px 0;border-top:1px solid var(--line)}
+.svp-row>b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:13px;font-weight:600}
+.svp-li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+.svp-list{border-bottom:1px solid var(--line)}
+.svp ul{margin:0;padding-left:20px;line-height:1.7}
+.svp-img{display:block;width:100%;object-fit:cover;background:var(--stone)}
+.svp-empty{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;background:var(--stone)}
+.svp-hide{display:none!important}
+@media (max-width:640px){
+  .svp{padding:16px 20px 40px}
+  .svp-path{font-size:13px}
+  .svp h1{font-size:24px;line-height:1.15}
+  .svp h2{font-size:16px}
+  .svp-lead{font-size:16px}
+  .svp .svp-btn{display:flex;width:100%;min-height:52px;padding:0 16px}
+  .svp-tab{margin-right:18px;font-size:11px}
+  .svp-row{grid-template-columns:minmax(0,1fr);gap:6px;padding:14px 0}
+  .svp-li{flex-direction:column;gap:2px}
+  .svp .svp-chip{min-height:36px;font-size:14px;padding:0 12px}
+}
+.svp h1{margin-top:16px}
+.svp-wide{max-width:960px}
+.pg-h2{margin:40px 0 4px!important;font-size:18px!important}
+.pg-row{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;padding:14px 0;border-top:1px solid var(--line)}
+.pg-row>b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;line-height:1.6}
+.pg-end{border-bottom:1px solid var(--line)}
+.pg-cols{display:flex;flex-wrap:wrap;gap:40px}
+.pg-cols>div{flex:1 1 340px;min-width:0}
+.pg-cols>div.pg-side{flex:1 1 240px;max-width:300px}
+.pg-step{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
+.pg-step b{font-family:'Unbounded',sans-serif;font-weight:700;font-size:13px;color:var(--accent)}
+.pg-band{background:var(--stone);padding:28px 32px 32px}
+.pg-place{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:24px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line)}
+.pg-place small{display:block;color:var(--muted);font-size:14px}
+.pg-place>a{white-space:nowrap;font-size:15px}
+.pg-tag{display:block;margin-top:4px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.gal{columns:3 240px;column-gap:10px}
+.gal img{width:100%;height:auto;display:block;margin:0 0 10px;break-inside:avoid;background:var(--stone)}
+@media (max-width:640px){
+  .pg-row{grid-template-columns:1fr;gap:4px;padding:12px 0}
+  .pg-h2{margin-top:28px!important;font-size:15px!important}
+  .pg-place{grid-template-columns:1fr;gap:4px}
+  .pg-band{padding:20px}
+  .gal{columns:2;column-gap:6px}.gal img{margin-bottom:6px}
+}
+</style>
+<style>
+.nf-code{font-family:'Unbounded',sans-serif;font-weight:700;font-size:120px;line-height:1;color:var(--accent);margin:8px 0 16px}
+.nf-btns{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;margin-top:28px}
+.svp .nf-sec{font-weight:600}
+.nf-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));border-top:1px solid var(--line);margin-top:12px}
+.svp .nf-links a{display:flex;flex-direction:column;gap:2px;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.nf-links b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:14px}
+.nf-links span{font-size:14px;color:var(--muted)}
+.nf-old{margin-top:28px;font-size:15px}
+@media (max-width:640px){.nf-code{font-size:80px}}
+</style>
+<div class="svp svp-404">
+  <div class="nf-code" aria-hidden="true">404</div>
+  <h1>Такой страницы нет</h1>
+  <p class="svp-lead">Возможно, ссылка устарела: сайт клуба переезжает на новый адрес, и часть страниц ещё живёт на старом. Попробуйте начать с главной или выберите раздел ниже.</p>
+  <div class="nf-btns"><a class="svp-btn" href="/">На главную</a><a class="nf-sec" href="/start/">Я здесь впервые →</a></div>
+  <h2 class="pg-h2">Разделы</h2>
+  <div class="nf-links">
+    <a href="/schools/"><b>Школы</b><span>горные школы НУ, БУ, СУ</span></a>
+    <a href="/hikes/"><b>Походы</b><span>походы сезона, руководителю</span></a>
+    <a href="/calendar/"><b>Календарь</b><span>лекции, тренировки, выезды</span></a>
+    <a href="/library/"><b>Библиотека</b><span>лекции, перевалы, отчёты</span></a>
+    <a href="/club/"><b>О клубе</b><span>люди, контакты, членство</span></a>
+  </div>
+  <p class="nf-old svp-muted">Ищете отчёт, перевал или старую страницу? Они пока на <a href="https://westra.ru/">westra.ru</a>. Если что-то потерялось, напишите в <a href="https://t.me/+9wvbZK_QDxkxZDY6">чат клуба</a>.</p>
+</div>
