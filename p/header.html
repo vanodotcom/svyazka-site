@@ -111,11 +111,30 @@ body{font-family:'Onest',system-ui,sans-serif}
     if(window.innerWidth<1000){side.style.top='';side.style.bottom='';return;}
     var h=head.getBoundingClientRect().bottom; side.style.top=Math.max(0,h)+'px';
     var f=document.getElementById('t-footer')||document.querySelector('.sv-foot'); if(f){var ft=f.getBoundingClientRect().top; side.style.bottom=Math.max(0,window.innerHeight-ft)+'px';}
+    /* меню прокручивается вместе со страницей, пока не покажет свой конец */
+    side.scrollTop=window.pageYOffset;
   }
-  window.addEventListener('scroll',place,{passive:true}); window.addEventListener('resize',place); place();
+  /* если страница короче меню, опускаем подвал ниже конца меню, чтобы он не наезжал на меню */
+  var fitting=false;
+  function fit(){
+    if(fitting) return; fitting=true;
+    var f=document.getElementById('t-footer')||document.querySelector('.sv-foot');
+    if(f){
+      var cur=parseFloat(f.style.marginTop)||0, need=0;
+      if(window.innerWidth>=1000){
+        var y=window.pageYOffset;
+        var menuEnd=head.getBoundingClientRect().bottom+y+side.scrollHeight;
+        var footTop=f.getBoundingClientRect().top+y-cur;
+        need=Math.max(0,Math.ceil(menuEnd-footTop));
+      }
+      if(Math.abs(need-cur)>1) f.style.marginTop=need?need+'px':'';
+    }
+    place(); fitting=false;
+  }
+  window.addEventListener('scroll',place,{passive:true}); window.addEventListener('resize',fit); fit();
   /* страница и подвал подгружаются позже: пересчитать, когда меняется высота */
-  document.addEventListener('sv:loaded',place); window.addEventListener('load',place);
-  if(window.ResizeObserver) new ResizeObserver(place).observe(document.body);
+  document.addEventListener('sv:loaded',fit); window.addEventListener('load',fit);
+  if(window.ResizeObserver) new ResizeObserver(fit).observe(document.body);
   function open(v){side.classList.toggle('sv-open',v); burger.setAttribute('aria-expanded',v?'true':'false');}
   burger.addEventListener('click',function(){open(!side.classList.contains('sv-open'));});
   close.addEventListener('click',function(){open(false);});
