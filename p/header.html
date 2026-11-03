@@ -103,6 +103,7 @@ body{font-family:'Onest',system-ui,sans-serif}
 </aside>
 
 <style>
+#allrecords .sv-oldi{font-size:.85em;color:#C8410B;text-decoration:none!important;display:inline-block}
 @media (max-width:999px){ .sv-cta-d{display:none} .sv-cta-m{display:inline-flex!important} }
 </style>
 <script>
@@ -152,5 +153,15 @@ body{font-family:'Onest',system-ui,sans-serif}
   });
   if(best){best.classList.add('sv-on'); best.setAttribute('aria-current','page'); best.parentNode.querySelector('.sv-sh').classList.add('sv-on');}
   else side.querySelectorAll('a.sv-sh').forEach(function(a){ var p=a.getAttribute('href'); if(p!=='/'&&path.indexOf(p)===0) a.classList.add('sv-on'); });
+  /* ссылки на старый сайт westra.ru: значок ↗, открываются в новой вкладке */
+  function markOld(){
+    document.querySelectorAll('#allrecords a[href*="westra.ru"]:not([data-old])').forEach(function(a){
+      a.setAttribute('data-old','1'); a.target='_blank'; a.rel='noopener';
+      a.title='Старый сайт westra.ru, откроется в новой вкладке';
+      var t=a.lastChild; if(t&&t.nodeType===3&&/\s*→\s*$/.test(t.nodeValue)) t.nodeValue=t.nodeValue.replace(/\s*→\s*$/,'');
+      var i=document.createElement('span'); i.className='sv-oldi'; i.setAttribute('aria-hidden','true'); i.textContent='\u2009↗'; a.appendChild(i);
+    });
+  }
+  markOld(); document.addEventListener('sv:loaded',markOld); setTimeout(markOld,1500);
 })();
 </script>
