@@ -22,6 +22,7 @@
 .svh .svh-door{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-top:1px solid var(--line);text-decoration:none}
 .svh-door b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:600;font-size:15px}
 .svh-door span{font-size:15px;color:var(--muted);text-align:right}
+.svh-door span i{font-style:normal}
 .svh-door:hover b{text-decoration:underline}
 .svh-sec{margin-top:48px}
 .svh-sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:4px}
@@ -48,9 +49,11 @@
   .svh-link{text-align:center}
   .svh-photo{height:200px;margin-top:16px}
   .svh-doors{margin-top:24px}
-  .svh .svh-door{align-items:center;min-height:52px;padding:8px 0}
-  .svh-door b{font-size:13px}
-  .svh-door span{font-size:0} .svh-door span:after{content:'→';font-size:16px;color:var(--ink)}
+  .svh .svh-door{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;row-gap:3px;align-items:center;padding:12px 0}
+  .svh-door b{font-size:13px;grid-column:1}
+  .svh-door span{grid-column:1;font-size:14px;line-height:1.35;text-align:left}
+  .svh-door span i{display:none}
+  .svh .svh-door:after{content:'→';grid-column:2;grid-row:1/3;font-size:16px;color:var(--ink)}
   .svh-sec{margin-top:32px}
   .svh h2{font-size:16px} .svh-sec-h a{font-size:14px}
   .svh .svh-nw{grid-template-columns:72px minmax(0,1fr);gap:12px;padding:10px 0}
@@ -79,10 +82,10 @@
   </section>
 
   <nav class="svh-doors" aria-label="С чего начать">
-    <a class="svh-door" href="/start/"><b>Я здесь впервые</b><span>Как устроен клуб и с чего начать →</span></a>
-    <a class="svh-door" href="/hikes/"><b>С кем пойти в поход</b><span>Походы лета 2027 →</span></a>
-    <a class="svh-door" href="/schools/"><b>Я учусь в школе</b><span>Расписание и лекции →</span></a>
-    <a class="svh-door" href="/library/"><b>Готовлю поход</b><span>Перевалы, отчёты, МКК →</span></a>
+    <a class="svh-door" href="/start/"><b>Я здесь впервые</b><span>Как устроен клуб и с чего начать<i> →</i></span></a>
+    <a class="svh-door" href="/hikes/"><b>С кем пойти в поход</b><span>Походы лета 2027<i> →</i></span></a>
+    <a class="svh-door" href="/schools/"><b>Я учусь в школе</b><span>Расписание и лекции<i> →</i></span></a>
+    <a class="svh-door" href="/library/"><b>Готовлю поход</b><span>Перевалы, отчёты, МКК<i> →</i></span></a>
   </nav>
 
   <section class="svh-sec" aria-label="Новости">
