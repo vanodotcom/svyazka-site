@@ -20,4 +20,4 @@ jobs:
           git config user.name "svyazka-search-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Поиск: обновить тексты страниц"
-          git push
+          git pull --rebase -q origin main && git push
