@@ -5,6 +5,7 @@
 (function(){
   var BASE = 'https://vanodotcom.github.io/svyazka-site/';
   var v = Math.floor(Date.now() / 60000); /* свежая версия не реже раза в минуту */
+  document.documentElement.lang = 'ru'; /* язык страницы для читалок, переводчика и переносов */
   function run(box, html){
     box.innerHTML = html;
     box.querySelectorAll('script').forEach(function(old){
