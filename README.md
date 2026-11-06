@@ -11,6 +11,7 @@
 | Школы | /schools/ | p/schools.html |
 | Записаться в школу | /schools/join/ | p/join.html |
 | Походы | /hikes/ | p/hikes.html |
+| Вести из походов | /hikes/live/ | p/live.html |
 | Календарь | /calendar/ | p/calendar.html |
 | Библиотека | /library/ | p/library.html |
 | О клубе | /club/ | p/club.html |
