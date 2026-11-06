@@ -31,6 +31,10 @@
 .lv-st.prep i{background:none;border:1.5px solid var(--muted)} .lv-st.done i{background:var(--muted)}
 .lv-last{margin-top:6px;padding-top:10px;border-top:1px solid var(--line);font-size:15px}
 .lv-last time{display:block;font-size:13px;color:var(--muted)}
+.lv-ld{font-size:16px;font-weight:600}
+.lv-h1ld{margin:8px 0 0;font-size:18px}
+.lv-search{display:flex;margin-top:24px;border-bottom:1px solid var(--ink);max-width:560px}
+.lv-search input{flex:1;min-width:0;border:0;outline:none;font:inherit;font-size:16px;min-height:44px;background:transparent}
 .lv-mini{display:flex;flex-wrap:wrap;gap:6px 24px;font-size:15px}
 .lv-feed{border-bottom:1px solid var(--line)}
 .lv-msg{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;padding:14px 0;border-top:1px solid var(--line)}
@@ -80,27 +84,29 @@
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   /* ===== МАКЕТ: примеры. Потом: походы из листа «Походы», вести из таблицы «Связка: вести». */
   var NOW = new Date(2027,6,18,20,15); /* для макета «сейчас» = 18 июля 2027, 20:15 */
+  /* Название похода собирается само из столбцов листа «Походы»: Район (заголовок) + Руководитель + Вид, к.с. + Сроки.
+     id (адрес страницы) скрипт создаёт один раз: фамилия руководителя + год-месяц старта, потом он не меняется. */
   var HIKES = [
-    {id:'svanetiya-27', title:'Сванетия', kind:'горный', ks:'3', area:'Кавказ, Грузия', from:'2027-07-06', to:'2027-07-24', leader:'Андрей Иванов', curator:'Ольга', status:'go', route:'Местиа — пер. Твибер — лед. Цанери — пер. Цаннер — Ушгули'},
-    {id:'altai-27', title:'Северо-Чуйский хребет', kind:'горный', ks:'2', area:'Алтай', from:'2027-07-10', to:'2027-07-25', leader:'Мария Смирнова', curator:'Дмитрий', status:'go', route:'Актру — пер. Учитель — оз. Шавлинские — Чибит'},
-    {id:'pamir-27', title:'Памир, Заалайский хребет', kind:'горный', ks:'4', area:'Памир, Киргизия', from:'2027-07-01', to:'2027-07-28', leader:'Сергей Кузнецов', curator:'Елена', status:'go', route:'Ачик-Таш — пер. Путешественников — лед. Ленина — Дароот-Коргон'},
-    {id:'karelia-27', title:'Река Чирка-Кемь', kind:'водный', ks:'2', area:'Карелия', from:'2027-07-12', to:'2027-07-21', leader:'Павел Орлов', curator:'Анна', status:'go', route:'пос. Тикша — Чирка-Кемь — Кемь — пос. Юшкозеро'},
-    {id:'fany-27', title:'Фанские горы', kind:'горный', ks:'1', area:'Таджикистан', from:'2027-07-22', to:'2027-08-03', leader:'Ирина Волкова', curator:'Максим', status:'prep', route:'Артуч — оз. Куликалон — пер. Алаудин — Искандеркуль', school:'НУ'},
-    {id:'khibiny-27', title:'Хибины', kind:'пешеходный', ks:'1', area:'Кольский п-ов', from:'2027-07-03', to:'2027-07-12', leader:'Николай Петров', curator:'Татьяна', status:'done', route:'Кировск — пер. Юмъекорр — Умбозеро — Кировск'}
+    {id:'ivanov-2027-07', area:'Сванетия', kind:'горный', ks:'3', from:'2027-07-06', to:'2027-07-24', leader:'Андрей Иванов', curator:'Ольга', status:'go', route:'Местиа — пер. Твибер — лед. Цанери — пер. Цаннер — Ушгули'},
+    {id:'smirnova-2027-07', area:'Алтай, Северо-Чуйский хр.', kind:'горный', ks:'2', from:'2027-07-10', to:'2027-07-25', leader:'Мария Смирнова', curator:'Дмитрий', status:'go', route:'Актру — пер. Учитель — оз. Шавлинские — Чибит'},
+    {id:'kuznetsov-2027-07', area:'Памир', kind:'горный', ks:'6', from:'2027-07-01', to:'2027-07-28', leader:'Сергей Кузнецов', curator:'Елена', status:'go', route:'Ачик-Таш — пер. Путешественников — лед. Ленина — Дароот-Коргон'},
+    {id:'orlov-2027-07', area:'Карелия, р. Чирка-Кемь', kind:'водный', ks:'2', from:'2027-07-12', to:'2027-07-21', leader:'Павел Орлов', curator:'Анна', status:'go', route:'пос. Тикша — Чирка-Кемь — Кемь — пос. Юшкозеро'},
+    {id:'volkova-2027-07', area:'Фанские горы', kind:'горный', ks:'1', from:'2027-07-22', to:'2027-08-03', leader:'Ирина Волкова', curator:'Максим', status:'prep', route:'Артуч — оз. Куликалон — пер. Алаудин — Искандеркуль', school:'НУ'},
+    {id:'petrov-2027-07', area:'Хибины', kind:'пешеходный', ks:'2', from:'2027-07-03', to:'2027-07-12', leader:'Николай Петров', curator:'Татьяна', status:'done', route:'Кировск — пер. Юмъекорр — Умбозеро — Кировск'}
   ];
   /* type: start · ok (на связи, всё хорошо) · point (прошли точку) · delay (задержка) · finish */
   var TYPES = {start:'Стартовали', ok:'На связи, всё хорошо', point:'Прошли точку', delay:'Задержка', finish:'Финишировали'};
   var NEWS = [
-    {h:'svanetiya-27', t:'2027-07-18 19:40', type:'point', text:'Прошли пер. Твибер, стоим под ледником. Все хорошо, погода ясная.'},
-    {h:'altai-27', t:'2027-07-18 17:05', type:'ok', text:'Стоим на оз. Шавлинские, сегодня полудневка. Все здоровы, передают привет.'},
-    {h:'karelia-27', t:'2027-07-18 12:30', type:'point', text:'Прошли порог Хаута, ночуем ниже. Все в порядке.'},
-    {h:'svanetiya-27', t:'2027-07-17 21:10', type:'ok', text:'Ночёвка у озера под перевалом. Завтра штурм. Все бодры.'},
-    {h:'pamir-27', t:'2027-07-17 09:15', type:'delay', text:'Сидим вторые сутки из-за непогоды на леднике. Продукты есть, все в порядке, ждём окно. Финиш может сдвинуться на 1–2 дня.'},
-    {h:'altai-27', t:'2027-07-16 20:00', type:'point', text:'Прошли пер. Учитель (2А). Спустились к озёрам.'},
-    {h:'svanetiya-27', t:'2027-07-16 18:20', type:'ok', text:'Дошли до лед. Цанери, встали лагерем.'},
-    {h:'khibiny-27', t:'2027-07-12 16:00', type:'finish', text:'Группа вышла в Кировск. Поход завершён, все дома 13 июля.'},
-    {h:'karelia-27', t:'2027-07-12 15:40', type:'start', text:'Стартовали из Тикши, первая ночёвка на берегу.'},
-    {h:'svanetiya-27', t:'2027-07-06 14:00', type:'start', text:'Выехали из Местиа, начали маршрут. Связь будет раз в день вечером.'}
+    {h:'ivanov-2027-07', t:'2027-07-18 19:40', type:'point', text:'Прошли пер. Твибер, стоим под ледником. Все хорошо, погода ясная.'},
+    {h:'smirnova-2027-07', t:'2027-07-18 17:05', type:'ok', text:'Стоим на оз. Шавлинские, сегодня полудневка. Все здоровы, передают привет.'},
+    {h:'orlov-2027-07', t:'2027-07-18 12:30', type:'point', text:'Прошли порог Хаута, ночуем ниже. Все в порядке.'},
+    {h:'ivanov-2027-07', t:'2027-07-17 21:10', type:'ok', text:'Ночёвка у озера под перевалом. Завтра штурм. Все бодры.'},
+    {h:'kuznetsov-2027-07', t:'2027-07-17 09:15', type:'delay', text:'Сидим вторые сутки из-за непогоды на леднике. Продукты есть, все в порядке, ждём окно. Финиш может сдвинуться на 1–2 дня.'},
+    {h:'smirnova-2027-07', t:'2027-07-16 20:00', type:'point', text:'Прошли пер. Учитель (2А). Спустились к озёрам.'},
+    {h:'ivanov-2027-07', t:'2027-07-16 18:20', type:'ok', text:'Дошли до лед. Цанери, встали лагерем.'},
+    {h:'petrov-2027-07', t:'2027-07-12 16:00', type:'finish', text:'Группа вышла в Кировск. Поход завершён, все дома 13 июля.'},
+    {h:'orlov-2027-07', t:'2027-07-12 15:40', type:'start', text:'Стартовали из Тикши, первая ночёвка на берегу.'},
+    {h:'ivanov-2027-07', t:'2027-07-06 14:00', type:'start', text:'Выехали из Местиа, начали маршрут. Связь будет раз в день вечером.'}
   ];
 
   var MON = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
@@ -115,11 +121,12 @@
   function news(id){return NEWS.filter(function(n){return !id||n.h===id;}).sort(function(a,b){return pd(b.t)-pd(a.t);});}
   var ST = {go:'на маршруте', prep:'готовятся', done:'финишировали'};
   function st(x){return '<span class="lv-st '+x.status+'"><i></i>'+ST[x.status]+'</span>';}
+  function q(x){return [x.leader,x.area,x.kind,x.ks+' кс',x.ks+' к.с.',x.route||''].join(' ').toLowerCase().replace(/ё/g,'е');}
   function link(x){return '?h='+encodeURIComponent(x.id);}
   function msg(n, withTag, tl){
     var d=pd(n.t), x=hike(n.h)||{}, go=n.type==='start'||n.type==='finish';
     return '<div class="lv-msg'+(go?' go':'')+'"><time datetime="'+esc(n.t)+'"><b>'+day(d)+'</b>'+hm(d)+'</time>'+(tl?'<div class="lv-pin"></div>':'')+
-      '<div class="lv-body"><div class="lv-tag">'+(withTag?'<a href="'+link(x)+'">'+esc(x.title)+'</a>':'')+'<span class="lv-type'+(go?' go':'')+'">'+TYPES[n.type]+'</span></div>'+
+      '<div class="lv-body"><div class="lv-tag">'+(withTag?'<a href="'+link(x)+'">'+esc(x.area)+'</a><span>рук. '+esc(x.leader)+'</span>':'')+'<span class="lv-type'+(go?' go':'')+'">'+TYPES[n.type]+'</span></div>'+
       '<div class="lv-txt">'+esc(n.text)+'</div></div></div>';
   }
   var root=document.querySelector('.svp-live');
@@ -129,25 +136,29 @@
     var h='<div class="svp-path"><a href="/hikes/">Походы</a> › Вести из походов</div>'+
       '<h1>Вести из походов</h1>'+
       '<p class="svp-lead">Где сейчас наши группы. Кураторы пересказывают здесь СМС со спутникового телефона, обычно раз в день.</p>'+
+      '<label class="lv-search"><input type="search" id="lv-q" placeholder="Найти: фамилия руководителя или район" aria-label="Найти поход"></label>'+
       '<div class="lv-sec"><div class="svp-now" style="margin-bottom:14px"><span class="svp-dot"></span>Сейчас на маршруте: '+going.length+'</div><div class="lv-cards">'+
       going.map(function(x){var last=news(x.id)[0];
-        return '<a class="lv-card" href="'+link(x)+'"><span class="lv-k">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+esc(x.area)+'</span><span class="lv-t">'+esc(x.title)+'</span>'+
-          '<span class="lv-k">'+range(x)+' · рук. '+esc(x.leader)+'</span>'+
+        return '<a class="lv-card" data-q="'+esc(q(x))+'" href="'+link(x)+'"><span class="lv-t">'+esc(x.area)+'</span>'+
+          '<span class="lv-ld">рук. '+esc(x.leader)+'</span><span class="lv-k">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+range(x)+'</span>'+
           (last?'<span class="lv-last"><time>последняя весть '+ago(pd(last.t))+'</time>'+esc(last.text)+'</span>':'')+'</a>';
       }).join('')+'</div></div>'+
       (prep.length?'<div class="lv-sec"><h2>Скоро выходят</h2><div class="lv-feed" style="margin-top:4px">'+prep.map(function(x){
-        return '<div class="svp-row"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.title)+'</a> <span class="svp-muted">· '+esc(x.kind)+', '+esc(x.ks)+' к.с. · рук. '+esc(x.leader)+'</span></div></div>';}).join('')+'</div></div>':'')+
-      '<div class="lv-sec"><h2>Все вести</h2><div class="svp-chips lv-chips-scroll" style="margin:4px 0 16px" id="lv-f"><button type="button" class="svp-chip on" data-h="">все походы</button>'+
-      HIKES.filter(function(x){return x.status!=='prep';}).map(function(x){return '<button type="button" class="svp-chip" data-h="'+esc(x.id)+'">'+esc(x.title)+'</button>';}).join('')+
-      '</div><div class="lv-feed" id="lv-feed"></div></div>'+
+        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.area)+'</a>, рук. '+esc(x.leader)+' <span class="svp-muted">· '+esc(x.kind)+', '+esc(x.ks)+' к.с.</span></div></div>';}).join('')+'</div></div>':'')+
+      '<div class="lv-sec"><h2>Все вести</h2>'+
+      '<div class="lv-feed" id="lv-feed" style="margin-top:4px"></div><p class="svp-muted svp-hide" id="lv-none">Ничего не нашлось. Попробуйте фамилию руководителя или район.</p></div>'+
       (done.length?'<div class="lv-sec"><h2>Вернулись в этом сезоне</h2><div class="lv-feed" style="margin-top:4px">'+done.map(function(x){
-        return '<div class="svp-row"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.title)+'</a> <span class="svp-muted">· '+esc(x.kind)+', '+esc(x.ks)+' к.с. · все вести →</span></div></div>';}).join('')+'</div></div>':'')+
+        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.area)+'</a>, рук. '+esc(x.leader)+' <span class="svp-muted">· '+esc(x.kind)+', '+esc(x.ks)+' к.с.</span></div></div>';}).join('')+'</div></div>':'')+
       note();
     root.innerHTML=h;
-    function feed(id){document.getElementById('lv-feed').innerHTML=news(id).map(function(n){return msg(n,!id,false);}).join('');}
-    feed('');
-    document.getElementById('lv-f').addEventListener('click',function(e){var b=e.target.closest('[data-h]'); if(!b) return;
-      this.querySelectorAll('[data-h]').forEach(function(c){c.classList.toggle('on',c===b);}); feed(b.dataset.h);});
+    function feed(){
+      var t=(document.getElementById('lv-q').value||'').trim().toLowerCase().replace(/ё/g,'е');
+      var ok=function(x){return !t||q(x).indexOf(t)>-1;};
+      document.getElementById('lv-feed').innerHTML=news('').filter(function(n){return ok(hike(n.h)||{});}).map(function(n){return msg(n,true,false);}).join('');
+      var any=false; root.querySelectorAll('[data-q]').forEach(function(e){var m=!t||e.getAttribute('data-q').indexOf(t)>-1; e.classList.toggle('svp-hide',!m); if(m) any=true;});
+      document.getElementById('lv-none').classList.toggle('svp-hide',any);
+    }
+    feed(); document.getElementById('lv-q').addEventListener('input',feed);
   }
   function note(){
     return '<div class="lv-note"><p><b>Если вестей давно нет</b>, это почти всегда значит, что нет связи: спутниковый телефон включают раз в день или реже, в ущельях он не ловит.</p>'+
@@ -158,8 +169,8 @@
     var a=pd(x.from), b=pd(x.to), total=Math.round((b-a)/864e5)+1, cur=Math.min(total,Math.max(0,Math.floor((NOW-a)/864e5)+1));
     var bar = x.status==='go'?'<div class="lv-bar">'+st(x)+'<span class="svp-muted" style="font-size:14px">день '+cur+' из '+total+'</span><div class="lv-prog"><span style="width:'+Math.round(cur/total*100)+'%"></span></div></div>'
       :'<div class="lv-bar">'+st(x)+'</div>';
-    root.innerHTML='<div class="svp-path"><a href="/hikes/">Походы</a> › <a href="./">Вести из походов</a> › '+esc(x.title)+'</div>'+
-      '<h1>'+esc(x.title)+'</h1>'+bar+
+    root.innerHTML='<div class="svp-path"><a href="/hikes/">Походы</a> › <a href="./">Вести из походов</a> › '+esc(x.area)+'</div>'+
+      '<h1>'+esc(x.area)+'</h1><p class="lv-h1ld">Группа под руководством '+esc(x.leader)+' · '+esc(x.kind)+', '+esc(x.ks)+' к.с.</p>'+bar+
       '<div style="margin-top:24px;border-bottom:1px solid var(--line)">'+
       '<div class="svp-row"><b>Поход</b><div>'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+esc(x.area)+'</div></div>'+
       '<div class="svp-row"><b>Сроки</b><div>'+range(x)+' '+b.getFullYear()+'</div></div>'+
