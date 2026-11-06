@@ -144,7 +144,7 @@
     var going=HIKES.filter(function(x){return x.status==='go';}).sort(function(a,b){return a.leader.localeCompare(b.leader,'ru');}), prep=HIKES.filter(function(x){return x.status==='prep';}), done=HIKES.filter(function(x){return x.status==='done';});
     var h='<div class="svp-path"><a href="/hikes/">Походы</a> › Вести из походов</div>'+
       '<h1>Вести из походов</h1>'+
-      '<p class="svp-lead">Где сейчас наши группы. Кураторы пересказывают здесь СМС со спутникового телефона, обычно раз в день.</p>'+
+      '<p class="svp-lead">Где сейчас наши группы. У каждой группы есть куратор: он на связи с ней и пересказывает здесь, что узнал. Как часто приходят вести, группа договаривается с куратором заранее: бывает раз в день, бывает раз в несколько дней.</p>'+
       '<label class="lv-search"><input type="search" id="lv-q" placeholder="Найти группу: фамилия руководителя" aria-label="Найти поход"></label>'+
       '<div class="lv-sec"><div class="svp-now" style="margin-bottom:14px"><span class="svp-dot"></span>Сейчас на маршруте: '+going.length+'</div><div class="lv-cards">'+
       going.map(function(x){var last=news(x.id)[0];
@@ -170,7 +170,7 @@
     feed(); document.getElementById('lv-q').addEventListener('input',feed);
   }
   function note(){
-    return '<div class="lv-note"><p><b>Если вестей давно нет</b>, это почти всегда значит, что нет связи: спутниковый телефон включают раз в день или реже, в ущельях он не ловит.</p>'+
+    return '<div class="lv-note"><p><b>Если вестей давно нет</b>, обычно это значит, что у группы просто нет связи или она выходит на связь раз в несколько дней. Если волнуетесь, спросите куратора.</p>'+
       '<p>Важное о конкретном человеке куратор сообщает родственникам лично, здесь его не публикуют. Вопросы о группе задавайте куратору или руководителю.</p></div>';
   }
   function page(x){
