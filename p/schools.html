@@ -1,5 +1,8 @@
-<!-- «Связка»: страница «Школы · горное направление» (адрес /schools/). Вставить в блок T123 «HTML-код», отступы блока 0.
-     Что меняется руками, отмечено словом ПРАВИТЬ. -->
+<!-- «Связка»: страница «Горный туризм», школы НУ, БУ, СУ (адрес /schools/).
+     Попадает на сайт так: в Тильде на этой странице блок T123 со строкой-заглушкой data-sv="schools" (см. README.md).
+     Данные: Google-таблица «Связка: календарь», лист «Настройки», строки «Школа НУ/БУ/СУ: статус | руководитель | первая встреча | место первой встречи».
+     Вкладка «Расписание» каждого уровня: лист «События», строки с меткой «горная» и уровнем (НУ, БУ, СУ).
+     Править руками: места со словом ПРАВИТЬ; данные, которых пока нет, стоят в [квадратных скобках]. -->
 <style>
 .svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
   font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
@@ -203,12 +206,14 @@
     }
     document.getElementById('sch-body').innerHTML=out;
   }
+  /* переключатель уровня НУ / БУ / СУ и вкладки внутри уровня */
   root.addEventListener('click',function(e){
     var b=e.target.closest('[data-lvl],[data-tab]'); if(!b) return;
     if(b.dataset.lvl){lvl=b.dataset.lvl; history.replaceState(null,'','#'+lvl);} else tab=b.dataset.tab;
     draw();
   });
   draw();
+  /* подставляет в тексты уровней статус, руководителя и первую встречу из листа «Настройки» */
   loadSettings(function(S){
     var RU={nu:'ну',bu:'бу',su:'су'};
     ['nu','bu','su'].forEach(function(k){ var L=LEVELS[k], p='школа '+RU[k]+': ';
