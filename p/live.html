@@ -31,7 +31,7 @@
 .lv-st.prep i{background:none;border:1.5px solid var(--muted)} .lv-st.done i{background:var(--muted)}
 .lv-last{margin-top:6px;padding-top:10px;border-top:1px solid var(--line);font-size:15px}
 .lv-last time{display:block;font-size:13px;color:var(--muted)}
-.lv-ld{font-size:16px;font-weight:600}
+.lv-ld{font-size:15px}
 .lv-h1ld{margin:8px 0 0;font-size:18px}
 .lv-search{display:flex;margin-top:24px;border-bottom:1px solid var(--ink);max-width:560px}
 .lv-search input{flex:1;min-width:0;border:0;outline:none;font:inherit;font-size:16px;min-height:44px;background:transparent}
@@ -84,15 +84,15 @@
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   /* ===== МАКЕТ: примеры. Потом: походы из листа «Походы», вести из таблицы «Связка: вести». */
   var NOW = new Date(2027,6,18,20,15); /* для макета «сейчас» = 18 июля 2027, 20:15 */
-  /* Название похода собирается само из столбцов листа «Походы»: Район (заголовок) + Руководитель + Вид, к.с. + Сроки.
+  /* Название похода собирается само из листа «Походы»: «Группа» + Руководитель (Фамилия Имя, заголовок) + Вид, к.с., сроки + Район.
      id (адрес страницы) скрипт создаёт один раз: фамилия руководителя + год-месяц старта, потом он не меняется. */
   var HIKES = [
-    {id:'ivanov-2027-07', area:'Сванетия', kind:'горный', ks:'3', from:'2027-07-06', to:'2027-07-24', leader:'Андрей Иванов', curator:'Ольга', status:'go', route:'Местиа — пер. Твибер — лед. Цанери — пер. Цаннер — Ушгули'},
-    {id:'smirnova-2027-07', area:'Алтай, Северо-Чуйский хр.', kind:'горный', ks:'2', from:'2027-07-10', to:'2027-07-25', leader:'Мария Смирнова', curator:'Дмитрий', status:'go', route:'Актру — пер. Учитель — оз. Шавлинские — Чибит'},
-    {id:'kuznetsov-2027-07', area:'Памир', kind:'горный', ks:'6', from:'2027-07-01', to:'2027-07-28', leader:'Сергей Кузнецов', curator:'Елена', status:'go', route:'Ачик-Таш — пер. Путешественников — лед. Ленина — Дароот-Коргон'},
-    {id:'orlov-2027-07', area:'Карелия, р. Чирка-Кемь', kind:'водный', ks:'2', from:'2027-07-12', to:'2027-07-21', leader:'Павел Орлов', curator:'Анна', status:'go', route:'пос. Тикша — Чирка-Кемь — Кемь — пос. Юшкозеро'},
-    {id:'volkova-2027-07', area:'Фанские горы', kind:'горный', ks:'1', from:'2027-07-22', to:'2027-08-03', leader:'Ирина Волкова', curator:'Максим', status:'prep', route:'Артуч — оз. Куликалон — пер. Алаудин — Искандеркуль', school:'НУ'},
-    {id:'petrov-2027-07', area:'Хибины', kind:'пешеходный', ks:'2', from:'2027-07-03', to:'2027-07-12', leader:'Николай Петров', curator:'Татьяна', status:'done', route:'Кировск — пер. Юмъекорр — Умбозеро — Кировск'}
+    {id:'ivanov-2027-07', area:'Сванетия', kind:'горный', ks:'3', from:'2027-07-06', to:'2027-07-24', leader:'Иванов Андрей', curator:'Ольга', status:'go', route:'Местиа — пер. Твибер — лед. Цанери — пер. Цаннер — Ушгули'},
+    {id:'smirnova-2027-07', area:'Алтай, Северо-Чуйский хр.', kind:'горный', ks:'2', from:'2027-07-10', to:'2027-07-25', leader:'Смирнова Мария', curator:'Дмитрий', status:'go', route:'Актру — пер. Учитель — оз. Шавлинские — Чибит'},
+    {id:'kuznetsov-2027-07', area:'Памир', kind:'горный', ks:'6', from:'2027-07-01', to:'2027-07-28', leader:'Кузнецов Сергей', curator:'Елена', status:'go', route:'Ачик-Таш — пер. Путешественников — лед. Ленина — Дароот-Коргон'},
+    {id:'orlov-2027-07', area:'Карелия, р. Чирка-Кемь', kind:'водный', ks:'2', from:'2027-07-12', to:'2027-07-21', leader:'Орлов Павел', curator:'Анна', status:'go', route:'пос. Тикша — Чирка-Кемь — Кемь — пос. Юшкозеро'},
+    {id:'volkova-2027-07', area:'Фанские горы', kind:'горный', ks:'1', from:'2027-07-22', to:'2027-08-03', leader:'Волкова Ирина', curator:'Максим', status:'prep', route:'Артуч — оз. Куликалон — пер. Алаудин — Искандеркуль', school:'НУ'},
+    {id:'petrov-2027-07', area:'Хибины', kind:'пешеходный', ks:'2', from:'2027-07-03', to:'2027-07-12', leader:'Петров Николай', curator:'Татьяна', status:'done', route:'Кировск — пер. Юмъекорр — Умбозеро — Кировск'}
   ];
   /* type: start · ok (на связи, всё хорошо) · point (прошли точку) · delay (задержка) · finish */
   var TYPES = {start:'Стартовали', ok:'На связи, всё хорошо', point:'Прошли точку', delay:'Задержка', finish:'Финишировали'};
@@ -126,29 +126,29 @@
   function msg(n, withTag, tl){
     var d=pd(n.t), x=hike(n.h)||{}, go=n.type==='start'||n.type==='finish';
     return '<div class="lv-msg'+(go?' go':'')+'"><time datetime="'+esc(n.t)+'"><b>'+day(d)+'</b>'+hm(d)+'</time>'+(tl?'<div class="lv-pin"></div>':'')+
-      '<div class="lv-body"><div class="lv-tag">'+(withTag?'<a href="'+link(x)+'">'+esc(x.area)+'</a><span>рук. '+esc(x.leader)+'</span>':'')+'<span class="lv-type'+(go?' go':'')+'">'+TYPES[n.type]+'</span></div>'+
+      '<div class="lv-body"><div class="lv-tag">'+(withTag?'<a href="'+link(x)+'">'+esc(x.leader)+'</a><span>'+esc(x.area)+'</span>':'')+'<span class="lv-type'+(go?' go':'')+'">'+TYPES[n.type]+'</span></div>'+
       '<div class="lv-txt">'+esc(n.text)+'</div></div></div>';
   }
   var root=document.querySelector('.svp-live');
 
   function overview(){
-    var going=HIKES.filter(function(x){return x.status==='go';}), prep=HIKES.filter(function(x){return x.status==='prep';}), done=HIKES.filter(function(x){return x.status==='done';});
+    var going=HIKES.filter(function(x){return x.status==='go';}).sort(function(a,b){return a.leader.localeCompare(b.leader,'ru');}), prep=HIKES.filter(function(x){return x.status==='prep';}), done=HIKES.filter(function(x){return x.status==='done';});
     var h='<div class="svp-path"><a href="/hikes/">Походы</a> › Вести из походов</div>'+
       '<h1>Вести из походов</h1>'+
       '<p class="svp-lead">Где сейчас наши группы. Кураторы пересказывают здесь СМС со спутникового телефона, обычно раз в день.</p>'+
-      '<label class="lv-search"><input type="search" id="lv-q" placeholder="Найти: фамилия руководителя или район" aria-label="Найти поход"></label>'+
+      '<label class="lv-search"><input type="search" id="lv-q" placeholder="Найти группу: фамилия руководителя" aria-label="Найти поход"></label>'+
       '<div class="lv-sec"><div class="svp-now" style="margin-bottom:14px"><span class="svp-dot"></span>Сейчас на маршруте: '+going.length+'</div><div class="lv-cards">'+
       going.map(function(x){var last=news(x.id)[0];
-        return '<a class="lv-card" data-q="'+esc(q(x))+'" href="'+link(x)+'"><span class="lv-t">'+esc(x.area)+'</span>'+
-          '<span class="lv-ld">рук. '+esc(x.leader)+'</span><span class="lv-k">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+range(x)+'</span>'+
+        return '<a class="lv-card" data-q="'+esc(q(x))+'" href="'+link(x)+'"><span class="lv-k">группа</span><span class="lv-t">'+esc(x.leader)+'</span>'+
+          '<span class="lv-ld">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+range(x)+'</span><span class="lv-k">'+esc(x.area)+'</span>'+
           (last?'<span class="lv-last"><time>последняя весть '+ago(pd(last.t))+'</time>'+esc(last.text)+'</span>':'')+'</a>';
       }).join('')+'</div></div>'+
       (prep.length?'<div class="lv-sec"><h2>Скоро выходят</h2><div class="lv-feed" style="margin-top:4px">'+prep.map(function(x){
-        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.area)+'</a>, рук. '+esc(x.leader)+' <span class="svp-muted">· '+esc(x.kind)+', '+esc(x.ks)+' к.с.</span></div></div>';}).join('')+'</div></div>':'')+
+        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.leader)+'</a>, '+esc(x.kind)+', '+esc(x.ks)+' к.с. <span class="svp-muted">· '+esc(x.area)+'</span></div></div>';}).join('')+'</div></div>':'')+
       '<div class="lv-sec"><h2>Все вести</h2>'+
       '<div class="lv-feed" id="lv-feed" style="margin-top:4px"></div><p class="svp-muted svp-hide" id="lv-none">Ничего не нашлось. Попробуйте фамилию руководителя или район.</p></div>'+
       (done.length?'<div class="lv-sec"><h2>Вернулись в этом сезоне</h2><div class="lv-feed" style="margin-top:4px">'+done.map(function(x){
-        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.area)+'</a>, рук. '+esc(x.leader)+' <span class="svp-muted">· '+esc(x.kind)+', '+esc(x.ks)+' к.с.</span></div></div>';}).join('')+'</div></div>':'')+
+        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.leader)+'</a>, '+esc(x.kind)+', '+esc(x.ks)+' к.с. <span class="svp-muted">· '+esc(x.area)+'</span></div></div>';}).join('')+'</div></div>':'')+
       note();
     root.innerHTML=h;
     function feed(){
@@ -169,13 +169,12 @@
     var a=pd(x.from), b=pd(x.to), total=Math.round((b-a)/864e5)+1, cur=Math.min(total,Math.max(0,Math.floor((NOW-a)/864e5)+1));
     var bar = x.status==='go'?'<div class="lv-bar">'+st(x)+'<span class="svp-muted" style="font-size:14px">день '+cur+' из '+total+'</span><div class="lv-prog"><span style="width:'+Math.round(cur/total*100)+'%"></span></div></div>'
       :'<div class="lv-bar">'+st(x)+'</div>';
-    root.innerHTML='<div class="svp-path"><a href="/hikes/">Походы</a> › <a href="./">Вести из походов</a> › '+esc(x.area)+'</div>'+
-      '<h1>'+esc(x.area)+'</h1><p class="lv-h1ld">Группа под руководством '+esc(x.leader)+' · '+esc(x.kind)+', '+esc(x.ks)+' к.с.</p>'+bar+
+    root.innerHTML='<div class="svp-path"><a href="/hikes/">Походы</a> › <a href="./">Вести из походов</a> › '+esc(x.leader)+'</div>'+
+      '<div class="lv-k" style="font-size:14px">группа</div><h1>'+esc(x.leader)+'</h1><p class="lv-h1ld">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+range(x)+' · '+esc(x.area)+'</p>'+bar+
       '<div style="margin-top:24px;border-bottom:1px solid var(--line)">'+
       '<div class="svp-row"><b>Поход</b><div>'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+esc(x.area)+'</div></div>'+
       '<div class="svp-row"><b>Сроки</b><div>'+range(x)+' '+b.getFullYear()+'</div></div>'+
       '<div class="svp-row"><b>Маршрут</b><div>'+esc(x.route)+'</div></div>'+
-      '<div class="svp-row"><b>Руководитель</b><div>'+esc(x.leader)+'</div></div>'+
       '<div class="svp-row"><b>Куратор</b><div>'+esc(x.curator)+' <span class="svp-muted">· на связи с группой и пишет сюда вести</span></div></div></div>'+
       '<div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px"><button type="button" class="lv-btn" id="lv-copy">Скопировать ссылку для родных</button><a class="lv-btn" href="./">Все походы</a></div>'+
       '<div class="lv-sec"><h2>Вести'+(last?' <span class="svp-muted" style="font-family:Onest,sans-serif;text-transform:none;font-weight:400;font-size:15px">· последняя '+ago(pd(last.t))+'</span>':'')+'</h2>'+
