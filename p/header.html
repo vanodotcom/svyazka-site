@@ -223,8 +223,7 @@ body{font-family:'Onest',system-ui,sans-serif}
       if(!db){ out.innerHTML='<p>Поиск сейчас не загрузился. Попробуйте через минуту.</p>'; return; }
       var r=find(q), h='';
       if(r&&r.list.length) r.list.forEach(function(p){ h+='<a href="'+p.u+'"><b>'+esc(p.t)+'</b><span>'+snippet(p,r.ws)+'</span></a>'; });
-      else h='<p>На сайте ничего не нашлось по запросу «'+esc(q)+'».</p>';
-      h+='<a class="sv-fx" href="https://westra.ru/passes/?word='+encodeURIComponent(q)+'&amp;place=&amp;notdone=0&amp;notconfirmed=0" target="_blank" rel="noopener">Искать «'+esc(q)+'» в каталоге перевалов ↗</a>';
+      else h='<p>На сайте не нашлось. Может, это перевал или вершина?</p><a class="sv-fx" href="https://westra.ru/passes/?word='+encodeURIComponent(q)+'&amp;place=&amp;notdone=0&amp;notconfirmed=0" target="_blank" rel="noopener">Искать «'+esc(q)+'» в каталоге перевалов ↗</a>';
       out.innerHTML=h;
       if(window.innerWidth<1000||side.scrollHeight>side.clientHeight) out.scrollIntoView({block:'nearest'});
     });
