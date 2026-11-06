@@ -73,13 +73,13 @@
     <img class="svp-img dr-photo" src="https://vanodotcom.github.io/svyazka-site/img/dir-water.jpg" alt="Два катамарана проходят порог в скальном каньоне" style="object-position:45% 50%">
   </section>
   <div class="svp-tabs" role="tablist" aria-label="Разделы школы">
-    <button type="button" class="svp-tab on" data-tab="about" aria-selected="true">О школе</button>
-    <button type="button" class="svp-tab" data-tab="plan">Расписание</button>
-    <button type="button" class="svp-tab" data-tab="lect">Лекции</button>
-    <button type="button" class="svp-tab" data-tab="docs">Документы</button>
+    <button type="button" class="svp-tab on" role="tab" id="tab-about" aria-controls="pnl-about" data-tab="about" aria-selected="true">О школе</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-plan" aria-controls="pnl-plan" data-tab="plan" aria-selected="false">Расписание</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-lect" aria-controls="pnl-lect" data-tab="lect" aria-selected="false">Лекции</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-docs" aria-controls="pnl-docs" data-tab="docs" aria-selected="false">Документы</button>
   </div>
   <section style="padding-top:4px">
-   <div data-panel="about">
+   <div data-panel="about" role="tabpanel" id="pnl-about" aria-labelledby="tab-about">
     <div class="svp-row" style="border-top:0"><b>Для кого</b><ul><li>Опыт не нужен</li><li>Возраст от 18 лет</li><li>Нет медицинских противопоказаний</li></ul></div>
     <div class="svp-row"><b>Как идёт сезон</b><div class="dr-season"><div><b>Январь–май</b><div class="svp-muted">Лекции по понедельникам, 19:30</div></div><div><b>Выходные</b><div class="svp-muted">Практика в Москве и Подмосковье</div></div><div><b>Конец апреля</b><div class="svp-muted">Походы 1 к.с. в европейской части России</div></div><div><b>Конец мая</b><div class="svp-muted">Походы 2 к.с. в Карелии</div></div></div></div>
     <div class="svp-row"><b>Сколько стоит</b><span>Взнос школы и клуба <span data-fee>2000 ₽</span> в месяц. Снаряжение можно взять в прокате клуба.</span></div>
@@ -87,9 +87,9 @@
     <div class="svp-row"><b>Где занимаемся</b><span>Лекции в зале клуба: Старопименовский пер., 4с2, м. Пушкинская. Тренировки и выезды в Москве и Подмосковье. <a href="/schools/places/">Все места занятий →</a></span></div>
     <div class="svp-row"><b>Дальше</b><span>Для тех, кто уже ходил: водная школа специализированного уровня у наших друзей из Люберецкого клуба туристов [ссылка].</span></div>
    </div>
-   <div data-panel="plan" class="svp-hide"><div class="svp-list"><div class="svp-li" data-first><span><b>[дата в январе], 19:30</b> · Первая встреча</span><span class="svp-muted">Пушкинская</span></div></div><p style="margin:16px 0 0"><a href="/calendar/">Весь календарь и подписка на расписание →</a></p></div>
-   <div data-panel="lect" class="svp-hide"><p style="margin:16px 0 0;max-width:600px">Видео лекций и статьи водной школы пока лежат в библиотеке на старом сайте.</p><p style="margin:12px 0 0"><a href="https://westra.ru/articles/">Лекции и статьи на westra.ru →</a></p></div>
-   <div data-panel="docs" class="svp-hide"><div class="svp-list"><div class="svp-li"><a href="#">Положение о водной школе</a><span class="svp-muted">pdf</span></div><div class="svp-li"><a href="#">Вопросы к экзамену</a><span class="svp-muted">страница</span></div><div class="svp-li"><a href="#">Список снаряжения</a><span class="svp-muted">страница</span></div></div></div>
+   <div data-panel="plan" role="tabpanel" id="pnl-plan" aria-labelledby="tab-plan" class="svp-hide"><div class="svp-list"><div class="svp-li" data-first><span><b>[дата в январе], 19:30</b> · Первая встреча</span><span class="svp-muted">Пушкинская</span></div></div><p style="margin:16px 0 0"><a href="/calendar/">Весь календарь и подписка на расписание →</a></p></div>
+   <div data-panel="lect" role="tabpanel" id="pnl-lect" aria-labelledby="tab-lect" class="svp-hide"><p style="margin:16px 0 0;max-width:600px">Видео лекций и статьи водной школы пока лежат в библиотеке на старом сайте.</p><p style="margin:12px 0 0"><a href="https://westra.ru/articles/">Лекции и статьи на westra.ru →</a></p></div>
+   <div data-panel="docs" role="tabpanel" id="pnl-docs" aria-labelledby="tab-docs" class="svp-hide"><div class="svp-list"><div class="svp-li"><a href="#">Положение о водной школе</a><span class="svp-muted">pdf</span></div><div class="svp-li"><a href="#">Вопросы к экзамену</a><span class="svp-muted">страница</span></div><div class="svp-li"><a href="#">Список снаряжения</a><span class="svp-muted">страница</span></div></div></div>
   </section>
 </div>
 

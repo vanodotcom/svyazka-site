@@ -47,6 +47,7 @@
 .hk-chk input{width:18px;height:18px;accent-color:#161615}
 .hk-wrap{overflow-x:auto}
 .hk-t{border-collapse:collapse;width:100%;font-size:14px;line-height:1.35;min-width:720px}
+.hk-wr{display:block;width:max-content;margin-top:2px;font-size:13px;color:var(--accent)!important;text-decoration:underline;text-underline-offset:3px}
 .hk-t th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:6px 12px 6px 0;border-bottom:1px solid var(--ink);white-space:nowrap}
 .hk-t td{padding:7px 12px 7px 0;border-bottom:1px solid var(--line);vertical-align:baseline}
 .hk-t .r{text-align:right;padding-right:0;white-space:nowrap}
@@ -111,7 +112,7 @@
     {ks:'3–4', kind:'горный', area:'[район]', dates:'[даты]', leader:'[ФИО]', school:'', open:false, link:'#'}
   ];
 
-  /* Таблица Google «Связка: календарь», лист «Походы». Столбцы: К.с. | Вид | Район | Сроки | Руководитель | Школа | Набор | Ссылка.
+  /* Таблица Google «Связка: календарь», лист «Походы». Столбцы: К.с. | Вид | Район | Сроки | Руководитель | Школа | Набор | Ссылка | Описание | Контакт.
      Если таблица не открылась, показывается список HIKES выше. */
   var SHEET_ID = '1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE', SHEET_NAME = 'Походы';
   function loadSheet(done){
@@ -130,7 +131,7 @@
           if(!r[2]&&!r[1]) return;
           if(r[2]==='Район') return;
           out.push({ks:(r[0]||'—').replace('-','–'), kind:(r[1]||'').toLowerCase(), area:r[2], dates:r[3]||'', leader:r[4]||'', school:r[5]||'',
-            open:/^есть/i.test(r[6]||''), link:/^https?:\/\//.test(r[7]||'')?r[7]:'', desc:r[8]||''});
+            open:/^есть/i.test(r[6]||''), link:/^https?:\/\//.test(r[7]||'')?r[7]:'', desc:r[8]||'', contact:r[9]||''});
         });
         done(out.length?out:null);
       }).catch(function(){done(null);});
@@ -144,6 +145,15 @@
     if(kinds.indexOf(kind)<0) kind='все';
     kbox.innerHTML=kinds.map(function(k){return '<button type="button" class="svp-chip" data-k="'+esc(k)+'">'+esc(k)+'</button>';}).join('');
   }
+  /* Контакт руководителя: @ник или t.me/… → Телеграм, vk.com/… → ВКонтакте, почта → письмо */
+  function contactUrl(c){
+    c=(c||'').trim(); if(!c) return '';
+    if(/^https?:\/\//i.test(c)) return c;
+    if(/^(t\.me|vk\.com|vk\.ru)\//i.test(c)) return 'https://'+c;
+    if(/^@[A-Za-z0-9_]{4,}$/.test(c)) return 'https://t.me/'+c.slice(1);
+    if(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c)) return 'mailto:'+c;
+    return '';
+  }
   function rank(g){ if(/^н/i.test(g)) return 0; var n=parseFloat(g); return isNaN(n)?99:n; }
   function draw(){
     kbox.querySelectorAll('[data-k]').forEach(function(b){b.classList.toggle('on',b.dataset.k===kind);b.setAttribute('aria-pressed',b.dataset.k===kind);});
@@ -154,7 +164,7 @@
         var id=HIKES.indexOf(x), isOpen=shown[id], lk=x.link&&x.link!=='#'?x.link:'';
         var last=x.desc?'<button type="button" class="hk-more" data-d="'+id+'" aria-expanded="'+!!isOpen+'">описание '+(isOpen?'↑':'↓')+'</button>'
           :(lk?'<a href="'+esc(lk)+'" target="_blank" rel="noopener">описание →</a>':'');
-        return '<tr class="'+(x.open?'open':'closed')+(isOpen?' has-ds':'')+'"><td class="k">'+esc(x.kind)+'</td><td class="a">'+esc(x.area)+'</td><td>'+esc(x.dates)+'</td><td>'+esc(x.leader)+'</td><td class="s'+(x.school?'':' no')+'">'+esc(x.school||'—')+'</td>'+
+        return '<tr class="'+(x.open?'open':'closed')+(isOpen?' has-ds':'')+'"><td class="k">'+esc(x.kind)+'</td><td class="a">'+esc(x.area)+'</td><td>'+esc(x.dates)+'</td><td>'+esc(x.leader)+(contactUrl(x.contact)?'<a class="hk-wr" href="'+esc(contactUrl(x.contact))+'" target="_blank" rel="noopener">написать</a>':'')+'</td><td class="s'+(x.school?'':' no')+'">'+esc(x.school||'—')+'</td>'+
           '<td><span class="hk-st"><i aria-hidden="true"></i>'+(x.open?'есть места':'группа набрана')+'</span></td><td class="r">'+last+'</td></tr>'+
           (isOpen?'<tr class="ds"><td colspan="7"><div class="dt">'+esc(x.desc)+(lk?'<br><a href="'+esc(lk)+'" target="_blank" rel="noopener">подробнее →</a>':'')+'</div></td></tr>':'');
       }).join('');

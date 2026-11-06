@@ -73,22 +73,22 @@
     <img class="svp-img dr-photo" src="https://vanodotcom.github.io/svyazka-site/img/dir-hiking.jpg" alt="Туристка с рюкзаком идёт по зелёному склону к перевалу" style="object-position:60% 50%">
   </section>
   <div class="svp-tabs" role="tablist" aria-label="Разделы школы">
-    <button type="button" class="svp-tab on" data-tab="about" aria-selected="true">О школе</button>
-    <button type="button" class="svp-tab" data-tab="plan">Расписание</button>
-    <button type="button" class="svp-tab" data-tab="lect">Лекции</button>
-    <button type="button" class="svp-tab" data-tab="docs">Документы</button>
+    <button type="button" class="svp-tab on" role="tab" id="tab-about" aria-controls="pnl-about" data-tab="about" aria-selected="true">О школе</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-plan" aria-controls="pnl-plan" data-tab="plan" aria-selected="false">Расписание</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-lect" aria-controls="pnl-lect" data-tab="lect" aria-selected="false">Лекции</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-docs" aria-controls="pnl-docs" data-tab="docs" aria-selected="false">Документы</button>
   </div>
   <section style="padding-top:4px">
-   <div data-panel="about">
+   <div data-panel="about" role="tabpanel" id="pnl-about" aria-labelledby="tab-about">
     <div class="svp-row" style="border-top:0"><b>Для кого</b><ul><li>Опыт походов не нужен, нужно желание учиться</li><li>Возраст от 18 лет</li><li>Нет медицинских противопоказаний</li></ul></div>
     <div class="svp-row"><b>Как идёт сезон</b><div class="dr-season"><div><b>Декабрь–май</b><div class="svp-muted">Лекции по четвергам, 19:30</div></div><div><b>Выходные</b><div class="svp-muted">Выезды: ориентирование, бивак, переправы, ПВД</div></div><div><b>Весна</b><div class="svp-muted">Техника, ориентирование, экзамен</div></div><div><b>Май</b><div class="svp-muted">Кросс-поход</div></div><div><b>Конец июня</b><div class="svp-muted">Походы 1–2 к.с. в Хибинах</div></div></div></div>
     <div class="svp-row"><b>Сколько стоит</b><span>Взнос школы и клуба <span data-fee>2000 ₽</span> в месяц. Снаряжение можно взять в прокате клуба.</span></div>
     <div class="svp-row"><b>Руководители</b><div class="dr-people" data-people><div>Начальник школы: [ФИО] · [контакт]</div></div></div>
     <div class="svp-row"><b>Где занимаемся</b><span>Лекции в зале клуба: Старопименовский пер., 4с2, м. Пушкинская. Тренировки и выезды в Москве и Подмосковье. <a href="/schools/places/">Все места занятий →</a></span></div>
    </div>
-   <div data-panel="plan" class="svp-hide"><div class="svp-list"><div class="svp-li" data-first><span><b>[дата в декабре], 19:30</b> · Первая встреча</span><span class="svp-muted">Пушкинская</span></div></div><p style="margin:16px 0 0"><a href="/calendar/">Весь календарь и подписка на расписание →</a></p></div>
-   <div data-panel="lect" class="svp-hide"><p style="margin:16px 0 0;max-width:600px">Видео лекций и статьи пешеходной школы пока лежат в библиотеке на старом сайте.</p><p style="margin:12px 0 0"><a href="https://westra.ru/articles/">Лекции и статьи на westra.ru →</a></p></div>
-   <div data-panel="docs" class="svp-hide"><div class="svp-list"><div class="svp-li"><a href="#">Положение о пешеходной школе</a><span class="svp-muted">pdf</span></div><div class="svp-li"><a href="#">Вопросы к экзамену</a><span class="svp-muted">страница</span></div><div class="svp-li"><a href="#">Список снаряжения</a><span class="svp-muted">страница</span></div></div></div>
+   <div data-panel="plan" role="tabpanel" id="pnl-plan" aria-labelledby="tab-plan" class="svp-hide"><div class="svp-list"><div class="svp-li" data-first><span><b>[дата в декабре], 19:30</b> · Первая встреча</span><span class="svp-muted">Пушкинская</span></div></div><p style="margin:16px 0 0"><a href="/calendar/">Весь календарь и подписка на расписание →</a></p></div>
+   <div data-panel="lect" role="tabpanel" id="pnl-lect" aria-labelledby="tab-lect" class="svp-hide"><p style="margin:16px 0 0;max-width:600px">Видео лекций и статьи пешеходной школы пока лежат в библиотеке на старом сайте.</p><p style="margin:12px 0 0"><a href="https://westra.ru/articles/">Лекции и статьи на westra.ru →</a></p></div>
+   <div data-panel="docs" role="tabpanel" id="pnl-docs" aria-labelledby="tab-docs" class="svp-hide"><div class="svp-list"><div class="svp-li"><a href="#">Положение о пешеходной школе</a><span class="svp-muted">pdf</span></div><div class="svp-li"><a href="#">Вопросы к экзамену</a><span class="svp-muted">страница</span></div><div class="svp-li"><a href="#">Список снаряжения</a><span class="svp-muted">страница</span></div></div></div>
   </section>
 </div>
 

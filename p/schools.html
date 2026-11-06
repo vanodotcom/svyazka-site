@@ -77,12 +77,12 @@
     <img class="svp-img sch-photo" src="https://static.tildacdn.pub/tila3536-3834-4162-b961-646632666265/svyazka-school-hero.jpg" alt="Группа с рюкзаками лезет по скалам">
   </section>
   <div class="svp-tabs" role="tablist" aria-label="Разделы школы">
-    <button type="button" class="svp-tab" data-tab="about">О школе</button>
-    <button type="button" class="svp-tab" data-tab="plan">Расписание</button>
-    <button type="button" class="svp-tab" data-tab="lect">Лекции</button>
-    <button type="button" class="svp-tab" data-tab="docs">Документы</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-about" data-tab="about" aria-controls="sch-body">О школе</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-plan" data-tab="plan" aria-controls="sch-body">Расписание</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-lect" data-tab="lect" aria-controls="sch-body">Лекции</button>
+    <button type="button" class="svp-tab" role="tab" id="tab-docs" data-tab="docs" aria-controls="sch-body">Документы</button>
   </div>
-  <section id="sch-body" style="padding-top:4px"></section>
+  <section id="sch-body" role="tabpanel" style="padding-top:4px"></section>
 </div>
 
 <script>
@@ -181,6 +181,7 @@
     var L=LEVELS[lvl];
     root.querySelectorAll('[data-lvl]').forEach(function(b){b.classList.toggle('on',b.dataset.lvl===lvl);b.setAttribute('aria-pressed',b.dataset.lvl===lvl);});
     root.querySelectorAll('[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab===tab);b.setAttribute('aria-selected',b.dataset.tab===tab);});
+    var pnl=document.getElementById('sch-body'); if(pnl) pnl.setAttribute('aria-labelledby','tab-'+tab);
     ['status','title','lead'].forEach(function(k){root.querySelector('[data-f="'+k+'"]').textContent=L[k];});
     root.querySelector('h1').classList.toggle('long',L.title.length>26);
     var ph=root.querySelector('.sch-photo'); if(ph&&ph.tagName==='IMG'&&L.photo){ph.src=L.photo; ph.alt=L.alt||''; ph.style.objectPosition=(window.innerWidth<=640&&L.mpos)||L.pos||'';}
