@@ -1,0 +1,25 @@
+name: Подписка на календарь
+on:
+  schedule:
+    - cron: '7 * * * *'
+  push:
+    branches: [main]
+    paths: ['scripts/calendar_ics.py']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: calendar-ics
+jobs:
+  ics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/calendar_ics.py
+      - name: Сохранить, если события изменились
+        run: |
+          git add calendar.ics
+          if git diff --cached --quiet; then echo "без изменений"; exit 0; fi
+          git config user.name "svyazka-calendar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Календарь: обновить подписку"
+          git push

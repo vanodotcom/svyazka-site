@@ -28,6 +28,17 @@ body{font-family:'Onest',system-ui,sans-serif}
 .sv-soc a{color:var(--sv-muted);text-decoration:none}
 .sv-search{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--sv-ink);margin:20px 0 0}
 .sv-search input{flex:1;min-width:0;border:0;outline:none;font:inherit;font-size:15px;min-height:40px;background:transparent}
+.sv-search input::-webkit-search-cancel-button{cursor:pointer}
+.sv-search:focus-within{border-bottom-color:var(--sv-accent)}
+.sv-found{margin:4px 0 0;font-size:14px;line-height:1.4}
+.sv-found:empty{display:none}
+.sv-found a{display:block;padding:9px 0;border-bottom:1px solid var(--sv-line);color:var(--sv-ink);text-decoration:none}
+.sv-found a:hover b,.sv-found a:focus b{color:var(--sv-accent)}
+.sv-found b{display:block;font-weight:600;font-size:15px}
+.sv-found span{display:block;color:var(--sv-muted);font-size:13px;margin-top:2px}
+.sv-found mark{background:none;color:var(--sv-ink);font-weight:600;box-shadow:inset 0 -2px 0 rgba(200,65,11,.45)}
+.sv-found p{margin:10px 0 0;color:var(--sv-muted);font-size:13px}
+.sv-found .sv-fx{color:var(--sv-accent);font-size:13px;border-bottom:0}
 /* сдвиг контента вправо на ширину меню, только на широких экранах */
 @media (min-width:1000px){
   #allrecords .t-rec{margin-left:var(--sv-menu)}
@@ -99,7 +110,8 @@ body{font-family:'Onest',system-ui,sans-serif}
 <div class="sv-grp"><a class="sv-sh" href="/club/">О клубе</a><a class="sv-si" href="/club/">Кто мы</a><a class="sv-si" href="/club/gallery/">Как мы ходим в горы</a><a class="sv-si" href="/club/people/">Люди и контакты</a><a class="sv-si" href="/club/member/">Как стать членом</a><a class="sv-si sv-gap" href="/club/history/">История клуба</a><a class="sv-si" href="/club/merch/">Мерч</a><a class="sv-si" href="/club/style/">Фирменный стиль</a><a class="sv-si" href="https://westra.ru/">Архив</a></div>
   </nav>
   <div class="sv-soc"><a href="https://t.me/westra">Телеграм</a><a href="https://t.me/+9wvbZK_QDxkxZDY6">Чат клуба</a><a href="https://vk.com/westra_tk">ВКонтакте</a></div>
-  <form class="sv-search" action="/search/" role="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#57554F" stroke-width="2.2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M20 20l-4.6-4.6"></path></svg><input type="search" name="q" placeholder="Поиск" aria-label="Поиск по сайту"></form>
+  <form class="sv-search" action="#" role="search" autocomplete="off"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#57554F" stroke-width="2.2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M20 20l-4.6-4.6"></path></svg><input type="search" name="q" placeholder="Поиск" aria-label="Поиск по сайту" aria-controls="svFound"></form>
+  <div class="sv-found" id="svFound" aria-live="polite"></div>
 </aside>
 
 <style>
@@ -163,6 +175,68 @@ body{font-family:'Onest',system-ui,sans-serif}
     });
   }
   markOld(); document.addEventListener('sv:loaded',markOld); setTimeout(markOld,1500);
+})();
+/* Поиск по сайту прямо в меню: тексты страниц лежат в data/search.json (собирает робот после каждой правки в p/) */
+(function(){
+  var form=document.querySelector('.sv-search'), out=document.getElementById('svFound'); if(!form||!out) return;
+  var inp=form.querySelector('input'), side=document.querySelector('.sv-side');
+  var URL='https://vanodotcom.github.io/svyazka-site/data/search.json?v='+Math.floor(Date.now()/600000);
+  var db=null, loading=null, timer=null;
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function norm(s){return String(s).toLowerCase().replace(/ё/g,'е');}
+  function load(){
+    if(loading) return loading;
+    loading=fetch(URL).then(function(r){if(!r.ok) throw r.status; return r.json();})
+      .then(function(d){d.forEach(function(p){p.nt=norm(p.t);p.nx=norm(p.x);}); db=d; return d;})
+      .catch(function(){loading=null; return null;});
+    return loading;
+  }
+  /* русские окончания: «перевалы», «перевалов» находят «перевал» */
+  function stem(w){ if(w.length<=4) return w; return w.slice(0,Math.max(4,w.length-2)); }
+  function words(q){ return norm(q).replace(/[^a-zа-я0-9\- ]/g,' ').split(/\s+/).filter(function(w){return w.length>1;}).map(stem); }
+  function snippet(p,ws){
+    var i=-1; ws.some(function(w){ i=p.nx.indexOf(w); return i>=0; });
+    if(i<0) return '';
+    var a=Math.max(0,i-50), b=Math.min(p.x.length,i+110);
+    var s=p.x.slice(a,b); if(a>0) s=s.slice(s.indexOf(' ')+1);
+    var t=esc(s); ws.forEach(function(w){ t=t.replace(new RegExp('('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'[а-яёa-z0-9]*)','gi'),'<mark>$1</mark>'); });
+    return (a>0?'…':'')+t+(b<p.x.length?'…':'');
+  }
+  function find(q){
+    var ws=words(q); if(!ws.length) return null;
+    var res=[];
+    db.forEach(function(p){
+      var score=0, ok=ws.every(function(w){
+        var inT=p.nt.indexOf(w)>=0, n=p.nx.split(w).length-1;
+        if(!inT&&!n) return false; score+=(inT?20:0)+Math.min(n,8); return true;
+      });
+      if(ok) res.push([score,p]);
+    });
+    res.sort(function(a,b){return b[0]-a[0];});
+    return {ws:ws, list:res.slice(0,7).map(function(x){return x[1];})};
+  }
+  function show(q){
+    q=q.trim();
+    if(q.length<2){ out.innerHTML=''; return; }
+    load().then(function(){
+      if(inp.value.trim()!==q) return;
+      if(!db){ out.innerHTML='<p>Поиск сейчас не загрузился. Попробуйте через минуту.</p>'; return; }
+      var r=find(q), h='';
+      if(r&&r.list.length) r.list.forEach(function(p){ h+='<a href="'+p.u+'"><b>'+esc(p.t)+'</b><span>'+snippet(p,r.ws)+'</span></a>'; });
+      else h='<p>На сайте не нашлось. Может, это перевал или вершина?</p><a class="sv-fx" href="https://westra.ru/passes/?word='+encodeURIComponent(q)+'&amp;place=&amp;notdone=0&amp;notconfirmed=0" target="_blank" rel="noopener">Искать «'+esc(q)+'» в каталоге перевалов ↗</a>';
+      out.innerHTML=h;
+      if(window.innerWidth<1000||side.scrollHeight>side.clientHeight) out.scrollIntoView({block:'nearest'});
+    });
+  }
+  inp.addEventListener('focus',load);
+  inp.addEventListener('input',function(){ clearTimeout(timer); timer=setTimeout(function(){show(inp.value);},200); });
+  form.addEventListener('submit',function(e){ e.preventDefault(); clearTimeout(timer); show(inp.value); });
+  inp.addEventListener('keydown',function(e){ if(e.key==='ArrowDown'){ var a=out.querySelector('a'); if(a){e.preventDefault(); a.focus();} } });
+  out.addEventListener('keydown',function(e){
+    if(e.key!=='ArrowDown'&&e.key!=='ArrowUp') return;
+    var links=[].slice.call(out.querySelectorAll('a')), i=links.indexOf(document.activeElement); if(i<0) return;
+    e.preventDefault(); if(e.key==='ArrowDown'&&links[i+1]) links[i+1].focus(); else if(e.key==='ArrowUp') (links[i-1]||inp).focus();
+  });
 })();
 /* Цели Яндекс Метрики: номер счётчика берём из того, что подключила Тильда */
 (function(){

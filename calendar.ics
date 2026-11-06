@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//svyazkaclub.ru//calendar//RU
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Связка: календарь клуба
+X-WR-TIMEZONE:Europe/Moscow
+X-WR-CALDESC:Занятия школ, выезды и клубные со
+ бытия турклуба «Связка». svyazkaclub.ru/calendar/
+REFRESH-INTERVAL;VALUE=DURATION:PT1H
+X-PUBLISHED-TTL:PT1H
+BEGIN:VEVENT
+UID:466455f20316aaaa9e84@svyazkaclub.ru
+DTSTAMP:20261124T163000Z
+DTSTART:20261124T163000Z
+DTEND:20261124T183000Z
+SUMMARY:Первая встреча школ БУ и СУ
+LOCATION:Зал на Пушкинской\, Старопименовски
+ й пер.\, 4с2
+DESCRIPTION:горная БУ и СУ · Все события: https://sv
+ yazkaclub.ru/calendar/
+URL:https://svyazkaclub.ru/calendar/
+END:VEVENT
+END:VCALENDAR

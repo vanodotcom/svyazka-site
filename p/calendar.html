@@ -45,6 +45,11 @@
 .cl-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px 32px}
 .cap-s{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:13px;font-weight:600}
 .cl-sub{margin-top:20px;padding:20px 24px;background:var(--stone);font-size:15px}
+.cl-subl{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.svp .cl-subl .svp-btn{background:#fff;color:var(--ink);border:1px solid var(--ink);min-height:44px;padding:0 18px;font-size:11px;width:auto}
+.svp .cl-subl .svp-btn:hover{background:var(--ink);color:#fff}
+@media (max-width:640px){.svp .cl-subl .svp-btn{width:100%}}
+.cl-subn{margin:12px 0 0;font-size:14px;color:var(--muted)}
 .cl-month{margin-top:32px}
 .cl-ev{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:24px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line)}
 .cl-ev:last-child{border-bottom:1px solid var(--line)}
@@ -65,7 +70,14 @@
   </div>
   <div class="cl-sub svp-hide" id="cl-sub">
     <b class="cap-s">Подписка на расписание</b>
-    <p style="margin:6px 0 0">Скоро здесь будет одна ссылка для Google, Apple или Яндекс Календаря, и изменения будут приходить сами.</p>
+    <p style="margin:6px 0 0">Все события клуба появятся в вашем календаре, а переносы и новые занятия будут приходить сами.</p>
+    <div class="cl-subl">
+      <a class="svp-btn" href="https://calendar.google.com/calendar/render?cid=webcal%3A%2F%2Fvanodotcom.github.io%2Fsvyazka-site%2Fcalendar.ics" target="_blank" rel="noopener">Google Календарь</a>
+      <a class="svp-btn" href="webcal://vanodotcom.github.io/svyazka-site/calendar.ics">Apple: айфон и мак</a>
+      <button type="button" class="svp-btn" id="cl-copy">Скопировать ссылку</button>
+    </div>
+    <p class="cl-subn"><b>Яндекс Календарь:</b> скопируйте ссылку, откройте calendar.yandex.ru, слева «+» у списка календарей → «Подписаться на календарь» и вставьте её. Так же подключаются Outlook и другие календари.</p>
+    <p class="cl-subn">Google обновляет подписку раз в несколько часов, поэтому о переносе в день занятия лучше читать <a href="https://t.me/westra">в Телеграме</a>.</p>
   </div>
   <div class="svp-chips" style="margin-top:24px" id="cl-f"></div>
   <div id="cl-list"></div>
@@ -138,6 +150,12 @@
   }
   fbox.addEventListener('click',function(e){var b=e.target.closest('[data-f]'); if(b){filter=b.dataset.f; draw();}});
   var sb=document.getElementById('cl-subbtn');
+  var cp=document.getElementById('cl-copy'), ICS='https://vanodotcom.github.io/svyazka-site/calendar.ics';
+  cp.addEventListener('click',function(){
+    function ok(){cp.textContent='Ссылка скопирована'; setTimeout(function(){cp.textContent='Скопировать ссылку';},2500);}
+    if(navigator.clipboard) navigator.clipboard.writeText(ICS).then(ok,function(){prompt('Ссылка на календарь:',ICS);});
+    else prompt('Ссылка на календарь:',ICS);
+  });
   sb.addEventListener('click',function(){var p=document.getElementById('cl-sub'); var open=p.classList.toggle('svp-hide')===false; sb.setAttribute('aria-expanded',open);});
   /* Пока таблица грузится, вместо событий серые полоски. Запасной список EVENTS
      показывается, только если таблица не ответила (ошибка или дольше 8 секунд). */
