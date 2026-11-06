@@ -89,7 +89,7 @@
   var HIKES = [
     {id:'ivanov-2027-07', area:'Сванетия', kind:'горный', ks:'3', from:'2027-07-06', to:'2027-07-24', leader:'Иванов Андрей', curator:'Ольга', status:'go', route:'Местиа — пер. Твибер — лед. Цанери — пер. Цаннер — Ушгули'},
     {id:'smirnova-2027-07', area:'Алтай, Северо-Чуйский хр.', kind:'горный', ks:'2', from:'2027-07-10', to:'2027-07-25', leader:'Смирнова Мария', curator:'Дмитрий', status:'go', route:'Актру — пер. Учитель — оз. Шавлинские — Чибит'},
-    {id:'kuznetsov-2027-07', area:'Памир', kind:'горный', ks:'6', from:'2027-07-01', to:'2027-07-28', leader:'Кузнецов Сергей', curator:'Елена', status:'go', route:'Ачик-Таш — пер. Путешественников — лед. Ленина — Дароот-Коргон'},
+    {id:'kuznetsov-2027-07', area:'Памир', kind:'горный', ks:'6', from:'2027-07-01', to:'2027-07-28', leader:'Хачатрян Артур', group:'Группа Хачатряна', curator:'Елена', status:'go', route:'Ачик-Таш — пер. Путешественников — лед. Ленина — Дароот-Коргон'},
     {id:'orlov-2027-07', area:'Карелия, р. Чирка-Кемь', kind:'водный', ks:'2', from:'2027-07-12', to:'2027-07-21', leader:'Орлов Павел', curator:'Анна', status:'go', route:'пос. Тикша — Чирка-Кемь — Кемь — пос. Юшкозеро'},
     {id:'volkova-2027-07', area:'Фанские горы', kind:'горный', ks:'1', from:'2027-07-22', to:'2027-08-03', leader:'Волкова Ирина', curator:'Максим', status:'prep', route:'Артуч — оз. Куликалон — пер. Алаудин — Искандеркуль', school:'НУ'},
     {id:'petrov-2027-07', area:'Хибины', kind:'пешеходный', ks:'2', from:'2027-07-03', to:'2027-07-12', leader:'Петров Николай', curator:'Татьяна', status:'done', route:'Кировск — пер. Юмъекорр — Умбозеро — Кировск'}
@@ -121,12 +121,21 @@
   function news(id){return NEWS.filter(function(n){return !id||n.h===id;}).sort(function(a,b){return pd(b.t)-pd(a.t);});}
   var ST = {go:'на маршруте', prep:'готовятся', done:'финишировали'};
   function st(x){return '<span class="lv-st '+x.status+'"><i></i>'+ST[x.status]+'</span>';}
-  function q(x){return [x.leader,x.area,x.kind,x.ks+' кс',x.ks+' к.с.',x.route||''].join(' ').toLowerCase().replace(/ё/g,'е');}
+  /* «Группа Макарова»: склоняем фамилию по простым правилам. Если в таблице заполнен столбец
+     «Группа (как называть)», берём его как есть (для фамилий вроде Хачикян, Байер, Петренко). */
+  function gen(f){
+    var r=[[/(ск|цк)ий$/,'$1ого'],[/(ск|цк)ая$/,'$1ой'],[/(ов|ев|ёв|ин|ын)$/,'$1а'],[/(ов|ев|ёв|ин|ын)а$/,'$1ой'],[/ой$/,'ого']];
+    for(var i=0;i<r.length;i++) if(r[i][0].test(f)) return f.replace(r[i][0],r[i][1]);
+    return f;
+  }
+  function grp(x){ if(x.group) return x.group; var w=(x.leader||'').trim().split(/\s+/); return 'Группа '+gen(w[0]||''); }
+  function who(x){ var w=(x.leader||'').trim().split(/\s+/); return w.length>1?w.slice(1).join(' ')+' '+w[0]:w[0]||''; }
+  function q(x){return [x.leader,grp(x),x.area,x.kind,x.ks+' кс',x.ks+' к.с.',x.route||''].join(' ').toLowerCase().replace(/ё/g,'е');}
   function link(x){return '?h='+encodeURIComponent(x.id);}
   function msg(n, withTag, tl){
     var d=pd(n.t), x=hike(n.h)||{}, go=n.type==='start'||n.type==='finish';
     return '<div class="lv-msg'+(go?' go':'')+'"><time datetime="'+esc(n.t)+'"><b>'+day(d)+'</b>'+hm(d)+'</time>'+(tl?'<div class="lv-pin"></div>':'')+
-      '<div class="lv-body"><div class="lv-tag">'+(withTag?'<a href="'+link(x)+'">'+esc(x.leader)+'</a><span>'+esc(x.area)+'</span>':'')+'<span class="lv-type'+(go?' go':'')+'">'+TYPES[n.type]+'</span></div>'+
+      '<div class="lv-body"><div class="lv-tag">'+(withTag?'<a href="'+link(x)+'">'+esc(grp(x))+'</a><span>'+esc(x.area)+'</span>':'')+'<span class="lv-type'+(go?' go':'')+'">'+TYPES[n.type]+'</span></div>'+
       '<div class="lv-txt">'+esc(n.text)+'</div></div></div>';
   }
   var root=document.querySelector('.svp-live');
@@ -139,16 +148,16 @@
       '<label class="lv-search"><input type="search" id="lv-q" placeholder="Найти группу: фамилия руководителя" aria-label="Найти поход"></label>'+
       '<div class="lv-sec"><div class="svp-now" style="margin-bottom:14px"><span class="svp-dot"></span>Сейчас на маршруте: '+going.length+'</div><div class="lv-cards">'+
       going.map(function(x){var last=news(x.id)[0];
-        return '<a class="lv-card" data-q="'+esc(q(x))+'" href="'+link(x)+'"><span class="lv-k">группа</span><span class="lv-t">'+esc(x.leader)+'</span>'+
+        return '<a class="lv-card" data-q="'+esc(q(x))+'" href="'+link(x)+'"><span class="lv-t">'+esc(grp(x))+'</span><span class="lv-k">рук. '+esc(who(x))+'</span>'+
           '<span class="lv-ld">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+range(x)+'</span><span class="lv-k">'+esc(x.area)+'</span>'+
           (last?'<span class="lv-last"><time>последняя весть '+ago(pd(last.t))+'</time>'+esc(last.text)+'</span>':'')+'</a>';
       }).join('')+'</div></div>'+
       (prep.length?'<div class="lv-sec"><h2>Скоро выходят</h2><div class="lv-feed" style="margin-top:4px">'+prep.map(function(x){
-        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.leader)+'</a>, '+esc(x.kind)+', '+esc(x.ks)+' к.с. <span class="svp-muted">· '+esc(x.area)+'</span></div></div>';}).join('')+'</div></div>':'')+
+        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(grp(x))+'</a>, '+esc(x.kind)+', '+esc(x.ks)+' к.с. <span class="svp-muted">· '+esc(x.area)+'</span></div></div>';}).join('')+'</div></div>':'')+
       '<div class="lv-sec"><h2>Все вести</h2>'+
       '<div class="lv-feed" id="lv-feed" style="margin-top:4px"></div><p class="svp-muted svp-hide" id="lv-none">Ничего не нашлось. Попробуйте фамилию руководителя или район.</p></div>'+
       (done.length?'<div class="lv-sec"><h2>Вернулись в этом сезоне</h2><div class="lv-feed" style="margin-top:4px">'+done.map(function(x){
-        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(x.leader)+'</a>, '+esc(x.kind)+', '+esc(x.ks)+' к.с. <span class="svp-muted">· '+esc(x.area)+'</span></div></div>';}).join('')+'</div></div>':'')+
+        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(grp(x))+'</a>, '+esc(x.kind)+', '+esc(x.ks)+' к.с. <span class="svp-muted">· '+esc(x.area)+'</span></div></div>';}).join('')+'</div></div>':'')+
       note();
     root.innerHTML=h;
     function feed(){
@@ -169,10 +178,9 @@
     var a=pd(x.from), b=pd(x.to), total=Math.round((b-a)/864e5)+1, cur=Math.min(total,Math.max(0,Math.floor((NOW-a)/864e5)+1));
     var bar = x.status==='go'?'<div class="lv-bar">'+st(x)+'<span class="svp-muted" style="font-size:14px">день '+cur+' из '+total+'</span><div class="lv-prog"><span style="width:'+Math.round(cur/total*100)+'%"></span></div></div>'
       :'<div class="lv-bar">'+st(x)+'</div>';
-    root.innerHTML='<div class="svp-path"><a href="/hikes/">Походы</a> › <a href="./">Вести из походов</a> › '+esc(x.leader)+'</div>'+
-      '<div class="lv-k" style="font-size:14px">группа</div><h1>'+esc(x.leader)+'</h1><p class="lv-h1ld">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+range(x)+' · '+esc(x.area)+'</p>'+bar+
+    root.innerHTML='<div class="svp-path"><a href="/hikes/">Походы</a> › <a href="./">Вести из походов</a> › '+esc(grp(x))+'</div>'+
+      '<h1>'+esc(grp(x))+'</h1><p class="lv-h1ld" style="margin-top:6px">рук. '+esc(who(x))+'</p><p class="lv-h1ld">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+range(x)+' · '+esc(x.area)+'</p>'+bar+
       '<div style="margin-top:24px;border-bottom:1px solid var(--line)">'+
-      '<div class="svp-row"><b>Поход</b><div>'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+esc(x.area)+'</div></div>'+
       '<div class="svp-row"><b>Сроки</b><div>'+range(x)+' '+b.getFullYear()+'</div></div>'+
       '<div class="svp-row"><b>Маршрут</b><div>'+esc(x.route)+'</div></div>'+
       '<div class="svp-row"><b>Куратор</b><div>'+esc(x.curator)+' <span class="svp-muted">· на связи с группой и пишет сюда вести</span></div></div></div>'+
