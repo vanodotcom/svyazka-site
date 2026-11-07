@@ -4,7 +4,7 @@
 
    Что делает:
    - бот @svyazka_vesti_bot принимает вести от кураторов (по личному коду похода);
-   - форма «Весть из похода» принимает вести от кураторов без Телеграма;
+   - форма «Весть с полей» принимает вести от кураторов без Телеграма;
    - вести пишутся в лист «Вести» публичной таблицы «Связка: календарь», оттуда их берёт сайт;
    - копия каждой вести и всё подозрительное уходит в группу модераторов в Телеграме;
    - журнал всего присланного лежит здесь, в листе «Журнал». */
@@ -240,7 +240,7 @@ function onMessage_(m) {
       '/delete — убрать последнюю весть\n/edit — исправить последнюю весть\n\nСтраница вестей: ' + SITE + '?h=' + c.addr);
   }
   var mine = byUser_(id);
-  if (!mine.length) return say_(chat, 'Это бот кураторов турклуба «Связка». Вести из походов читайте здесь: ' + SITE);
+  if (!mine.length) return say_(chat, 'Это бот кураторов турклуба «Связка». Вести с полей читайте здесь: ' + SITE);
   if (/^\/start/.test(text)) return say_(chat, 'Вы куратор: ' + mine.map(function (x) { return x.group; }).join(', ') + '. Пишите сюда вести.');
   if (/^\/(delete|edit)/.test(text)) return lastOwn_(chat, id, /^\/edit/.test(text));
   if (/^\/cancel/.test(text)) { state_(id, null); return say_(chat, 'Отменено.'); }
@@ -351,7 +351,7 @@ function formLink_(code) {
 
 function createForm() {
   if (props_().getProperty('FORM_ID')) return SpreadsheetApp.getUi().alert('Форма уже есть: ' + props_().getProperty('FORM_URL'));
-  var f = FormApp.create('Весть из похода')
+  var f = FormApp.create('Весть с полей')
     .setDescription('Для кураторов турклуба «Связка». Пользуйтесь своей личной ссылкой: код уже вписан.\nНе пишите фамилии участников, телефоны и подробности о здоровье.')
     .setCollectEmail(false).setAllowResponseEdits(false).setLimitOneResponsePerUser(false);
   var code = f.addTextItem().setTitle('Код куратора').setHelpText('Из вашей личной ссылки, вида SV-XXXXXX').setRequired(true);
