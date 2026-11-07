@@ -43,9 +43,9 @@
   .svp-li{flex-direction:column;gap:2px}
   .svp .svp-chip{min-height:36px;font-size:14px;padding:0 12px}
 }
-.mr-top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;margin-top:28px;align-items:start}
-.mr-main{height:460px}
-.mr-thumbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+.mr-top{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;margin-top:28px;align-items:start}
+.mr-main{height:auto;aspect-ratio:1600/968;object-fit:contain;background:#bbb}
+.mr-thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
 .mr-thumbs .svp-img{height:96px}
 .svp .mr-th{padding:0;border:1px solid transparent;background:none;cursor:pointer;display:block}
 .svp .mr-th.on{border-color:var(--ink)}
@@ -72,12 +72,10 @@
 .mr-legend{font-size:14px;color:var(--muted);line-height:1.7;margin-top:8px}
 @media (max-width:820px){
   .mr-top{grid-template-columns:minmax(0,1fr);gap:24px;margin-top:20px}
-  .mr-main{height:340px}
   .mr-sizes{grid-template-columns:minmax(0,1fr);gap:16px}
   .mr-sizes svg{max-width:230px;display:block}
 }
 @media (max-width:640px){
-  .mr-main{height:280px}
   .mr-thumbs .svp-img{height:72px}
   .mr-gr{grid-template-columns:repeat(2,minmax(0,1fr))}
   .mr-g .svp-img{height:84px}
@@ -143,14 +141,14 @@
 
 <script>
 (function(){
-  /* ===== ПРАВИТЬ: варианты графики. name — подпись, img — фото футболки спереди, back — сзади,
+  /* ===== ПРАВИТЬ: варианты графики. name — подпись, img — перед и спина на одном фото, front — спереди, back — сзади,
      detail — крупный план или фото на человеке. Сейчас стоят макеты: графика наложена на фото футболки (папка img/merch/). Пустая строка — серый прямоугольник «фото». */
   var M = 'https://vanodotcom.github.io/svyazka-site/img/merch/';
   var GRAPHICS = [
-    {name:'Я в Связке', img:M+'g4-pered.jpg', back:'', detail:M+'g4-krupno.jpg'},
-    {name:'Знак', img:M+'g1-pered.jpg', back:'', detail:M+'g1-krupno.jpg'},
-    {name:'Горы на спине', img:M+'g2-pered.jpg', back:M+'g2-spina.jpg', detail:M+'g2-krupno.jpg'},
-    {name:'Вся спина', img:M+'g5-pered.jpg', back:M+'g5-spina.jpg', detail:M+'g5-krupno.jpg'}
+    {name:'Я в Связке', img:M+'g4-obe.jpg', front:M+'g4-pered.jpg', back:'', detail:M+'g4-krupno.jpg'},
+    {name:'Знак', img:M+'g1-obe.jpg', front:M+'g1-pered.jpg', back:'', detail:M+'g1-krupno.jpg'},
+    {name:'Горы на спине', img:M+'g2-obe.jpg', front:M+'g2-pered.jpg', back:M+'g2-spina.jpg', detail:M+'g2-krupno.jpg'},
+    {name:'Вся спина', img:M+'g5-obe.jpg', front:M+'g5-pered.jpg', back:M+'g5-spina.jpg', detail:M+'g5-krupno.jpg'}
   ];
   /* ===== ПРАВИТЬ: размеры и обмеры в сантиметрах (A — ширина под проймой, B — длина по переду, C — рукав, D — плечо).
      Размерная сетка оверсайз-футболки Моспошив. */
@@ -179,8 +177,8 @@
 
   function render(){
     var G=GRAPHICS[g];
-    var T=[[G.img,'спереди'],[G.back,'сзади'],[G.detail,'крупно']].filter(function(t){return t[0];});
-    var cur=(view!=null&&T[view])?view:(G.back?1:0);
+    var T=[[G.img,'перед и спина'],[G.front,'спереди'],[G.back,'сзади'],[G.detail,'крупно']].filter(function(t){return t[0];});
+    var cur=(view!=null&&T[view])?view:0;
     var m=$('mr-main'), html=pic(T[cur]?T[cur][0]:'','mr-main','фото футболки: '+G.name+', '+(T[cur]?T[cur][1]:'спереди'));
     m.outerHTML=html.replace('class="svp-img','id="mr-main" class="svp-img');
     $('mr-thumbs').innerHTML=T.map(function(t,i){return '<button type="button" class="mr-th'+(i===cur?' on':'')+'" data-v="'+i+'" aria-label="'+esc(t[1])+'">'+pic(t[0],'',t[1])+'</button>';}).join('');
