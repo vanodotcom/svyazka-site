@@ -16,6 +16,7 @@ PAGES = {
     'join': ('/schools/join/', 'Записаться в школу'),
     'places': ('/schools/places/', 'Места занятий'),
     'hikes': ('/hikes/', 'Походы сезона'),
+    'live': ('/hikes/live/', 'Вести с полей'),
     'lead': ('/hikes/lead/', 'Руководителю похода и МКК'),
     'calendar': ('/calendar/', 'Календарь'),
     'library': ('/library/', 'Библиотека'),

@@ -1,5 +1,9 @@
-<!-- «Связка»: страница «Лыжный туризм» (адрес /schools/ski/). Вставить в блок T123 «HTML-код», отступы блока 0.
-     Меняется в Google-таблице, лист «Настройки»: «Лыжное: статус», «Лыжное: руководители» (через точку с запятой), «Лыжное: первая встреча», «Лыжное: место первой встречи», «Взнос в месяц». -->
+<!-- «Связка»: страница «Лыжный туризм» (адрес /schools/ski/). Устроена так же, как другие страницы направлений:
+     hiking, water, ski, alpinism, поэтому правку оформления обычно надо повторить во всех четырёх.
+     Данные: Google-таблица «Связка: календарь», лист «Настройки», строки «Лыжный туризм: статус», «Лыжный туризм: руководители» (через точку с запятой),
+     «Лыжный туризм: первая встреча», «Лыжный туризм: место первой встречи», а также «Взнос в месяц».
+     Вкладка «Расписание»: лист «События», строки, в столбце «Метка» которых есть «лыжн».
+     Если таблица не загрузилась, остаётся текст, записанный ниже в разметке. -->
 <style>
 .svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
   font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
@@ -95,11 +99,14 @@
 <script>
 (function(){
   var root=document.querySelector('.svp-dir'), KEYS=['лыжный туризм', 'лыжное']; /* новое название в таблице, затем старое */
+  /* вкладки «О школе», «Расписание», «Лекции», «Документы»: показать нужную, спрятать остальные */
   root.addEventListener('click',function(e){
     var b=e.target.closest('[data-tab]'); if(!b) return;
     root.querySelectorAll('[data-tab]').forEach(function(x){var on=x===b; x.classList.toggle('on',on); x.setAttribute('aria-selected',on);});
     root.querySelectorAll('[data-panel]').forEach(function(p){p.classList.toggle('svp-hide',p.getAttribute('data-panel')!==b.dataset.tab);});
   });
+  /* читает лист «Настройки» из Google-таблицы в словарь S: название настройки маленькими буквами → значение.
+     Если таблица не открылась, S пустой, и на странице остаётся текст из разметки. */
   function loadSettings(done){
     fetch('https://docs.google.com/spreadsheets/d/1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('Настройки')+'&_='+Math.floor(Date.now()/60000))
       .then(function(r){if(!r.ok)throw r.status;return r.text();})
@@ -147,6 +154,7 @@
     var box=root.querySelector('[data-panel="plan"] .svp-list');
     box.innerHTML=list.slice(0,8).map(function(e){return '<div class="svp-li"><span><b>'+escE(e.when)+'</b> · '+escE(e.title)+'</span><span class="svp-muted">'+escE(e.place)+'</span></div>';}).join('');
   });
+  /* подставляет в страницу статус, руководителей, первую встречу и взнос из таблицы */
   loadSettings(function(S){
     function G(n){for(var i=0;i<KEYS.length;i++){var v=S[KEYS[i]+': '+n]; if(v) return v;}}
     var st=G('статус'), pp=G('руководители'), fm=G('первая встреча'), fp=G('место первой встречи'), fee=S['взнос в месяц'];
