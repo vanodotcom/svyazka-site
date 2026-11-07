@@ -79,6 +79,7 @@ sv.js (из этого репозитория) скачивает p/schools.html
 | Записаться в школу | `/schools/join/` | `p/join.html` | Настройки; форма в Яндекс Формах |
 | Места занятий | `/schools/places/` | `p/places.html` | — (карта Яндекса) |
 | Походы сезона | `/hikes/` | `p/hikes.html` | Походы, Настройки |
+| Вести с полей | `/hikes/live/` (страница группы `?h=адрес`) | `p/live.html` | Походы, Вести (пишут бот и форма кураторов, скрипт `scripts/vesti.gs`) |
 | Руководителю и МКК | `/hikes/lead/` | `p/lead.html` | форма в Яндекс Формах |
 | Календарь | `/calendar/` | `p/calendar.html` | События |
 | Библиотека | `/library/` | `p/library.html` | — |

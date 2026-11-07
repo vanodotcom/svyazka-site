@@ -1,0 +1,233 @@
+<!-- «Связка»: страница «Вести с полей» (адрес /hikes/live/, страница похода /hikes/live/?h=адрес). Вставить в блок T123 «HTML-код», отступы блока 0.
+     Данные: Google-таблица «Связка: календарь», листы «Походы» и «Вести». -->
+<style>
+.sv-skel{height:18px;margin:16px 0;border-radius:4px;background:#ECEAE5;animation:svsk 1.2s ease-in-out infinite}.sv-skel:nth-child(even){width:70%}@keyframes svsk{50%{opacity:.45}}
+.svp{--ink:#161615;--muted:#57554F;--line:#E6E4DF;--stone:#ECEAE5;--accent:#C8410B;
+  font-family:'Onest',system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);
+  box-sizing:border-box;max-width:956px;padding:24px 48px 64px}
+.svp *{box-sizing:border-box}
+.svp a{color:var(--ink)} .svp a:hover{color:var(--muted)}
+.svp-path{font-size:14px;color:var(--muted);margin-bottom:10px} .svp-path a{color:var(--muted)}
+.svp h1{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:36px;line-height:1.1;font-weight:700}
+.svp h2{margin:0;font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:20px;line-height:1.2;font-weight:700}
+.svp-lead{margin:12px 0 0;font-size:18px;max-width:680px}
+.svp-muted{color:var(--muted)}
+.svp-now{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.svp-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.svp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.svp .svp-chip{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;font:inherit;font-size:15px;cursor:pointer}
+.svp .svp-chip.on{background:var(--ink);color:#fff}
+.svp-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:12px 0;border-top:1px solid var(--line)}
+.svp-row>b{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-size:12px;font-weight:600;padding-top:3px}
+.svp-hide{display:none!important}
+.lv-sec{margin-top:40px}
+.lv-sec>h2{margin-bottom:14px}
+.lv-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.svp .lv-card{display:flex;flex-direction:column;gap:6px;padding:18px 20px;border:1px solid var(--ink);text-decoration:none;color:var(--ink)}
+.svp .lv-card:hover{background:#FAF9F7;color:var(--ink)}
+.lv-k{font-size:13px;color:var(--muted)}
+.lv-t{font-family:'Unbounded',sans-serif;text-transform:uppercase;font-weight:700;font-size:17px;line-height:1.2}
+.lv-st{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.lv-st i{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.lv-st.prep i{background:none;border:1.5px solid var(--muted)} .lv-st.done i{background:var(--muted)}
+.lv-last{margin-top:6px;padding-top:10px;border-top:1px solid var(--line);font-size:15px}
+.lv-last time{display:block;font-size:13px;color:var(--muted)}
+.lv-ld{font-size:15px}
+.lv-h1ld{margin:8px 0 0;font-size:18px}
+.lv-search{display:flex;margin-top:24px;border-bottom:1px solid var(--ink);max-width:560px}
+.lv-search input{flex:1;min-width:0;border:0;outline:none;font:inherit;font-size:16px;min-height:44px;background:transparent}
+.lv-mini{display:flex;flex-wrap:wrap;gap:6px 24px;font-size:15px}
+.lv-feed{border-bottom:1px solid var(--line)}
+.lv-msg{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;padding:14px 0;border-top:1px solid var(--line)}
+.lv-msg time{font-size:14px;color:var(--muted);line-height:1.4}
+.lv-msg time b{display:block;color:var(--ink);font-weight:600}
+.lv-tag{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin-bottom:2px;font-size:13px;color:var(--muted)}
+.lv-tag a{font-weight:600;color:var(--ink)}
+.lv-type{display:inline-flex;align-items:center;gap:6px}
+.lv-type.go{color:var(--accent);font-weight:600}
+.lv-txt{font-size:16px}
+.lv-note{margin-top:40px;padding:18px 20px;background:var(--stone);font-size:15px;max-width:680px}
+.lv-note p{margin:0} .lv-note p+p{margin-top:8px}
+.lv-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 32px}
+.lv-bar{margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
+.lv-prog{flex:1;min-width:200px;height:6px;background:var(--stone);position:relative}
+.lv-prog span{position:absolute;left:0;top:0;bottom:0;background:var(--accent)}
+.lv-tl .lv-msg{grid-template-columns:120px 18px minmax(0,1fr);gap:0 16px}
+.lv-tl .lv-pin{position:relative}
+.lv-tl .lv-pin:before{content:'';position:absolute;left:8px;top:-15px;bottom:-15px;width:1px;background:var(--line)}
+.lv-tl .lv-pin:after{content:'';position:absolute;left:4px;top:6px;width:9px;height:9px;border-radius:50%;background:#fff;border:1.5px solid var(--ink)}
+.lv-tl .lv-msg.go .lv-pin:after{background:var(--accent);border-color:var(--accent)}
+.svp .lv-btn{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid var(--ink);background:#fff;font:inherit;font-size:15px;cursor:pointer;color:var(--ink);text-decoration:none}
+@media (max-width:640px){
+  .svp{padding:16px 20px 40px}
+  .svp-path{font-size:13px}
+  .svp h1{font-size:24px;line-height:1.15}
+  .svp h2{font-size:16px}
+  .svp-lead{font-size:16px}
+  .svp-row{grid-template-columns:minmax(0,1fr);gap:2px;padding:10px 0}
+  .svp .svp-chip{min-height:36px;font-size:14px;padding:0 12px}
+  .lv-sec{margin-top:32px}
+  .lv-cards{grid-template-columns:minmax(0,1fr)}
+  .svp .lv-card{padding:16px}
+  .lv-msg{grid-template-columns:minmax(0,1fr);gap:4px;padding:12px 0}
+  .lv-msg time b{display:inline;margin-right:6px}
+  .lv-tl .lv-msg{grid-template-columns:18px minmax(0,1fr);gap:2px 12px}
+  .lv-tl .lv-msg time{grid-column:2} .lv-tl .lv-pin{grid-row:1/3;grid-column:1} .lv-tl .lv-body{grid-column:2}
+  .lv-chips-scroll{flex-wrap:nowrap;overflow-x:auto;margin:0 -20px;padding:0 20px}
+  .lv-chips-scroll .svp-chip{flex:none}
+}
+</style>
+
+<div class="svp svp-live"></div>
+
+<script>
+(function(){
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  /* ===== МАКЕТ: примеры. Потом: походы из листа «Походы», вести из таблицы «Связка: вести». */
+  var NOW = new Date();
+  /* Название похода собирается само из листа «Походы»: «Группа» + Руководитель (Фамилия Имя, заголовок) + Вид, к.с., сроки + Район.
+     id (адрес страницы) скрипт создаёт один раз: фамилия руководителя + год-месяц старта, потом он не меняется. */
+  var HIKES = [];
+  /* type: start · ok (на связи, всё хорошо) · point (прошли точку) · delay (задержка) · finish */
+  var TYPES = {start:'Стартовали', ok:'На связи, всё хорошо', point:'Прошли точку', delay:'Задержка', finish:'Финишировали'};
+  var NEWS = [];
+
+  var MON = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  var MONS = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+  function pd(s){var m=s.match(/(\d+)-(\d+)-(\d+)(?:\s+(\d+):(\d+))?/); return new Date(+m[1],m[2]-1,+m[3],+(m[4]||0),+(m[5]||0));}
+  function day(d){var a=new Date(NOW.getFullYear(),NOW.getMonth(),NOW.getDate()), b=new Date(d.getFullYear(),d.getMonth(),d.getDate()), n=Math.round((a-b)/864e5);
+    return n===0?'сегодня':n===1?'вчера':d.getDate()+' '+MON[d.getMonth()];}
+  function hm(d){return d.getHours()+':'+('0'+d.getMinutes()).slice(-2);}
+  function ago(d){var m=Math.round((NOW-d)/6e4); if(m<60) return m+' мин назад'; var h=Math.round(m/60); if(h<24) return h+' '+(h%10==1&&h!=11?'час':(h%10>=2&&h%10<=4&&(h<10||h>20))?'часа':'часов')+' назад'; return day(d);}
+  function range(x){var a=pd(x.from),b=pd(x.to); return a.getDate()+(a.getMonth()!=b.getMonth()?' '+MONS[a.getMonth()]:'')+' — '+b.getDate()+' '+MONS[b.getMonth()];}
+  function hike(id){for(var i=0;i<HIKES.length;i++) if(HIKES[i].id===id) return HIKES[i]; return null;}
+  function news(id){return NEWS.filter(function(n){return !id||n.h===id;}).sort(function(a,b){return pd(b.t)-pd(a.t);});}
+  var ST = {go:'на маршруте', prep:'готовятся', done:'финишировали'};
+  function st(x){return '<span class="lv-st '+x.status+'"><i></i>'+ST[x.status]+'</span>';}
+  /* «Группа Макарова»: склоняем фамилию по простым правилам. Если в таблице заполнен столбец
+     «Группа (как называть)», берём его как есть (для фамилий вроде Хачикян, Байер, Петренко). */
+  function gen(f){
+    var r=[[/(ск|цк)ий$/,'$1ого'],[/(ск|цк)ая$/,'$1ой'],[/(ов|ев|ёв|ин|ын)$/,'$1а'],[/(ов|ев|ёв|ин|ын)а$/,'$1ой'],[/ой$/,'ого']];
+    for(var i=0;i<r.length;i++) if(r[i][0].test(f)) return f.replace(r[i][0],r[i][1]);
+    return f;
+  }
+  function grp(x){ if(x.group) return x.group; var w=(x.leader||'').trim().split(/\s+/); return 'Группа '+gen(w[0]||''); }
+  function who(x){ var w=(x.leader||'').trim().split(/\s+/); return w.length>1?w.slice(1).join(' ')+' '+w[0]:w[0]||''; }
+  function q(x){return [x.leader,grp(x),x.area,x.kind,x.ks+' кс',x.ks+' к.с.',x.route||''].join(' ').toLowerCase().replace(/ё/g,'е');}
+  function link(x){return '?h='+encodeURIComponent(x.id);}
+  function msg(n, withTag, tl){
+    var d=pd(n.t), x=hike(n.h)||{}, go=n.type==='start'||n.type==='finish';
+    return '<div class="lv-msg'+(go?' go':'')+'"><time datetime="'+esc(n.t)+'"><b>'+day(d)+'</b>'+hm(d)+'</time>'+(tl?'<div class="lv-pin"></div>':'')+
+      '<div class="lv-body"><div class="lv-tag">'+(withTag?'<a href="'+link(x)+'">'+esc(grp(x))+'</a><span>'+esc(x.area)+'</span>':'')+'<span class="lv-type'+(go?' go':'')+'">'+TYPES[n.type]+'</span></div>'+
+      '<div class="lv-txt">'+esc(n.text)+'</div></div></div>';
+  }
+  var root=document.querySelector('.svp-live');
+
+  function overview(){
+    var going=HIKES.filter(function(x){return x.status==='go';}).sort(function(a,b){return a.leader.localeCompare(b.leader,'ru');}), prep=HIKES.filter(function(x){return x.status==='prep';}), done=HIKES.filter(function(x){return x.status==='done';});
+    var h='<div class="svp-path"><a href="/hikes/">Походы</a> › Вести с полей</div>'+
+      '<h1>Вести с полей</h1>'+
+      '<p class="svp-lead">Где сейчас наши группы. У каждой группы есть куратор: он на связи с ней и пересказывает здесь, что узнал. Как часто приходят вести, группа договаривается с куратором заранее: бывает раз в день, бывает раз в несколько дней.</p>'+
+      '<label class="lv-search"><input type="search" id="lv-q" placeholder="Найти группу: фамилия руководителя" aria-label="Найти поход"></label>'+
+      (going.length?'':'<div class="lv-sec"><p class="svp-muted" style="margin:0">Сейчас ни одна группа не на маршруте. Когда группы выйдут, здесь появятся их вести.</p></div>')+
+      (!going.length?'':'<div class="lv-sec"><div class="svp-now" style="margin-bottom:14px"><span class="svp-dot"></span>Сейчас на маршруте: '+going.length+'</div><div class="lv-cards">'+
+      going.map(function(x){var last=news(x.id)[0];
+        return '<a class="lv-card" data-q="'+esc(q(x))+'" href="'+link(x)+'"><span class="lv-t">'+esc(grp(x))+'</span><span class="lv-k">рук. '+esc(who(x))+'</span>'+
+          '<span class="lv-ld">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+range(x)+'</span><span class="lv-k">'+esc(x.area)+'</span>'+
+          (last?'<span class="lv-last"><time>последняя весть '+ago(pd(last.t))+'</time>'+esc(last.text)+'</span>':'')+'</a>';
+      }).join('')+'</div></div>')+
+      (prep.length?'<div class="lv-sec"><h2>Скоро выходят</h2><div class="lv-feed" style="margin-top:4px">'+prep.map(function(x){
+        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(grp(x))+'</a>, '+esc(x.kind)+', '+esc(x.ks)+' к.с. <span class="svp-muted">· '+esc(x.area)+'</span></div></div>';}).join('')+'</div></div>':'')+
+      '<div class="lv-sec'+(NEWS.length?'':' svp-hide')+'"><h2>Все вести</h2>'+
+      '<div class="lv-feed" id="lv-feed" style="margin-top:4px"></div><p class="svp-muted svp-hide" id="lv-none">Ничего не нашлось. Попробуйте фамилию руководителя или район.</p></div>'+
+      (done.length?'<div class="lv-sec"><h2>Вернулись в этом сезоне</h2><div class="lv-feed" style="margin-top:4px">'+done.map(function(x){
+        return '<div class="svp-row" data-q="'+esc(q(x))+'"><b>'+range(x)+'</b><div><a href="'+link(x)+'">'+esc(grp(x))+'</a>, '+esc(x.kind)+', '+esc(x.ks)+' к.с. <span class="svp-muted">· '+esc(x.area)+'</span></div></div>';}).join('')+'</div></div>':'')+
+      note();
+    root.innerHTML=h;
+    function feed(){
+      var t=(document.getElementById('lv-q').value||'').trim().toLowerCase().replace(/ё/g,'е');
+      var ok=function(x){return !t||q(x).indexOf(t)>-1;};
+      document.getElementById('lv-feed').innerHTML=news('').filter(function(n){return ok(hike(n.h)||{});}).map(function(n){return msg(n,true,false);}).join('');
+      var any=false; root.querySelectorAll('[data-q]').forEach(function(e){var m=!t||e.getAttribute('data-q').indexOf(t)>-1; e.classList.toggle('svp-hide',!m); if(m) any=true;});
+      document.getElementById('lv-none').classList.toggle('svp-hide',any);
+    }
+    feed(); document.getElementById('lv-q').addEventListener('input',feed);
+  }
+  function note(){
+    return '<div class="lv-note"><p><b>Если вестей давно нет</b>, обычно это значит, что у группы просто нет связи или она выходит на связь раз в несколько дней. Если волнуетесь, спросите куратора.</p>'+
+      '<p>Важное о конкретном человеке куратор сообщает родственникам лично, здесь его не публикуют. Вопросы о группе задавайте куратору или руководителю.</p></div>';
+  }
+  function page(x){
+    var list=news(x.id), last=list[0];
+    var a=pd(x.from), b=pd(x.to), total=Math.round((b-a)/864e5)+1, cur=Math.min(total,Math.max(0,Math.floor((NOW-a)/864e5)+1));
+    var bar = x.status==='go'?'<div class="lv-bar">'+st(x)+'<span class="svp-muted" style="font-size:14px">день '+cur+' из '+total+'</span><div class="lv-prog"><span style="width:'+Math.round(cur/total*100)+'%"></span></div></div>'
+      :'<div class="lv-bar">'+st(x)+'</div>';
+    root.innerHTML='<div class="svp-path"><a href="/hikes/">Походы</a> › <a href="./">Вести с полей</a> › '+esc(grp(x))+'</div>'+
+      '<h1>'+esc(grp(x))+'</h1><p class="lv-h1ld" style="margin-top:6px">рук. '+esc(who(x))+'</p><p class="lv-h1ld">'+esc(x.kind)+', '+esc(x.ks)+' к.с. · '+range(x)+' · '+esc(x.area)+'</p>'+bar+
+      '<div style="margin-top:24px;border-bottom:1px solid var(--line)">'+
+      '<div class="svp-row"><b>Сроки</b><div>'+range(x)+' '+b.getFullYear()+'</div></div>'+
+      (x.route?'<div class="svp-row"><b>Маршрут</b><div>'+esc(x.route)+'</div></div>':'')+
+      (x.curator?'<div class="svp-row"><b>Куратор</b><div>'+esc(x.curator)+' <span class="svp-muted">· на связи с группой и пишет сюда вести</span></div></div>':'')+'</div>'+
+      '<div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px"><button type="button" class="lv-btn" id="lv-copy">Скопировать ссылку для родных</button><a class="lv-btn" href="./">Все походы</a></div>'+
+      '<div class="lv-sec"><h2>Вести'+(last?' <span class="svp-muted" style="font-family:Onest,sans-serif;text-transform:none;font-weight:400;font-size:15px">· последняя '+ago(pd(last.t))+'</span>':'')+'</h2>'+
+      '<div class="lv-feed lv-tl" style="margin-top:4px">'+(list.length?list.map(function(n){return msg(n,false,true);}).join(''):'<p class="svp-muted">Вестей пока нет. Первая появится, когда группа выйдет на маршрут.</p>')+'</div></div>'+
+      note();
+    document.getElementById('lv-copy').addEventListener('click',function(){try{navigator.clipboard.writeText(location.href);this.textContent='Ссылка скопирована';}catch(e){}});
+  }
+  function start(){
+    var id=(location.search.match(/[?&]h=([^&]+)/)||[])[1], x=id&&hike(decodeURIComponent(id));
+    if(x) page(x); else overview();
+  }
+
+  /* ===== Данные из Google-таблицы «Связка: календарь»: лист «Походы» (походы с заполненным «Адрес вестей»)
+     и лист «Вести» (их пишут бот и форма кураторов). Столбцы ищутся по заголовкам. */
+  var SHEET_ID='1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE';
+  function csv(sheet){
+    return fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent(sheet)+'&_='+Date.now())
+      .then(function(r){if(!r.ok)throw r.status;return r.text();})
+      .then(function(txt){
+        var rows=[],row=[],f='',q=false;
+        for(var i=0;i<txt.length;i++){var c=txt[i];
+          if(q){ if(c=='"'){ if(txt[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
+          else if(c=='"') q=true; else if(c==','){row.push(f);f='';} else if(c=='\n'){row.push(f);rows.push(row);row=[];f='';} else if(c!='\r') f+=c; }
+        if(f||row.length){row.push(f);rows.push(row);}
+        return rows.map(function(r){return r.map(function(v){return (v||'').trim();});});
+      });
+  }
+  function cols(head){var c={};head.forEach(function(h,i){c[h.toLowerCase()]=i;});return function(r,name){
+    for(var k in c) if(k.indexOf(name)===0) return r[c[k]]||''; return '';};}
+  function iso(d){var m=d.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/); if(m) return m[3]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2);
+    m=d.match(/(\d{4})-(\d{1,2})-(\d{1,2})/); return m?m[1]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[3]).slice(-2):'';}
+  var KEYS={'стартовали':'start','на связи, всё хорошо':'ok','прошли точку':'point','задержка':'delay','финишировали':'finish'};
+  function build(hr, vr){
+    var news=[]; if(vr.length){ var g=cols(vr[0]); vr.slice(1).forEach(function(r){
+      var addr=g(r,'адрес'), t=g(r,'когда'), show=g(r,'показывать').toLowerCase();
+      if(!addr||!/\d{4}-\d{2}-\d{2}/.test(t)||show==='нет') return;
+      news.push({h:addr, t:t, type:KEYS[g(r,'тип').toLowerCase()]||'ok', text:g(r,'текст')}); }); }
+    var hikes=[]; if(hr.length){ var c=cols(hr[0]); hr.slice(1).forEach(function(r){
+      var id=c(r,'адрес вестей'), from=iso(c(r,'начало')), to=iso(c(r,'конец'))||from;
+      if(!id||!from) return;
+      var x={id:id, area:c(r,'район'), kind:c(r,'вид').toLowerCase(), ks:c(r,'к.с.'), from:from, to:to, leader:c(r,'руководитель'),
+        group:c(r,'группа'), curator:c(r,'куратор'), route:c(r,'маршрут')};
+      var mine=news.filter(function(n){return n.h===id;}), a=pd(from), b=pd(to);
+      var fin=mine.some(function(n){return n.type==='finish';}), st=mine.some(function(n){return n.type==='start';});
+      x.status = fin || NOW-b>14*864e5 ? 'done' : (st || NOW>=a ? 'go' : 'prep');
+      if(x.status==='prep' && a-NOW>30*864e5) return;      /* «скоро выходят»: за месяц до старта */
+      if(x.status==='done' && NOW-b>120*864e5) return;     /* вернувшиеся видны ~4 месяца */
+      hikes.push(x); }); }
+    HIKES=hikes; NEWS=news.filter(function(n){return hike(n.h);});
+  }
+  var last='';
+  function load(first){
+    Promise.all([csv('Походы'), csv('Вести').catch(function(){return [];})]).then(function(d){
+      var key=JSON.stringify(d); if(key===last) return; last=key;
+      var q=document.getElementById('lv-q'); if(!first && q && q.value) return; /* не мешаем, пока человек ищет */
+      build(d[0], d[1]); start();
+    }).catch(function(){ if(first){ root.innerHTML='<p class="svp-muted">Не удалось загрузить вести. Обновите страницу через минуту.</p>'; } });
+  }
+  {
+    root.innerHTML='<div class="svp-path"><a href="/hikes/">Походы</a> › Вести с полей</div><h1>Вести с полей</h1><div role="status" aria-label="Загружаем" style="margin-top:24px"><div class="sv-skel"></div><div class="sv-skel"></div><div class="sv-skel"></div></div>';
+    load(true); setInterval(function(){ if(!document.hidden) load(false); }, 120000);
+  }
+})();
+</script>

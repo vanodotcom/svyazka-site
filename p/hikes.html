@@ -133,13 +133,21 @@
           r=r.map(function(v){return (v||'').trim();});
           if(!r[2]&&!r[1]) return;
           if(r[2]==='Район') return;
-          out.push({ks:(r[0]||'—').replace('-','–'), kind:(r[1]||'').toLowerCase(), area:r[2], dates:r[3]||'', leader:r[4]||'', school:r[5]||'',
+          out.push({ks:(r[0]||'—').replace('-','–'), kind:(r[1]||'').toLowerCase(), area:r[2], dates:r[3]||span(r[10],r[11]), leader:r[4]||'', school:r[5]||'',
             open:/^есть/i.test(r[6]||''), link:/^https?:\/\//.test(r[7]||'')?r[7]:'', desc:r[8]||'', contact:r[9]||''});
         });
         done(out.length?out:null);
       }).catch(function(){done(null);});
   }
 
+  /* Сроки из столбцов «Начало» (K) и «Конец» (L), если столбец «Сроки» (D) пустой: «6–24 июля 2027». */
+  function span(a,b){
+    var M=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+    function p(s){var m=(s||'').match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/); return m?{d:+m[1],m:+m[2]-1,y:+m[3]}:null;}
+    var x=p(a), y=p(b)||x; if(!x) return '';
+    if(x.m===y.m&&x.y===y.y) return (x.d===y.d?x.d:x.d+'–'+y.d)+' '+M[y.m]+' '+y.y;
+    return x.d+' '+M[x.m]+' – '+y.d+' '+M[y.m]+' '+y.y;
+  }
   var root=document.querySelector('.svp-hikes'), kind='все', onlyOpen=false, shown={};
   root.querySelector('[data-f="season"]').textContent=SEASON;
   var kbox=document.getElementById('hk-kinds');
