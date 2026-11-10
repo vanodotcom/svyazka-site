@@ -142,9 +142,20 @@
 <script>
 (function(){
   /* ===== ПРАВИТЬ: варианты графики. name — подпись, img — перед и спина на одном фото, front — спереди, back — сзади,
-     detail — крупный план или фото на человеке. Сейчас стоят макеты: графика наложена на фото футболки (папка img/merch/). Пустая строка — серый прямоугольник «фото». */
-  var M = 'https://vanodotcom.github.io/svyazka-site/img/merch/';
+     detail — крупный план или фото на человеке.
+     thumb — необязательно: отдельная картинка для значка в выборе графики (если широкая надпись не влезает в квадрат); без него значок берётся из detail. Сейчас стоят макеты: графика наложена на фото футболки (папка img/merch/). Пустая строка — серый прямоугольник «фото». */
+  var M = 'https://vanodotcom.gitlab.io/svyazka-site/img/merch/';
+  /* Порядок = порядок на странице, первый вариант открыт сразу.
+     Сначала главный принт (кот), потом картинки на спине, в конце простые надписи и знаки.
+     Файлы g6–g9 нарезаны 9 ноября 2026 из макетов владельца: исходники в общей папке проекта turklub/brand/merch-2026-11-09/. */
   var GRAPHICS = [
+    /* главный принт: спереди SVYAZKA, на спине кот в оранжевой верёвке */
+    {name:'Кот', img:M+'g6-obe.jpg', front:M+'g6-pered.jpg', back:M+'g6-spina.jpg', detail:M+'g6-krupno.jpg'},
+    /* картинки на спине, спереди маленький логотип */
+    {name:'Ледник', img:M+'g7-obe.jpg', front:M+'g7-pered.jpg', back:M+'g7-spina.jpg', detail:M+'g7-krupno.jpg'},
+    {name:'Связка в снегах', img:M+'g8-obe.jpg', front:M+'g8-pered.jpg', back:M+'g8-spina.jpg', detail:M+'g8-krupno.jpg'},
+    /* простые: надписи и знаки */
+    {name:'Буквы из верёвки', img:M+'g9-obe.jpg', front:M+'g9-pered.jpg', back:M+'g9-spina.jpg', detail:M+'g9-krupno.jpg', thumb:M+'g9-znachok.jpg'},
     {name:'Вся спина', img:M+'g5-obe.jpg', front:M+'g5-pered.jpg', back:M+'g5-spina.jpg', detail:M+'g5-krupno.jpg'},
     {name:'Я в Связке', img:M+'g4-obe.jpg', front:M+'g4-pered.jpg', back:'', detail:M+'g4-krupno.jpg'},
     {name:'Знак', img:M+'g1-obe.jpg', front:M+'g1-pered.jpg', back:'', detail:M+'g1-krupno.jpg'},
@@ -182,7 +193,7 @@
     var m=$('mr-main'), html=pic(T[cur]?T[cur][0]:'','mr-main','фото футболки: '+G.name+', '+(T[cur]?T[cur][1]:'спереди'));
     m.outerHTML=html.replace('class="svp-img','id="mr-main" class="svp-img');
     $('mr-thumbs').innerHTML=T.map(function(t,i){return '<button type="button" class="mr-th'+(i===cur?' on':'')+'" data-v="'+i+'" aria-label="'+esc(t[1])+'">'+pic(t[0],'',t[1])+'</button>';}).join('');
-    $('mr-gr').innerHTML=GRAPHICS.map(function(x,i){return '<button type="button" class="mr-g'+(i===g?' on':'')+'" data-g="'+i+'" aria-pressed="'+(i===g)+'">'+pic(x.detail,'',x.name)+'<b>'+esc(x.name)+'</b></button>';}).join('');
+    $('mr-gr').innerHTML=GRAPHICS.map(function(x,i){return '<button type="button" class="mr-g'+(i===g?' on':'')+'" data-g="'+i+'" aria-pressed="'+(i===g)+'">'+pic(x.thumb||x.detail,'',x.name)+'<b>'+esc(x.name)+'</b></button>';}).join('');
     $('mr-sz').innerHTML=SIZES.map(function(r){return '<button type="button" class="svp-chip'+(r[0]===sz?' on':'')+'" data-sz="'+esc(r[0])+'" aria-pressed="'+(r[0]===sz)+'">'+esc(r[0])+'</button>';}).join('');
     $('mr-tb').innerHTML=SIZES.map(function(r){return '<tr'+(r[0]===sz?' class="on"':'')+'><td>'+r.map(esc).join('</td><td>')+'</td></tr>';}).join('');
     $('mr-pick').textContent='Ваш выбор: '+G.name+', размер '+sz;

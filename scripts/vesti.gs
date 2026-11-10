@@ -1,10 +1,10 @@
 /* «Связка»: бот и форма для «Вестей из походов».
-   Скрипт живёт в закрытой таблице «Связка: кураторы (закрыто)»: Расширения → Apps Script.
-   Вставляется один раз. Всё, что меняется (походы, кураторы, вести), меняется в таблицах, не здесь.
+   Скрипт живёт в закрытой таблице «Связка: координаторы (закрыто)»: Расширения → Apps Script.
+   Вставляется один раз. Всё, что меняется (походы, координаторы, вести), меняется в таблицах, не здесь.
 
    Что делает:
-   - бот @svyazka_vesti_bot принимает вести от кураторов (по личному коду похода);
-   - форма «Весть с полей» принимает вести от кураторов без Телеграма;
+   - бот @svyazkaclub_vesti_bot принимает вести от координаторов (по личному коду похода);
+   - форма «Весть с полей» принимает вести от координаторов без Телеграма;
    - вести пишутся в лист «Вести» публичной таблицы «Связка: календарь», оттуда их берёт сайт;
    - копия каждой вести и всё подозрительное уходит в группу модераторов в Телеграме;
    - журнал всего присланного лежит здесь, в листе «Журнал». */
@@ -12,8 +12,8 @@
 var PUBLIC_ID = '1VaxvNKg-Qq0lQI24aSWUwkhhvPA80JX0QRKDvnT5jNE'; // «Связка: календарь»
 var SITE = 'https://svyazkaclub.ru/hikes/live/';
 var TZ = 'Europe/Moscow';
-var KEEP_DAYS = 7;       // сколько дней после конца похода код куратора ещё работает
-var EDIT_HOURS = 24;     // сколько часов куратор может удалить или исправить свою весть
+var KEEP_DAYS = 7;       // сколько дней после конца похода код координатора ещё работает
+var EDIT_HOURS = 24;     // сколько часов координатор может удалить или исправить свою весть
 
 var TYPES = [
   ['start', 'Стартовали'],
@@ -23,12 +23,14 @@ var TYPES = [
   ['finish', 'Финишировали'],
   ['help', 'Нужна помощь']
 ];
-var NEUTRAL = 'Группа на связи, ситуация решается. Подробности у куратора.';
+var NEUTRAL = 'Группа на связи, ситуация решается. Подробности у координатора.';
 var HEALTH = /травм|больниц|госпитал|эвакуац|перелом|ранен|погиб|без сознани|кровотеч|сотрясен|обморож|отёк|отек|вертол[её]т|мчс|спасател|ксс/i;
 var PHONE = /(\+?\d[\s\-()]*){10,}/;
 
 /* ---------- таблицы ---------- */
 
+/* Лист координаторов. Старое название «Кураторы» тоже понимаем, пока лист не переименован. */
+function coordSheet_() { return priv_().getSheetByName('Координаторы') || priv_().getSheetByName('Кураторы'); }
 function priv_() { return SpreadsheetApp.getActive(); }
 function pub_() { return SpreadsheetApp.openById(PUBLIC_ID); }
 function props_() { return PropertiesService.getScriptProperties(); }
@@ -50,7 +52,7 @@ function hikes_() {
   var sh = pub_().getSheetByName('Походы'), v = sh.getDataRange().getValues(), h = v[0], out = [];
   function col(name) { for (var i = 0; i < h.length; i++) if (String(h[i]).indexOf(name) === 0) return i; return -1; }
   var c = { ks: col('К.с.'), kind: col('Вид'), area: col('Район'), leader: col('Руководитель'), from: col('Начало'),
-            to: col('Конец'), group: col('Группа'), curator: col('Куратор'), addr: col('Адрес вестей') };
+            to: col('Конец'), group: col('Группа'), curator: col('Координатор') >= 0 ? col('Координатор') : col('Куратор'), addr: col('Адрес вестей') };
   for (var r = 1; r < v.length; r++) {
     var x = v[r];
     if (!x[c.leader] || !(x[c.from] instanceof Date)) continue;
@@ -77,12 +79,12 @@ function code_() {
   return s;
 }
 
-/* Завести походы для вестей: адрес страницы, код куратора, ссылки. Запускается из меню и сама раз в час. */
+/* Завести походы для вестей: адрес страницы, код координатора, ссылки. Запускается из меню и сама раз в час. */
 function syncHikes() {
   var list = hikes_(), psh = pub_().getSheetByName('Походы');
-  var csh = priv_().getSheetByName('Кураторы'), cur = csh.getDataRange().getValues();
+  var csh = coordSheet_(), cur = csh.getDataRange().getValues();
   var used = {}; list.forEach(function (x) { if (x.addr) used[x.addr] = 1; });
-  var bot = setting_('Адрес бота') || 'svyazka_vesti_bot';
+  var bot = setting_('Адрес бота') || 'svyazkaclub_vesti_bot';
   list.forEach(function (x) {
     if (!x.addr) {
       var base = translit_(x.leader.split(/\s+/)[0]) + '-' + Utilities.formatDate(x.from, TZ, 'yyyy-MM'), a = base, n = 2;
@@ -104,9 +106,9 @@ function syncHikes() {
   });
 }
 
-/* Строка куратора по коду или по Телеграм-id. */
+/* Строка координатора по коду или по Телеграм-id. */
 function curators_() {
-  var v = priv_().getSheetByName('Кураторы').getDataRange().getValues(), out = [], today = new Date();
+  var v = coordSheet_().getDataRange().getValues(), out = [], today = new Date();
   for (var i = 1; i < v.length; i++) {
     var r = v[i];
     if (!r[0] || !r[2]) continue;
@@ -229,19 +231,19 @@ function onMessage_(m) {
     var c = byCode_(st[1]);
     if (!c || !c.active) return say_(chat, 'Код не подошёл или срок его действия закончился. Напишите модератору вестей клуба.');
     if (c.ids.indexOf(String(id)) < 0) {
-      var sh = priv_().getSheetByName('Кураторы');
+      var sh = coordSheet_();
       sh.getRange(c.row, 6).setValue(c.ids.concat(String(id)).join(', '));
       sh.getRange(c.row, 7).setValue(who_(m.from));
       sh.getRange(c.row, 8).setValue(now_());
-      mod_('🔗 Подключился куратор: ' + c.group + '\n' + who_(m.from));
+      mod_('🔗 Подключился координатор: ' + c.group + '\n' + who_(m.from));
     }
-    return say_(chat, 'Вы куратор: ' + c.group + '.\n\nКогда группа выйдет на связь, просто напишите сюда, что она передала (или перешлите сообщение). Я спрошу тип вести и покажу, как она будет выглядеть на сайте.\n\n' +
+    return say_(chat, 'Вы координатор: ' + c.group + '.\n\nКогда группа выйдет на связь, просто напишите сюда, что она передала (или перешлите сообщение). Я спрошу тип вести и покажу, как она будет выглядеть на сайте.\n\n' +
       'Не пишите фамилии участников, телефоны и подробности о здоровье. Плохие новости сначала лично родственникам, а сюда «Нужна помощь»: такую весть увидят только модераторы.\n\n' +
       '/delete — убрать последнюю весть\n/edit — исправить последнюю весть\n\nСтраница вестей: ' + SITE + '?h=' + c.addr);
   }
   var mine = byUser_(id);
-  if (!mine.length) return say_(chat, 'Это бот кураторов турклуба «Связка». Вести с полей читайте здесь: ' + SITE);
-  if (/^\/start/.test(text)) return say_(chat, 'Вы куратор: ' + mine.map(function (x) { return x.group; }).join(', ') + '. Пишите сюда вести.');
+  if (!mine.length) return say_(chat, 'Это бот координаторов турклуба «Связка». Вести с полей читайте здесь: ' + SITE);
+  if (/^\/start/.test(text)) return say_(chat, 'Вы координатор: ' + mine.map(function (x) { return x.group; }).join(', ') + '. Пишите сюда вести.');
   if (/^\/(delete|edit)/.test(text)) return lastOwn_(chat, id, /^\/edit/.test(text));
   if (/^\/cancel/.test(text)) { state_(id, null); return say_(chat, 'Отменено.'); }
   if (!text) return say_(chat, 'Пока я принимаю только текст. Опишите словами, что передала группа.');
@@ -279,8 +281,8 @@ function lastOwn_(chat, id, edit) {
       if (age > EDIT_HOURS) return say_(chat, 'Последняя весть старше суток, её может поправить только модератор.');
       if (!rowByN_(m[1])) break;
       if (edit) { state_(id, { step: 'editlast', n: m[1], addr: v[i][1] }); return say_(chat, 'Сейчас там:\n' + v[i][6] + '\n\nПришлите новый текст целиком (или /cancel).'); }
-      showN_(m[1], false); journalSet_(i + 1, v[i][7] + '; удалено куратором');
-      mod_('🗑 Куратор убрал весть: ' + groupOf_(v[i][1]) + '\n' + v[i][6]);
+      showN_(m[1], false); journalSet_(i + 1, v[i][7] + '; удалено координатором');
+      mod_('🗑 Координатор убрал весть: ' + groupOf_(v[i][1]) + '\n' + v[i][6]);
       return say_(chat, 'Убрал с сайта.');
     }
   }
@@ -306,7 +308,7 @@ function onButton_(q) {
     journalSet_(n, 'опубликовано' + (k === 'mn' ? ' нейтрально' : '') + ' (' + by + '), №' + p.n);
     return edit('✅ Опубликовано' + (k === 'mn' ? ': «' + NEUTRAL + '»' : '') + ' (' + by + ')', [[{ text: 'Скрыть с сайта', callback_data: 'h:' + p.n }]]);
   }
-  /* кнопки куратора */
+  /* кнопки координатора */
   var s = state_(id), done = function (t) { tg_('editMessageText', { chat_id: chat, message_id: q.message.message_id, text: t }); };
   if (!s.step) return done('Это сообщение устарело. Пришлите текст вести заново.');
   var mine = byUser_(id);
@@ -336,7 +338,7 @@ function onButton_(q) {
       return say_(chat, 'В тексте ' + f.join(' и ') + '. На сайте такое не публикуем. Что делаем?',
         [[{ text: 'Переписать', callback_data: 'p:edit' }], [{ text: 'Отправить модератору', callback_data: 'p:mod' }]]);
     }
-    if (d === 'p:mod') { hold_(s.addr, s.type, s.when, s.text, 'бот', who_(q.from), f.join(', ') || 'по просьбе куратора'); state_(id, null); return done('Отправил модератору. Он решит, публиковать ли.'); }
+    if (d === 'p:mod') { hold_(s.addr, s.type, s.when, s.text, 'бот', who_(q.from), f.join(', ') || 'по просьбе координатора'); state_(id, null); return done('Отправил модератору. Он решит, публиковать ли.'); }
     postNow_(s.addr, s.type, s.when, s.text, 'бот', who_(q.from)); state_(id, null);
     return done('Опубликовано, на сайте через пару минут.\n' + SITE + '?h=' + s.addr + '\n\n/delete — убрать, /edit — исправить');
   }
@@ -352,9 +354,9 @@ function formLink_(code) {
 function createForm() {
   if (props_().getProperty('FORM_ID')) return SpreadsheetApp.getUi().alert('Форма уже есть: ' + props_().getProperty('FORM_URL'));
   var f = FormApp.create('Весть с полей')
-    .setDescription('Для кураторов турклуба «Связка». Пользуйтесь своей личной ссылкой: код уже вписан.\nНе пишите фамилии участников, телефоны и подробности о здоровье.')
+    .setDescription('Для координаторов турклуба «Связка». Пользуйтесь своей личной ссылкой: код уже вписан.\nНе пишите фамилии участников, телефоны и подробности о здоровье.')
     .setCollectEmail(false).setAllowResponseEdits(false).setLimitOneResponsePerUser(false);
-  var code = f.addTextItem().setTitle('Код куратора').setHelpText('Из вашей личной ссылки, вида SV-XXXXXX').setRequired(true);
+  var code = f.addTextItem().setTitle('Код координатора').setHelpText('Из вашей личной ссылки, вида SV-XXXXXX').setRequired(true);
   f.addMultipleChoiceItem().setTitle('Тип вести').setChoiceValues(TYPES.map(function (t) { return t[1]; })).setRequired(true);
   f.addDateTimeItem().setTitle('Когда группа вышла на связь').setRequired(true);
   f.addParagraphTextItem().setTitle('Текст вести').setRequired(true);
@@ -362,27 +364,41 @@ function createForm() {
   f.setDestination(FormApp.DestinationType.SPREADSHEET, priv_().getId());
   var pre = f.createResponse().withItemResponse(code.createResponse('КОД')).toPrefilledUrl();
   props_().setProperties({ FORM_ID: f.getId(), FORM_URL: f.getPublishedUrl(), FORM_PREFILL: pre });
-  setting_('Форма (для кураторов)', f.getPublishedUrl());
+  setting_('Форма (для координаторов)', f.getPublishedUrl());
   setting_('Форма (редактировать)', f.getEditUrl());
   ScriptApp.newTrigger('onForm').forSpreadsheet(priv_()).onFormSubmit().create();
   syncHikes();
-  SpreadsheetApp.getUi().alert('Форма создана. Личные ссылки на неё появились в листе «Кураторы».');
+  SpreadsheetApp.getUi().alert('Форма создана. Личные ссылки на неё появились в листе «Координаторы».');
 }
+
+/* Код из формы. В старой форме вопрос назывался «Код куратора», понимаем оба. */
+function code_f_(get) { return get('Код координатора') || get('Код куратора'); }
 
 function onForm(e) {
   var nv = e.namedValues, get = function (k) { return String((nv[k] || [''])[0]).trim(); };
-  var c = byCode_(get('Код куратора')), type = typeByLabel_(get('Тип вести')) || 'ok', text = get('Текст вести');
+  var c = byCode_(code_f_(get)), type = typeByLabel_(get('Тип вести')) || 'ok', text = get('Текст вести');
   var whenRaw = get('Когда группа вышла на связь'), when = now_();
   var m = whenRaw.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})\D+(\d{1,2}):(\d{2})/);
   if (m) when = m[3] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[1]).slice(-2) + ' ' + ('0' + m[4]).slice(-2) + ':' + m[5];
   else if (!isNaN(new Date(whenRaw))) when = Utilities.formatDate(new Date(whenRaw), TZ, 'yyyy-MM-dd HH:mm');
   if (!c || !c.active) {
-    journal_('форма', 'код ' + get('Код куратора'), '', type, when, text, 'не опубликовано: неверный или просроченный код');
-    return mod_('❓ Форма: весть с неверным кодом «' + get('Код куратора') + '», не опубликована.\n' + text);
+    journal_('форма', 'код ' + code_f_(get), '', type, when, text, 'не опубликовано: неверный или просроченный код');
+    return mod_('❓ Форма: весть с неверным кодом «' + code_f_(get) + '», не опубликована.\n' + text);
   }
   var f = flags_(text);
   if (type === 'help' || f.length) return hold_(c.addr, type, when, text, 'форма', 'форма, код ' + c.code, type === 'help' ? 'нужна помощь' : f.join(', '));
   postNow_(c.addr, type, when, text, 'форма', 'форма, код ' + c.code);
+}
+
+/* Переименование 9 ноября 2026: в уже созданной форме «куратор» меняем на «координатор».
+   Личные ссылки на форму не ломаются: они привязаны к номеру вопроса, а не к его названию. */
+function renameForm() {
+  var ui = SpreadsheetApp.getUi(), url = setting_('Форма (редактировать)');
+  if (!url) return ui.alert('Не нашёл ссылку на форму в листе «Настройки бота».');
+  var f = FormApp.openByUrl(url);
+  f.setDescription('Для координаторов турклуба «Связка». Пользуйтесь своей личной ссылкой: код уже вписан.\nНе пишите фамилии участников, телефоны и подробности о здоровье.');
+  f.getItems().forEach(function (it) { if (/куратор/i.test(it.getTitle())) it.setTitle(it.getTitle().replace(/куратор/g, 'координатор').replace(/Куратор/g, 'Координатор')); });
+  ui.alert('Готово: в форме теперь «координатор».');
 }
 
 /* ---------- настройка (меню в таблице) ---------- */
@@ -391,10 +407,11 @@ function onOpen() {
   SpreadsheetApp.getUi().createMenu('Вести')
     .addItem('1. Ввести токен бота', 'setToken')
     .addItem('2. Подключить бота', 'connectBot')
-    .addItem('3. Создать форму для кураторов', 'createForm')
+    .addItem('3. Создать форму для координаторов', 'createForm')
     .addSeparator()
-    .addItem('Обновить походы и ссылки кураторов', 'syncHikes')
+    .addItem('Обновить походы и ссылки координаторов', 'syncHikes')
     .addItem('Сменить группу модераторов', 'resetMods')
+    .addItem('Обновить тексты формы', 'renameForm')
     .addItem('Проверить, всё ли работает', 'check')
     .addToUi();
 }
@@ -410,9 +427,13 @@ function setToken() {
 }
 
 function connectBot() {
-  var ui = SpreadsheetApp.getUi(), url = ScriptApp.getService().getUrl();
-  if (!url) return ui.alert('Сначала «Развернуть» → «Новое развёртывание» → тип «Веб-приложение», доступ «Все», затем снова этот пункт.');
-  url = url.replace(/\/dev$/, '/exec');
+  /* Адрес веб-приложения владелец вставляет сам: ScriptApp.getService().getUrl() часто отдаёт
+     адрес черновика, а не развёртывания, и Телеграм получает «404 Not Found». */
+  var ui = SpreadsheetApp.getUi();
+  var a = ui.prompt('Адрес веб-приложения', 'В редакторе скрипта: «Развернуть» → «Управление развёртываниями» → скопируйте «URL» веб-приложения (заканчивается на /exec) и вставьте сюда.', ui.ButtonSet.OK_CANCEL);
+  if (a.getSelectedButton() !== ui.Button.OK) return;
+  var url = a.getResponseText().trim().replace(/\?.*$/, '');
+  if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(url)) return ui.alert('Это не тот адрес. Нужен URL веб-приложения, он начинается с https://script.google.com/ и заканчивается на /exec.');
   var secret = props_().getProperty('SECRET') || Utilities.getUuid().replace(/-/g, '');
   props_().setProperty('SECRET', secret);
   var r = tg_('setWebhook', { url: url + '?k=' + secret, allowed_updates: ['message', 'callback_query'], drop_pending_updates: true });

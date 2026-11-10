@@ -74,8 +74,8 @@
     <b class="cap-s">Подписка на расписание</b>
     <p style="margin:6px 0 0">Все события клуба появятся в вашем календаре, а переносы и новые занятия будут приходить сами.</p>
     <div class="cl-subl">
-      <a class="svp-btn" href="https://calendar.google.com/calendar/render?cid=webcal%3A%2F%2Fvanodotcom.github.io%2Fsvyazka-site%2Fcalendar.ics" target="_blank" rel="noopener">Google Календарь</a>
-      <a class="svp-btn" href="webcal://vanodotcom.github.io/svyazka-site/calendar.ics">Apple: айфон и мак</a>
+      <a class="svp-btn" href="https://calendar.google.com/calendar/render?cid=webcal%3A%2F%2Fvanodotcom.gitlab.io%2Fsvyazka-site%2Fcalendar.ics" target="_blank" rel="noopener">Google Календарь</a>
+      <a class="svp-btn" href="webcal://vanodotcom.gitlab.io/svyazka-site/calendar.ics">Apple: айфон и мак</a>
       <button type="button" class="svp-btn" id="cl-copy">Скопировать ссылку</button>
     </div>
     <p class="cl-subn"><b>Яндекс Календарь:</b> скопируйте ссылку, откройте calendar.yandex.ru, слева «+» у списка календарей → «Подписаться на календарь» и вставьте её. Так же подключаются Outlook и другие календари.</p>
@@ -152,7 +152,7 @@
   }
   fbox.addEventListener('click',function(e){var b=e.target.closest('[data-f]'); if(b){filter=b.dataset.f; draw();}});
   var sb=document.getElementById('cl-subbtn');
-  var cp=document.getElementById('cl-copy'), ICS='https://vanodotcom.github.io/svyazka-site/calendar.ics';
+  var cp=document.getElementById('cl-copy'), ICS='https://vanodotcom.gitlab.io/svyazka-site/calendar.ics';
   cp.addEventListener('click',function(){
     function ok(){cp.textContent='Ссылка скопирована'; setTimeout(function(){cp.textContent='Скопировать ссылку';},2500);}
     if(navigator.clipboard) navigator.clipboard.writeText(ICS).then(ok,function(){prompt('Ссылка на календарь:',ICS);});

@@ -81,7 +81,7 @@
       <a class="svh-link" href="/start/">Как всё устроено</a>
     </div>
     <!-- ПРАВИТЬ: вместо ССЫЛКА_НА_ФОТО вставьте адрес фото из Тильды (см. инструкцию) -->
-    <img class="svh-photo" src="https://vanodotcom.github.io/svyazka-site/img/home-hero.jpg" alt="Группа в касках поднимается по каменистой тропе, позади горные хребты">
+    <img class="svh-photo" src="https://vanodotcom.gitlab.io/svyazka-site/img/home-hero.jpg" alt="Группа в касках поднимается по каменистой тропе, позади горные хребты">
   </section>
 
   <nav class="svh-doors" aria-label="С чего начать">
@@ -156,7 +156,7 @@
   ];
 
   /* Новости: файл news.json, его раз в час обновляет GitHub из t.me/westra (scripts/tg_news.py). Если не загрузился, показывается NEWS выше. */
-  var FEED_URL = 'https://vanodotcom.github.io/svyazka-site/news.json?v='+Math.floor(Date.now()/60000); /* обновляется раз в час из t.me/westra */
+  var FEED_URL = 'https://vanodotcom.gitlab.io/svyazka-site/news.json?v='+Math.floor(Date.now()/60000); /* обновляется раз в час из t.me/westra */
 
   var MONTHS=['янв','февр','марта','апр','мая','июня','июля','авг','сент','окт','нояб','дек'];
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
