@@ -55,6 +55,14 @@ body{font-family:'Onest',system-ui,sans-serif}
   #t-footer{position:relative;z-index:60}
   html,body{overflow-x:hidden}
 }
+/* очень широкие экраны (больше --sv-max, например 2K и 4K): весь сайт (шапка, меню, страница, подвал)
+   стоит колонкой шириной --sv-max по центру, слева и справа белые поля. ПРАВИТЬ: ширина колонки */
+:root{--sv-max:1440px}
+@media (min-width:1000px){
+  #allrecords{max-width:var(--sv-max);margin-left:auto!important;margin-right:auto!important}
+  /* меню закреплено на экране, поэтому его отодвигаем от левого края вручную, на ширину белого поля */
+  .sv-side{left:max(0px,calc((100% - var(--sv-max)) / 2))}
+}
 /* ноутбуки: меню чуть уже, блоки Тильды ужимаются под оставшуюся ширину */
 @media (min-width:1000px) and (max-width:1479px){
   :root{--sv-menu:230px}
