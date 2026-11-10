@@ -1,15 +1,15 @@
 /* «Связка»: загрузчик страниц для Тильды.
    В блоке T123 стоит строка вида
-     <div data-sv="schools"></div><script src="https://vanodotcom.gitlab.io/svyazka-site/sv.js"></script>
-   (в старых заглушках вместо gitlab.io стоит vanodotcom.github.io — работает так же).
+     <div data-sv="schools"></div><script src="https://vanodotcom.github.io/svyazka-site/sv.js"></script>
+   (в шапке и подвале Тильды у этой строки есть запасной вариант: если GitHub не открылся, sv.js берётся с GitLab; см. README).
    Скрипт берёт файл p/schools.html из репозитория и вставляет его на место div. */
 (function(){
-  /* Сайт лежит в двух одинаковых копиях: GitLab Pages и GitHub Pages (с 10 ноября 2026 обе обновляются вместе).
+  /* Сайт лежит в двух одинаковых копиях: основная — GitHub Pages, запасная — GitLab Pages (обе обновляются вместе).
      Страницу запрашиваем сразу с обеих и берём ту, что пришла первой: если один хостинг не открывается
      у посетителя (сбой, блокировка у мобильного оператора), сайт всё равно работает со второго. */
-  var BASES = ['https://vanodotcom.gitlab.io/svyazka-site/', 'https://vanodotcom.github.io/svyazka-site/'];
-  var MIRROR = 'https://cdn.jsdelivr.net/gh/vanodotcom/svyazka-site@main/'; /* запасной сервер, если не ответили оба (копия с GitHub, обновляется с задержкой до 12 часов) */
-  var MAIN = BASES[0]; /* этот адрес записан внутри страниц (фото, данные); меняем его на тот хостинг, который ответил */
+  var BASES = ['https://vanodotcom.github.io/svyazka-site/', 'https://vanodotcom.gitlab.io/svyazka-site/'];
+  var MIRROR = 'https://cdn.jsdelivr.net/gh/vanodotcom/svyazka-site@main/'; /* третий запасной, если не ответили оба (копия с GitHub, обновляется с задержкой до 12 часов) */
+  var MAIN = BASES[0]; /* адрес GitHub записан внутри страниц (фото, данные); если первым ответил GitLab, меняем его на GitLab */
   var v = Math.floor(Date.now() / 60000); /* свежая версия не реже раза в минуту */
   document.documentElement.lang = 'ru'; /* язык страницы для читалок, переводчика и переносов */
   function run(box, html){

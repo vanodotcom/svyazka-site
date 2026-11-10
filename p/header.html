@@ -198,7 +198,7 @@ body{font-family:'Onest',system-ui,sans-serif}
 (function(){
   var form=document.querySelector('.sv-search'), out=document.getElementById('svFound'); if(!form||!out) return;
   var inp=form.querySelector('input'), side=document.querySelector('.sv-side');
-  var URL='https://vanodotcom.gitlab.io/svyazka-site/data/search.json?v='+Math.floor(Date.now()/600000);
+  var URL='https://vanodotcom.github.io/svyazka-site/data/search.json?v='+Math.floor(Date.now()/600000);
   var db=null, loading=null, timer=null;
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function norm(s){return String(s).toLowerCase().replace(/ё/g,'е');}

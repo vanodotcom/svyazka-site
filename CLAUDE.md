@@ -41,9 +41,10 @@
 - t.me, github.io и API GitHub Pages недоступны из контейнера. Роботов проверяют запуском на GitHub (`workflow_dispatch`) и по вкладке Actions.
 - Роботы, которые пишут в `main` (календарь, поиск), перед `git push` делают `git pull --rebase`, чтобы два запуска подряд не конфликтовали.
 
-## Хостинг (с 8 ноября 2026)
+## Хостинг (с 10 ноября 2026)
 
-- Аккаунт GitHub vanodotcom заблокирован 7 ноября 2026. Репозиторий теперь на GitLab (https://gitlab.com/vanodotcom/svyazka-site), сайт с кодом на GitLab Pages `https://vanodotcom.gitlab.io/svyazka-site/` (`.gitlab-ci.yml`, задание `pages`).
-- Роботы из `.github/workflows/` не работают. Вместо них задание `pages` в `.gitlab-ci.yml` запускает scripts/*.py перед публикацией (данные только в public, в репозиторий не коммитятся); расписание раз в час в Build → Pipeline schedules.
-- sv.js запрашивает страницу параллельно с GitLab Pages и GitHub Pages (`BASES`), берёт первый ответ и заменяет в ней адрес gitlab.io на ответивший хостинг. `MIRROR` (jsDelivr, копия GitHub) — если не ответил ни один.
-- Каждую правку пушить в ОБА репозитория: GitLab main и GitHub main (истории разные: на GitHub коммит поверх gh/main с деревом GitLab main, без force).
+- Основной: GitHub vanodotcom/svyazka-site, GitHub Pages `https://vanodotcom.github.io/svyazka-site/`; этот адрес записан в p/*.html. Запасной, всегда такой же: GitLab (https://gitlab.com/vanodotcom/svyazka-site), GitLab Pages `https://vanodotcom.gitlab.io/svyazka-site/` (`.gitlab-ci.yml`, задание `pages`, роботы там же, данные только в public).
+- 7–10 ноября 2026 аккаунт GitHub был заблокирован, тогда основным был GitLab.
+- Роботы работают в обеих копиях: на GitHub через `.github/workflows/` (коммитят в main), на GitLab в CI.
+- sv.js запрашивает страницу параллельно с GitHub Pages и GitLab Pages (`BASES`), берёт первый ответ; если ответил GitLab, меняет в странице github.io на gitlab.io. `MIRROR` (jsDelivr) — если не ответил ни один. Заглушки шапки и подвала в Тильде грузят sv.js с GitHub, при ошибке (onerror) с GitLab.
+- Каждую правку пушить в ОБА репозитория: сначала GitHub main, затем GitLab main (истории разные: на GitLab коммит поверх его main с деревом GitHub main, без force).
