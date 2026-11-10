@@ -45,4 +45,5 @@
 
 - Аккаунт GitHub vanodotcom заблокирован 7 ноября 2026. Репозиторий теперь на GitLab (https://gitlab.com/vanodotcom/svyazka-site), сайт с кодом на GitLab Pages `https://vanodotcom.gitlab.io/svyazka-site/` (`.gitlab-ci.yml`, задание `pages`).
 - Роботы из `.github/workflows/` не работают. Вместо них задание `pages` в `.gitlab-ci.yml` запускает scripts/*.py перед публикацией (данные только в public, в репозиторий не коммитятся); расписание раз в час в Build → Pipeline schedules.
-- `MIRROR` в sv.js (jsDelivr) берёт файлы только с GitHub, поэтому сейчас он запасной лишь на случай, если GitHub вернут.
+- sv.js запрашивает страницу параллельно с GitLab Pages и GitHub Pages (`BASES`), берёт первый ответ и заменяет в ней адрес gitlab.io на ответивший хостинг. `MIRROR` (jsDelivr, копия GitHub) — если не ответил ни один.
+- Каждую правку пушить в ОБА репозитория: GitLab main и GitHub main (истории разные: на GitHub коммит поверх gh/main с деревом GitLab main, без force).
