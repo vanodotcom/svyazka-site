@@ -21,4 +21,17 @@ DESCRIPTION:открыто всем · Все события: https://svya
  zkaclub.ru/calendar/
 URL:https://svyazkaclub.ru/calendar/
 END:VEVENT
+BEGIN:VEVENT
+UID:c2d26c37c89ac420b3d2@svyazkaclub.ru
+DTSTAMP:20261130T163000Z
+DTSTART:20261130T163000Z
+DTEND:20261130T183000Z
+SUMMARY:Первая встреча пешеходной школы (НУ\
+ , БУ\, СУ)
+LOCATION:Зал на Пушкинской\, Старопименовски
+ й пер.\, 4с2
+DESCRIPTION:пешеходная · Все события: https://svyazka
+ club.ru/calendar/
+URL:https://svyazkaclub.ru/calendar/
+END:VEVENT
 END:VCALENDAR
