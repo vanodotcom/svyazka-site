@@ -155,7 +155,7 @@
     {day:'2026-11-24', title:'Первая встреча горных школ БУ и СУ', where:'Пушкинская, 19:30'}
   ];
 
-  /* Новости: файл news.json, его раз в час обновляет GitHub из t.me/westra (scripts/tg_news.py). Если не загрузился, показывается NEWS выше. */
+  /* Новости: файл news.json, его раз в час обновляет робот из t.me/westra (scripts/tg_news.py), картинки лежат у нас в img/news/. Если не загрузился, показывается NEWS выше. */
   var FEED_URL = 'https://vanodotcom.gitlab.io/svyazka-site/news.json?v='+Math.floor(Date.now()/60000); /* обновляется раз в час из t.me/westra */
 
   var MONTHS=['янв','февр','марта','апр','мая','июня','июля','авг','сент','окт','нояб','дек'];
@@ -164,7 +164,9 @@
   function drawNews(list){
     var box=document.getElementById('svh-news'); if(!box) return;
     box.innerHTML=list.slice(0,3).map(function(n){
-      var img=n.photo?'<img src="'+esc(n.photo)+'" alt="" loading="lazy">':'';
+      /* photo бывает полным адресом или путём вида img/news/1084.jpg (копия картинки у нас на сайте, её кладёт робот): тогда берём с того же хостинга, что и news.json */
+      var src=n.photo&&!/^https?:/.test(n.photo)?FEED_URL.replace(/news\.json.*$/,'')+n.photo:n.photo;
+      var img=src?'<img src="'+esc(src)+'" alt="" loading="lazy">':'';
       return '<a class="svh-nw'+(img?'':' noimg')+'" href="'+esc(n.link||'https://t.me/westra')+'">'+img+
         '<span><small>'+esc(n.date)+'</small><strong>'+esc(n.title)+'</strong>'+(n.text?'<p>'+esc(n.text)+'</p>':'')+'</span></a>';
     }).join('');

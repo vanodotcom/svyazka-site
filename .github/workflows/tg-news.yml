@@ -1,5 +1,6 @@
 # Робот «Новости из Телеграма»: каждый час (в :17) читает публичный канал t.me/westra
 # и пишет 6 свежих постов в news.json; главная показывает три из них.
+# Картинки этих трёх новостей скачиваются в img/news/, старые удаляются.
 name: Новости из Телеграма
 on:
   schedule:
@@ -17,6 +18,7 @@ jobs:
       - name: Сохранить, если новости изменились
         run: |
           git add news.json
+          git add -A img/news
           if git diff --cached --quiet; then echo "без изменений"; exit 0; fi
           git config user.name "svyazka-news-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
