@@ -1,5 +1,5 @@
 """Собирает calendar.ics (подписка на календарь клуба) из листа «События» Google-таблицы.
-Запускается роботом раз в час (.github/workflows/calendar-ics.yml). Строки с [ТЕСТ] и без даты пропускаются."""
+Запускается роботом раз в час (на GitHub .github/workflows/calendar-ics.yml, на GitLab .gitlab-ci.yml). Строки с [ТЕСТ] и без даты пропускаются."""
 import csv, hashlib, io, os, re, urllib.parse, urllib.request
 from datetime import date, datetime, timedelta, timezone
 

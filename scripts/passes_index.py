@@ -1,5 +1,5 @@
 """Собирает список перевалов из каталога westra.ru/passes для подсказок в поиске на /library/passes/.
-Пишет data/passes.json. Запускается GitHub Actions раз в сутки (.github/workflows/passes-index.yml).
+Пишет data/passes.json. Запускается раз в сутки: на GitHub .github/workflows/passes-index.yml, на GitLab .gitlab-ci.yml.
 Берёт только списки перевалов по крупным районам (около 30 страниц, с паузой между запросами)."""
 import html, json, re, sys, time, urllib.request
 

@@ -1,5 +1,5 @@
 """Собирает data/search.json для поиска в меню: адрес, заголовок и текст каждой страницы из p/.
-Запускается роботом после каждой правки в p/ (.github/workflows/search-index.yml)."""
+Запускается роботом после каждой правки в p/ (на GitHub .github/workflows/search-index.yml, на GitLab при каждой публикации в .gitlab-ci.yml)."""
 import html, json, os, re
 from html.parser import HTMLParser
 
