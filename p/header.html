@@ -25,6 +25,9 @@ body{font-family:'Onest',system-ui,sans-serif}
 .sv-close svg{display:block}
 /* левое меню */
 .sv-side{position:fixed;left:0;top:var(--sv-head);bottom:0;width:var(--sv-menu);box-sizing:border-box;padding:16px 24px 32px 32px;background:#fff;overflow-y:auto;z-index:50;font-family:'Onest',system-ui,sans-serif}
+/* Прячем полосу прокрутки меню (в Windows она видна всегда, на Mac прячется сама). Меню по-прежнему прокручивается колёсиком и пальцем. */
+.sv-side{scrollbar-width:none;-ms-overflow-style:none}
+.sv-side::-webkit-scrollbar{display:none;width:0;height:0}
 .sv-grp{display:flex;flex-direction:column;padding:12px 0;border-top:1px solid var(--sv-line)}
 .sv-grp:first-child{border-top:0}
 .sv-sh{font-family:'Unbounded',sans-serif;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--sv-ink);margin:0 0 6px;align-self:flex-start}
