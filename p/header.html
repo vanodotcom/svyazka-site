@@ -24,7 +24,7 @@ body{font-family:'Onest',system-ui,sans-serif}
 .sv-burger,.sv-cta-m{flex-shrink:0}
 .sv-close svg{display:block}
 /* левое меню */
-.sv-side{position:fixed;left:0;top:var(--sv-head);bottom:0;width:var(--sv-menu);box-sizing:border-box;padding:16px 24px 32px 32px;border-right:1px solid var(--sv-line);background:#fff;overflow-y:auto;z-index:50;font-family:'Onest',system-ui,sans-serif}
+.sv-side{position:fixed;left:0;top:var(--sv-head);bottom:0;width:var(--sv-menu);box-sizing:border-box;padding:16px 24px 32px 32px;background:#fff;overflow-y:auto;z-index:50;font-family:'Onest',system-ui,sans-serif}
 .sv-grp{display:flex;flex-direction:column;padding:12px 0;border-top:1px solid var(--sv-line)}
 .sv-grp:first-child{border-top:0}
 .sv-sh{font-family:'Unbounded',sans-serif;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--sv-ink);margin:0 0 6px;align-self:flex-start}
@@ -57,7 +57,7 @@ body{font-family:'Onest',system-ui,sans-serif}
 }
 /* очень широкие экраны (больше --sv-max, например 2K и 4K): весь сайт (шапка, меню, страница, подвал)
    стоит колонкой шириной --sv-max по центру, слева и справа белые поля. ПРАВИТЬ: ширина колонки */
-:root{--sv-max:1440px}
+:root{--sv-max:1300px}
 @media (min-width:1000px){
   #allrecords{max-width:var(--sv-max);margin-left:auto!important;margin-right:auto!important}
   /* меню закреплено на экране, поэтому его отодвигаем от левого края вручную, на ширину белого поля */
