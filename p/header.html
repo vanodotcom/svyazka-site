@@ -204,6 +204,13 @@ body{font-family:'Onest',system-ui,sans-serif}
     });
   }
   markOld(); document.addEventListener('sv:loaded',markOld); setTimeout(markOld,1500);
+  /* все ссылки на другие сайты (новости в Телеграме, соцсети клуба, формы, карты) открываются в новой вкладке,
+     чтобы человек не уходил с нашего сайта. Ловим нажатие, поэтому работает и для новостей, которые подгружаются позже */
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href]'); if(!a||a.target||a.hasAttribute('download')) return;
+    if(!/^https?:$/.test(a.protocol)||a.hostname===location.hostname||/(^|\.)svyazkaclub\.ru$/.test(a.hostname)) return;
+    a.target='_blank'; a.rel='noopener';
+  },true);
 })();
 /* Поиск по сайту прямо в меню: тексты страниц лежат в data/search.json (собирает робот после каждой правки в p/) */
 (function(){
