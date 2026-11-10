@@ -11,6 +11,8 @@
 pages:
   image: python:3.12-alpine
   script:
+    # картинки новостей качаем только раз в сутки (в 02 UTC), в остальное время берём уже скачанные из кэша GitLab
+    - if [ "$(date -u +%H)" = "02" ]; then export NEWS_PHOTOS=1; fi
     - python3 scripts/tg_news.py || echo "новости не обновились, оставляем прежние"
     - python3 scripts/calendar_ics.py || echo "календарь не обновился, оставляем прежний"
     - python3 scripts/search_index.py || echo "поиск не обновился, оставляем прежний"
@@ -19,6 +21,11 @@ pages:
     # копируем всё, кроме самой папки public
     - for f in *; do if [ "$f" != public ]; then cp -r "$f" public/; fi; done
     - ls public
+  # кэш между запусками: картинки новостей (img/news), чтобы не качать их каждый час заново
+  cache:
+    key: news-img
+    paths:
+      - img/news/
   artifacts:
     paths:
       - public

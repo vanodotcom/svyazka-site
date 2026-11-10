@@ -3,7 +3,9 @@
 
 Картинки трёх новостей, которые показывает главная, робот скачивает к себе в img/news/
 (имя = номер поста, например 1084.jpg), чтобы главная не зависела от доступности Телеграма.
-Картинки ушедших с главной новостей удаляются, хранится только то, что сейчас на главной."""
+Картинки ушедших с главной новостей удаляются, хранится только то, что сейчас на главной.
+Скачивает новые картинки только запуск раз в сутки (переменная окружения NEWS_PHOTOS=1, около 5 утра по Москве).
+В остальные часы у новой новости картинка идёт прямо из Телеграма, а уже скачанные остаются."""
 import html, json, os, re, sys, urllib.request
 from datetime import datetime, timezone, timedelta
 
@@ -11,6 +13,7 @@ CHANNEL = 'westra'
 LIMIT = 6
 SHOW = 3           # столько новостей показывает главная (p/home.html), только их картинки храним
 IMG_DIR = 'img/news'
+DOWNLOAD = os.environ.get('NEWS_PHOTOS') == '1'  # 1 — можно скачивать новые картинки
 UA = {'User-Agent': 'Mozilla/5.0 (svyazka-site news bot)'}
 MONTHS = ['янв', 'февр', 'марта', 'апр', 'мая', 'июня', 'июля', 'авг', 'сент', 'окт', 'нояб', 'дек']
 
@@ -75,6 +78,8 @@ def cache_photos(posts):
         path = os.path.join(IMG_DIR, name)
         try:
             if not os.path.exists(path):  # картинка поста не меняется, второй раз не качаем
+                if not DOWNLOAD:  # не суточный запуск: пока показываем картинку из Телеграма
+                    continue
                 data = urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30).read()
                 with open(path, 'wb') as f:
                     f.write(data)
