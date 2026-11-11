@@ -1,7 +1,7 @@
 """Собирает список перевалов из каталога westra.ru/passes для подсказок в поиске на /library/passes/.
 Пишет data/passes.json. Запускается раз в сутки: на GitHub .github/workflows/passes-index.yml, на GitLab .gitlab-ci.yml.
 Берёт только списки перевалов по крупным районам (около 30 страниц, с паузой между запросами)."""
-import html, json, re, sys, time, urllib.request
+import html, json, os, re, sys, time, urllib.request
 
 BASE = 'https://westra.ru/passes/'
 UA = 'svyazka-passes-index/1.0 (+https://svyazkaclub.ru/library/passes/)'
@@ -75,4 +75,7 @@ def main():
 
 
 if __name__ == '__main__':
+    if os.path.exists('robots-pause.txt'):  # роботы заморожены кнопкой «Откатить данные роботов»
+        print('роботы заморожены (robots-pause.txt), перевалы не обновляю')
+        raise SystemExit(0)
     main()

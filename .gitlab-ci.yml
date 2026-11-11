@@ -7,16 +7,19 @@
 #   calendar.ics     — подписка на календарь из листа «События» (scripts/calendar_ics.py)
 #   data/search.json — тексты страниц для поиска в меню (scripts/search_index.py)
 #   data/passes.json — список перевалов westra.ru, только в запуске около 5 утра по Москве (scripts/passes_index.py)
-# Если робот не смог обновить данные (сбой Телеграма, таблицы и т.п.), на сайт уходит прежний файл из репозитория.
+# Если робот не смог обновить данные (сбой Телеграма, таблицы и т.п.) или его защита решила, что новые данные
+# подозрительно пустые, на сайт уходит прежний файл из репозитория.
 pages:
   image: python:3.12-alpine
   script:
     # картинки новостей качаем только раз в сутки (в 02 UTC), в остальное время берём уже скачанные из кэша GitLab
     - if [ "$(date -u +%H)" = "02" ]; then export NEWS_PHOTOS=1; fi
-    - python3 scripts/tg_news.py || echo "новости не обновились, оставляем прежние"
-    - python3 scripts/calendar_ics.py || echo "календарь не обновился, оставляем прежний"
-    - python3 scripts/search_index.py || echo "поиск не обновился, оставляем прежний"
-    - if [ "$(date -u +%H)" = "02" ]; then python3 scripts/passes_index.py || echo "перевалы не обновились"; fi
+    # заморозка: если на GitHub нажали «Откатить данные роботов», берём оттуда откаченные файлы и роботов не запускаем
+    - if python3 scripts/robots_pause.py; then export SV_PAUSED=1; fi
+    - if [ -z "$SV_PAUSED" ]; then python3 scripts/tg_news.py || echo "новости не обновились, оставляем прежние"; fi
+    - if [ -z "$SV_PAUSED" ]; then python3 scripts/calendar_ics.py || echo "календарь не обновился, оставляем прежний"; fi
+    - if [ -z "$SV_PAUSED" ]; then python3 scripts/search_index.py || echo "поиск не обновился, оставляем прежний"; fi
+    - if [ -z "$SV_PAUSED" ] && [ "$(date -u +%H)" = "02" ]; then python3 scripts/passes_index.py || echo "перевалы не обновились"; fi
     - mkdir public
     # копируем всё, кроме самой папки public
     - for f in *; do if [ "$f" != public ]; then cp -r "$f" public/; fi; done

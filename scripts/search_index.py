@@ -105,9 +105,25 @@ def main():
             text = page_text(f.read())
         out.append({'u': url, 't': title, 'x': text[:12000]})
     os.makedirs(os.path.join(ROOT, 'data'), exist_ok=True)
+    # защита от поломки: если страниц или текста стало намного меньше, прежний файл не трогаем
+    # (запуск завершится ошибкой и станет красным); обойти — запустить с SV_FORCE=1
+    old_path = os.path.join(ROOT, 'data', 'search.json')
+    if os.path.exists(old_path) and os.environ.get('SV_FORCE') != '1':
+        try:
+            old = json.load(open(old_path, encoding='utf-8'))
+        except ValueError:
+            old = []
+        old_len = sum(len(x.get('x', '')) for x in old)
+        new_len = sum(len(x['x']) for x in out)
+        if len(out) < len(old) * 0.7 or new_len < old_len * 0.5:
+            raise SystemExit('страниц было %d, стало %d; текста было %d, стало %d: поиск не перезаписываю'
+                             % (len(old), len(out), old_len, new_len))
     with open(os.path.join(ROOT, 'data', 'search.json'), 'w', encoding='utf-8') as f:
         json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
 
 
 if __name__ == '__main__':
+    if os.path.exists(os.path.join(ROOT, 'robots-pause.txt')):
+        print('роботы заморожены (robots-pause.txt), поиск не обновляю')
+        raise SystemExit(0)
     main()

@@ -41,6 +41,7 @@
 - t.me, github.io, gitlab.io и API GitHub Pages недоступны из контейнера. Роботов проверяют запуском на GitHub (`gh api -X POST repos/vanodotcom/svyazka-site/actions/workflows/<файл>.yml/dispatches -f ref=main`) и по списку запусков Actions; запуски GitLab видны без входа: `https://gitlab.com/api/v4/projects/88675709/pipelines`.
 - Картинки трёх новостей главной лежат в `img/news/` (кладёт `scripts/tg_news.py`, новые качает только при `NEWS_PHOTOS=1` в запуске 02 UTC; на GitLab хранятся в кэше CI `news-img`). Руками не трогать.
 - Роботы, которые пишут в `main` (календарь, поиск), перед `git push` делают `git pull --rebase`, чтобы два запуска подряд не конфликтовали.
+- У роботов есть защита от пустых данных (выход с ошибкой, файл не трогают; обход `SV_FORCE=1`) и заморозка: пока в корне есть `robots-pause.txt`, все роботы пропускают работу. Кнопка `.github/workflows/rollback.yml` откатывает данные по истории git и ставит/снимает заморозку; GitLab узнаёт о ней через `scripts/robots_pause.py` (читает raw.githubusercontent.com). Новый робот тоже должен проверять `robots-pause.txt`.
 
 ## Хостинг (с 10 ноября 2026)
 

@@ -82,7 +82,25 @@ def build(rows):
     return '\r\n'.join(fold(x) for x in lines) + '\r\n'
 
 
+def guard(ics):
+    """Защита от поломки: если событий вдруг стало намного меньше, чем в прежнем файле
+    (переименовали лист или столбцы, удалили строки), прежний calendar.ics не трогаем и
+    завершаемся с ошибкой: на GitHub запуск станет красным и придёт письмо.
+    Обойти защиту (если событий правда стало мало): запустить с SV_FORCE=1."""
+    path = os.path.join(ROOT, 'calendar.ics')
+    if os.environ.get('SV_FORCE') == '1' or not os.path.exists(path):
+        return
+    old = open(path, encoding='utf-8').read().count('BEGIN:VEVENT')
+    new = ics.count('BEGIN:VEVENT')
+    if (new == 0 and old >= 1) or (new < old / 2 and old - new >= 5):
+        raise SystemExit('событий было %d, стало %d: похоже на поломку таблицы, календарь не перезаписываю' % (old, new))
+
+
 if __name__ == '__main__':
+    if os.path.exists(os.path.join(ROOT, 'robots-pause.txt')):
+        print('роботы заморожены (robots-pause.txt), календарь не обновляю')
+        raise SystemExit(0)
     ics = build(fetch())
+    guard(ics)
     with open(os.path.join(ROOT, 'calendar.ics'), 'w', encoding='utf-8', newline='') as f:
         f.write(ics)

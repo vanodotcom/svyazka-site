@@ -1,0 +1,69 @@
+# Кнопка «Откатить данные роботов»: на случай, когда роботы отработали «успешно», но данные на сайте пропали или сломались
+# (Телеграм поменял страницу, в таблице переименовали столбцы и т. п.).
+# Как нажать: вкладка Actions → слева «Откатить данные роботов» → Run workflow → выбрать действие → зелёная кнопка Run workflow.
+#   «откатить»     — вернуть news.json, calendar.ics, data/search.json, data/passes.json и img/news/ такими, какими они были
+#                    N часов назад (по умолчанию сутки), и ЗАМОРОЗИТЬ роботов (файл robots-pause.txt), чтобы через час
+#                    они не записали плохие данные снова. Запасная копия на GitLab тоже видит заморозку и берёт данные отсюда.
+#   «разморозить»  — убрать заморозку (когда причина исправлена) и сразу запустить всех роботов заново.
+# Отдельный архив не нужен: каждая версия файлов роботов уже лежит в истории git.
+name: Откатить данные роботов
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Что сделать'
+        type: choice
+        options: ['откатить', 'разморозить']
+        default: 'откатить'
+      hours:
+        description: 'На сколько часов назад откатить (только для «откатить»)'
+        default: '24'
+permissions:
+  contents: write
+  actions: write
+concurrency: rollback
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # нужна вся история, из неё и берём прежние версии
+      - name: Откатить и заморозить
+        if: inputs.action == 'откатить'
+        env:
+          HOURS: ${{ inputs.hours }}
+        run: |
+          case "$HOURS" in ''|*[!0-9]*) echo "часы должны быть числом"; exit 1;; esac
+          C=$(git rev-list -1 --before="$HOURS hours ago" HEAD)
+          if [ -z "$C" ]; then echo "нет такой старой версии"; exit 1; fi
+          echo "Берём данные из версии $C ($(git log -1 --format='%ci %s' $C))"
+          for f in news.json calendar.ics data/search.json data/passes.json; do
+            git checkout "$C" -- "$f" 2>/dev/null || echo "в той версии нет $f, оставляем как есть"
+          done
+          # картинки новостей: удаляем нынешние и кладём те, что были тогда
+          git rm -rq --ignore-unmatch img/news
+          git checkout "$C" -- img/news 2>/dev/null || true
+          printf 'Роботы заморожены %s UTC: данные откачены на %s часов назад (версия %s).\nРазморозить: Actions → «Откатить данные роботов» → «разморозить».\n' \
+            "$(date -u '+%Y-%m-%d %H:%M')" "$HOURS" "$C" > robots-pause.txt
+          git add -A news.json calendar.ics data robots-pause.txt
+          if [ -d img/news ]; then git add -A img/news; fi
+          git config user.name "svyazka-rollback-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Откат данных роботов на $HOURS ч назад и заморозка роботов"
+          git pull --rebase -q origin main && git push
+      - name: Разморозить и запустить роботов
+        if: inputs.action == 'разморозить'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f robots-pause.txt ]; then
+            git rm -q robots-pause.txt
+            git config user.name "svyazka-rollback-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Роботы разморожены"
+            git pull --rebase -q origin main && git push
+          else
+            echo "роботы и так не заморожены"
+          fi
+          for w in tg-news.yml calendar-ics.yml search-index.yml passes-index.yml; do gh workflow run "$w" --ref main; done

@@ -95,9 +95,11 @@ def main():
     req = urllib.request.Request('https://t.me/s/' + CHANNEL, headers=UA)
     page = urllib.request.urlopen(req, timeout=30).read().decode('utf-8', 'replace')
     posts = parse(page)
-    if not posts:
-        print('no posts parsed, keeping old news.json')
-        return 0
+    # защита от поломки (Телеграм поменял страницу): меньше трёх постов или пустые заголовки —
+    # прежний news.json не трогаем и завершаемся с ошибкой, чтобы запуск стал красным
+    if len(posts) < SHOW or sum(1 for x in posts if x['title'].strip()) < SHOW:
+        print('разобрано постов: %d, похоже на поломку, news.json не перезаписываю' % len(posts))
+        return 1
     cache_photos(posts)
     with open('news.json', 'w', encoding='utf-8') as f:
         json.dump(posts, f, ensure_ascii=False, indent=1)
@@ -105,4 +107,7 @@ def main():
     return 0
 
 if __name__ == '__main__':
+    if os.path.exists('robots-pause.txt'):
+        print('роботы заморожены (robots-pause.txt), новости не обновляю')
+        sys.exit(0)
     sys.exit(main())
