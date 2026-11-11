@@ -81,7 +81,8 @@
       <a class="svh-link" href="/start/">Как всё устроено</a>
     </div>
     <!-- ПРАВИТЬ: вместо ССЫЛКА_НА_ФОТО вставьте адрес фото из Тильды (см. инструкцию) -->
-    <img class="svh-photo" src="https://vanodotcom.github.io/svyazka-site/img/home-hero.jpg" alt="Группа в касках поднимается по каменистой тропе, позади горные хребты">
+    <!-- Фото: телефон берёт home-hero-800.jpg (sizes занижен нарочно, чтобы телефон с плотным экраном не качал большое), компьютер home-hero.jpg 1600 px. Новое фото: две версии, 800 и 1600 px по ширине. -->
+    <img class="svh-photo" src="https://vanodotcom.github.io/svyazka-site/img/home-hero.jpg" srcset="https://vanodotcom.github.io/svyazka-site/img/home-hero-800.jpg 800w, https://vanodotcom.github.io/svyazka-site/img/home-hero.jpg 1600w" sizes="(max-width:640px) 50vw, 1100px" fetchpriority="high" alt="Группа в касках поднимается по каменистой тропе, позади горные хребты">
   </section>
 
   <nav class="svh-doors" aria-label="С чего начать">
