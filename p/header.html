@@ -350,7 +350,8 @@ body{font-family:'Onest',system-ui,sans-serif}
     g.pose(0,false); return g;
   }
 
-  var svg=null, rope, team, W=0, H=0, phase=0, last=null, face=1, lastY=window.pageYOffset, moving=false, timer=0, blinkT=0;
+  var svg=null, rope, team, W=0, H=0, phase=0, last=null, face=1, edge=window.pageYOffset, moving=false, timer=0, blinkT=0;
+  var TURN=40;  /* ПРАВИТЬ: на сколько пикселей нужно прокрутить назад, чтобы связка развернулась */
   var GAP=36, S=1.3, HY=8;   /* ПРАВИТЬ: GAP расстояние между людьми, S размер человечков */
   function build(){
     if(svg) return;
@@ -376,7 +377,10 @@ body{font-family:'Onest',system-ui,sans-serif}
   }
   window.addEventListener('scroll',function(){
     if(!svg) return;
-    var y=window.pageYOffset; if(y!==lastY) face=y>lastY?1:-1; lastY=y;
+    /* разворот только после заметной прокрутки назад: edge помнит самую дальнюю точку в текущую сторону,
+       мелкие подёргивания пальцем меньше TURN пикселей связку не разворачивают */
+    var y=window.pageYOffset;
+    if((y-edge)*face>0) edge=y; else if(Math.abs(y-edge)>TURN){face=-face;edge=y;}
     moving=true; clearTimeout(timer); timer=setTimeout(function(){moving=false;draw();},160); draw();
   },{passive:true});
   window.addEventListener('resize',function(){layout();draw();});
