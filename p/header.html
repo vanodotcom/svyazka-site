@@ -121,6 +121,22 @@ body{font-family:'Onest',system-ui,sans-serif}
 /* ссылки в тексте: заметное подчёркивание */
 #allrecords :is(p,span,small,td,dd,label) > a:not([class]){text-decoration:underline!important;text-decoration-color:#C8410B!important;text-decoration-thickness:1.5px!important;text-underline-offset:3px!important}
 #allrecords :is(p,span,small,td,dd,label) > a:not([class]):hover{color:#C8410B!important}
+/* Телефоны и планшеты (уже 1000 пикселей): шапка приклеена к верху экрана, по её нижней линии
+   гуляет связка из трёх человечков (скрипт «Связка в шапке» внизу файла). На компьютере всё как раньше.
+   .sv-head-gap занимает место шапки, чтобы страница не уехала под неё. */
+.sv-head-gap{display:none}
+.sv-walk{display:none}
+@media (max-width:999px){
+  .sv-head{position:fixed;top:0;left:0;right:0;z-index:900}
+  .sv-head-gap{display:block;height:88px}
+  /* человечки идут перед логотипом, но за кнопками: кнопкам нужен белый фон */
+  .sv-head>.sv-left,.sv-head>.sv-right{position:relative;z-index:2}
+  .sv-head>.sv-logo{position:relative;z-index:0}
+  .sv-head .sv-cta{background:#fff}
+  .sv-head .sv-cta:hover{background:var(--sv-ink)}
+  .sv-walk{display:block;position:absolute;left:0;top:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:hidden}
+}
+@media (max-width:640px){ .sv-head-gap{height:72px} }
 </style>
 
 <header class="sv-head">
@@ -128,6 +144,7 @@ body{font-family:'Onest',system-ui,sans-serif}
   <a class="sv-logo" href="/"><img src="https://vanodotcom.github.io/svyazka-site/img/brand/logo-shapka.png" width="240" height="88" alt=""><span>Связка</span></a>
   <div class="sv-right"><a class="sv-cta sv-cta-d" href="/start/">Хочу в горы</a><button class="sv-burger" type="button" aria-expanded="false">Меню</button></div>
 </header>
+<div class="sv-head-gap" aria-hidden="true"></div>
 
 <aside class="sv-side" aria-label="Главное меню">
   <button class="sv-close" type="button" aria-label="Закрыть меню">Закрыть<svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.6"/></svg></button>
@@ -293,5 +310,79 @@ body{font-family:'Onest',system-ui,sans-serif}
     else if(h.indexOf('t.me/westra')>-1) goal('tg_channel');
     if(h.indexOf('vk.com/')>-1) goal('vk');
   },true);
+})();
+/* «Связка в шапке»: на узких экранах (меньше 1000 пикселей) трое человечков-мармеладок в касках,
+   связанные оранжевой верёвкой, идут по нижней линии приклеенной шапки. Где они стоят, показывает,
+   сколько страницы прочитано: вверху слева, в конце страницы у правого края, там поднимают руки.
+   Крутите вверх, разворачиваются. Шагают, только пока страница едет; иногда моргают.
+   Если в системе включено «уменьшить движение», не шагают и не моргают, только передвигаются.
+   На компьютере скрипт ничего не рисует. ПРАВИТЬ: SV_WALK = false выключает человечков совсем. */
+(function(){
+  var SV_WALK=true;
+  if(!SV_WALK||window.svWalk) return; window.svWalk=1;
+  var head=document.querySelector('.sv-head'); if(!head) return;
+  var NS='http://www.w3.org/2000/svg', INK='#161615', OR='#C8410B';
+  var narrow=window.matchMedia('(max-width:999px)'), calm=window.matchMedia('(prefers-reduced-motion: reduce)');
+  function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+
+  /* один человечек: ступни на линии y=0, смотрит вправо; ноги и рука поворачиваются из кода */
+  function hiker(parent){
+    var g=el('g',{fill:INK,stroke:INK,'stroke-linecap':'round'},parent);
+    function leg(x){var o=el('g',{transform:'translate('+x+' -6)'},g);var r=el('g',{},o);el('line',{x1:0,y1:0,x2:0,y2:5.2,'stroke-width':2.8},r);return r;}
+    var l2=leg(-0.4);
+    el('ellipse',{cx:-4.4,cy:-12,rx:3.6,ry:4.6,stroke:'none'},g);           /* рюкзак */
+    el('ellipse',{cx:0.4,cy:-10,rx:3.2,ry:4.4,stroke:'none'},g);            /* туловище */
+    var l1=leg(1);
+    var ao=el('g',{transform:'translate(2.4 -11.6)'},g), arm=el('g',{},ao); el('line',{x1:0,y1:0,x2:0,y2:3.6,'stroke-width':2.2},arm);
+    el('circle',{cx:1.8,cy:-17.6,r:4,stroke:'none'},g);                     /* голова */
+    el('path',{d:'M-2.3 -18 A4.2 4.2 0 0 1 6 -18.2 Z',fill:OR,stroke:'none'},g); /* каска */
+    el('path',{d:'M-2.4 -17.9 L6.1 -18.2',fill:'none','stroke-width':0.9},g);
+    var eyes=el('g',{stroke:'none'},g);                                     /* глаза, голова в профиль */
+    el('ellipse',{cx:3.3,cy:-16.6,rx:1.15,ry:1.35,fill:'#fff'},eyes);
+    el('ellipse',{cx:5.2,cy:-16.6,rx:0.75,ry:1.15,fill:'#fff'},eyes);
+    el('circle',{cx:3.8,cy:-16.5,r:0.6},eyes); el('circle',{cx:5.45,cy:-16.5,r:0.45},eyes);
+    el('circle',{cx:3.55,cy:-16.95,r:0.22,fill:'#fff'},eyes);
+    g.pose=function(b,end){
+      l1.setAttribute('transform','rotate('+(b*0.7)+')'); l2.setAttribute('transform','rotate('+(-b*0.7)+')');
+      arm.setAttribute('transform','rotate('+(end?-170:-30-b*0.6)+')');
+    };
+    g.blink=function(){eyes.setAttribute('transform','translate(0 -16.6) scale(1 0.12) translate(0 16.6)');setTimeout(function(){eyes.removeAttribute('transform');},140);};
+    g.pose(0,false); return g;
+  }
+
+  var svg=null, rope, team, W=0, H=0, phase=0, last=null, face=1, lastY=window.pageYOffset, moving=false, timer=0, blinkT=0;
+  var GAP=36, S=1.3, HY=8;   /* ПРАВИТЬ: GAP расстояние между людьми, S размер человечков */
+  function build(){
+    if(svg) return;
+    svg=el('svg',{'class':'sv-walk','aria-hidden':'true',focusable:'false'}); head.insertBefore(svg,head.firstChild);
+    rope=el('path',{fill:'none',stroke:OR,'stroke-width':1.3,'stroke-linecap':'round'},svg);
+    team=[hiker(svg),hiker(svg),hiker(svg)];
+    if(!calm.matches) blinkT=setInterval(function(){team[Math.floor(Math.random()*3)].blink();},1700);
+    layout(); draw();
+  }
+  function drop(){ if(!svg) return; clearInterval(blinkT); svg.parentNode.removeChild(svg); svg=null; }
+  function layout(){ if(!svg) return; W=head.clientWidth; H=head.clientHeight; svg.setAttribute('viewBox','0 0 '+W+' '+H); }
+  function draw(){
+    if(!svg) return;
+    var max=document.documentElement.scrollHeight-window.innerHeight, t=max>0?Math.min(1,Math.max(0,window.pageYOffset/max)):0;
+    var x=14+GAP*2+t*(W-28-GAP*2), Y=H-1, end=t>0.995;
+    if(last!==null) phase+=Math.abs(x-last)*0.22; last=x;
+    var a=(moving&&!calm.matches&&!end)?Math.sin(phase)*40:0;
+    /* первый в связке всегда впереди по ходу движения */
+    var xs=[0,1,2].map(function(k){return face>0?x-k*GAP:x-GAP*2+k*GAP;});
+    team.forEach(function(h,k){h.setAttribute('transform','translate('+xs[k]+' '+Y+') scale('+(face*S)+' '+S+')');h.pose(k%2?-a:a,end);});
+    var ry=Y-HY*S;
+    rope.setAttribute('d','M'+xs[0]+' '+ry+' Q'+(xs[0]+xs[1])/2+' '+(ry+5)+' '+xs[1]+' '+ry+' Q'+(xs[1]+xs[2])/2+' '+(ry+5)+' '+xs[2]+' '+ry);
+  }
+  window.addEventListener('scroll',function(){
+    if(!svg) return;
+    var y=window.pageYOffset; if(y!==lastY) face=y>lastY?1:-1; lastY=y;
+    moving=true; clearTimeout(timer); timer=setTimeout(function(){moving=false;draw();},160); draw();
+  },{passive:true});
+  window.addEventListener('resize',function(){layout();draw();});
+  document.addEventListener('sv:loaded',draw);
+  function check(){ if(narrow.matches) build(); else drop(); }
+  if(narrow.addEventListener) narrow.addEventListener('change',check); else if(narrow.addListener) narrow.addListener(check);
+  check();
 })();
 </script>
