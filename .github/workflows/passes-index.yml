@@ -21,4 +21,4 @@ jobs:
           git config user.name "svyazka-passes-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Список перевалов из каталога westra.ru"
-          git push
+          git pull --rebase -q origin main && git push
