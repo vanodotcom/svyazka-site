@@ -216,10 +216,13 @@ body{font-family:'Onest',system-ui,sans-serif}
     document.querySelectorAll('#allrecords a[href*="westra.ru"]:not([data-old])').forEach(function(a){
       a.setAttribute('data-old','1'); a.target='_blank'; a.rel='noopener';
       a.title='Старый сайт westra.ru, откроется в новой вкладке';
-      /* стрелка отдельным элементом (строки-плашки, как на «Кто мы»): меняем её на ↗ на том же месте, чтобы не было двух стрелок */
-      var e=a.lastElementChild; if(e&&e.tagName==='SPAN'&&e.textContent.trim()==='→'){ e.className='sv-oldi'; e.textContent='↗'; return; }
+      var i=document.createElement('span'); i.className='sv-oldi'; i.setAttribute('aria-hidden','true'); i.textContent=' ↗';
+      /* строки-плашки (как на «Кто мы»): чёрная стрелка → отдельным элементом справа остаётся,
+         а ↗ ставим сразу после заголовка строки, чтобы не было двух стрелок справа */
+      var e=a.lastElementChild, b=a.querySelector('b');
+      if(e&&e.tagName==='SPAN'&&e.textContent.trim()==='→'&&b){ b.appendChild(i); return; }
       var t=a.lastChild; if(t&&t.nodeType===3&&/\s*→\s*$/.test(t.nodeValue)) t.nodeValue=t.nodeValue.replace(/\s*→\s*$/,'');
-      var i=document.createElement('span'); i.className='sv-oldi'; i.setAttribute('aria-hidden','true'); i.textContent='\u2009↗'; a.appendChild(i);
+      a.appendChild(i);
     });
   }
   markOld(); document.addEventListener('sv:loaded',markOld); setTimeout(markOld,1500);
